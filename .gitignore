@@ -27,8 +27,5 @@ override.tf.json
 terraform.rc
 
 # ignore unnecessary files
-.terraform
-.tfstate
-*.tfstate
 .DS_Store
 .idea
