@@ -28,13 +28,13 @@ data "aws_ssm_parameter" "private_subnet_2b_id" {
 ## -----------------------------------------------------------------------------
 ## amis
 
-data "aws_ami" "website_ami" {
+data "aws_ami" "private_beta_rp_ami" {
     most_recent = true
 
     filter {
         name   = "name"
         values = [
-            "website-wp-primer-${var.environment}*"
+            "private-beta-rp-primer*"
         ]
     }
 

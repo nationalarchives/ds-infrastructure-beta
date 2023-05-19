@@ -16,3 +16,4 @@ locals {
 ## environment variables
 
 variable "environment" {}
+variable "deployment_s3_bucket" {}

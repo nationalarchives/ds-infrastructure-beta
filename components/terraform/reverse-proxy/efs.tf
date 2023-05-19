@@ -7,28 +7,27 @@ resource "aws_security_group" "rp_efs" {
     description = "Reverse proxy EFS storage security group"
     vpc_id      = var.vpc_id
 
-    ingress {
-        description = "allow connection from instances"
-        from_port   = 0
-        to_port     = 65535
-        protocol    = "tcp"
-        cidr_blocks = [
-            var.vpc_cidr
-        ]
-    }
-
-    egress {
-        from_port   = 0
-        to_port     = 0
-        protocol    = "-1"
-        cidr_blocks = [
-            "0.0.0.0/0"
-        ]
-    }
-
     tags = merge(var.tags, {
         Name = "private-beta-efs-reverse-proxy-sg"
     })
+}
+
+resource "aws_vpc_security_group_ingress_rule" "http" {
+  security_group_id = aws_security_group.rp_efs.id
+
+  cidr_ipv4   = "0.0.0.0/0"
+  from_port   = 0
+  ip_protocol = "tcp"
+  to_port     = 65535
+}
+
+resource "aws_vpc_security_group_egress_rule" "outwards_all" {
+  security_group_id = aws_security_group.rp_efs.id
+
+  cidr_ipv4   = "0.0.0.0/0"
+  from_port   = 0
+  ip_protocol = "-1"
+  to_port     = 0
 }
 
 resource "aws_iam_role" "efs_backup" {
