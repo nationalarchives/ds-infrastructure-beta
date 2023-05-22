@@ -1,6 +1,5 @@
-## -----------------------------------------------------------------------------
-## networking
-
+# networking
+#
 data "aws_ssm_parameter" "vpc_id" {
     name = "/infrastructure/vpc_id"
 }
@@ -25,9 +24,8 @@ data "aws_ssm_parameter" "private_subnet_2b_id" {
     name = "/infrastructure/private_subnet_2b_id"
 }
 
-## -----------------------------------------------------------------------------
-## amis
-
+# amis
+#
 data "aws_ami" "private_beta_rp_ami" {
     most_recent = true
 
@@ -51,13 +49,13 @@ data "aws_ami" "private_beta_rp_ami" {
     ]
 }
 
-data "aws_ami" "rp_ami" {
+data "aws_ami" "private_beta_wagtail_ami" {
     most_recent = true
 
     filter {
         name   = "name"
         values = [
-            "website-rp-primer-${var.environment}*"
+            "private-beta-wagtail-primer*"
         ]
     }
 
@@ -76,6 +74,12 @@ data "aws_ami" "rp_ami" {
 
 data "aws_caller_identity" "current" {}
 
+# ip_set for waf
+#
+data "aws_ssm_parameter" "private_beta_waf_ipset" {
+    name = "/infrastructure/private_beta_waf_ipset"
+}
+
 data "aws_ssm_parameter" "zone_id" {
     name = "/infrastructure/zone_id"
 }
@@ -92,9 +96,8 @@ data "aws_ssm_parameter" "sns_slack_alert" {
     name = "/infrastructure/sns_slack_alert_arn"
 }
 
-## -----------------------------------------------------------------------------
-## certificates
-
+# certificates
+#
 data "aws_ssm_parameter" "wildcard_certificate_arn" {
     name = "/infrastructure/certificate-manager/wildcard-certificate-arn"
 }
@@ -103,9 +106,8 @@ data "aws_ssm_parameter" "us_east_1_wildcard_certificate_arn" {
     name = "/infrastructure/certificate-manager/us-east-1-wildcard-certificate-arn"
 }
 
-## -----------------------------------------------------------------------------
-## DB Security Group
-
+# DB Security Group
+#
 data "aws_ssm_parameter" "web_db_sg_id" {
     name = "/infrastructure/web_db_sg_id"
 }

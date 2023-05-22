@@ -1,5 +1,5 @@
 terraform {
-    required_version = ">= 1.2.9"
+    required_version = ">= 1.4.6"
 
     required_providers {
         aws = "4.67.0"
@@ -9,15 +9,6 @@ terraform {
 provider "aws" {
     alias  = "aws-cf-waf"
     region = "us-east-1"
-}
-
-provider "aws" {
-    region  = "eu-west-2"
-    alias   = "intersite"
-
-    assume_role {
-        role_arn = "arn:aws:iam::500447081210:role/github-actions-xacct"
-    }
 }
 
 provider "aws" {

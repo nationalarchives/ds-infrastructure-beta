@@ -31,10 +31,7 @@ variable "cloudfront_domain_name" {}
 module "cloudfront_public" {
     source = "./cloudfront"
 
-    cf_dist= local.cf_dist
-
-    cloudfront_origin_id   = var.cloudfront_public_origin_id
-    cloudfront_domain_name = module.reverse-proxy.reverse_proxy_lb_dns_name
+    cf_dist = local.cf_dist
 
     website_waf_info         = module.waf.website_waf_info
     cloudfront_distributions = var.cf_dist
