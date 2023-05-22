@@ -13,7 +13,13 @@ locals {
 }
 
 ## -----------------------------------------------------------------------------
-## environment variables
+## variables - cross all modules
 
 variable "environment" {}
+
+variable "public_domain_name" {}
+variable "internal_domain_name" {}
+variable "ciim_domain_name" {}
+
 variable "deployment_s3_bucket" {}
+variable "logfile_s3_bucket" {}

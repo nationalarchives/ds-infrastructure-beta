@@ -1,19 +1,13 @@
 ## -----------------------------------------------------------------------------
 ## variable definitions
 
-variable "cloudfront_public_domain_name" {}
-variable "cloudfront_public_origin_id" {}
+variable "cf_dist" {}
 
 variable "wildcard_certificate_arn" {}
 
 # ======================================================================================================================
 # Variables
 # ======================================================================================================================
-
-variable "cloudfront_distributions" {
-  description = "A map of details for a set of Cloudfront distributions"
-  default     = {}
-}
 
 variable "website_waf_info" {
   description = "Taken from aws ssm parameter store data"

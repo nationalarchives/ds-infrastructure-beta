@@ -1,5 +1,5 @@
 locals {
-    reverse_proxy_asg_tags = [
+    rp_asg_tags = [
         {
             key                 = "Name"
             value               = "private-beta-reverse-proxy-nginx"
@@ -27,12 +27,12 @@ locals {
         },
         {
             key                 = "Patch Group"
-            value               = var.reverse_proxy_nginx_patch_group
+            value               = var.rp_nginx_patch_group
             propagate_at_launch = "true"
         },
         {
             key                 = "Deployment-Group"
-            value               = var.reverse_proxy_nginx_deployment_group
+            value               = var.rp_nginx_deployment_group
             propagate_at_launch = "true"
         },
         {
@@ -49,8 +49,10 @@ locals {
 
 }
 
-variable "reverse_proxy_nginx_patch_group" {}
-variable "reverse_proxy_nginx_deployment_group" {}
+# reverse proxy
+#
+variable "rp_nginx_patch_group" {}
+variable "rp_nginx_deployment_group" {}
 
 variable "rp_efs_backup_schedule" {}
 variable "rp_efs_backup_start_window" {}
@@ -65,6 +67,14 @@ variable "rp_efs_mount_dir" {}
 variable "rp_nginx_folder_s3_key" {}
 
 variable "rp_root_block_device_size" {}
+
+# auto-scaling
+#
+variable "rp_asg_max_size" {}
+variable "rp_asg_min_size" {}
+variable "rp_asg_desired_capacity" {}
+variable "rp_asg_health_check_grace_period" {}
+variable "rp_asg_health_check_type" {}
 
 module "reverse-proxy" {
     source = "./reverse-proxy"
@@ -96,6 +106,19 @@ module "reverse-proxy" {
     rp_efs_mount_dir          = var.rp_efs_mount_dir
     rp_nginx_folder_s3_key    = var.rp_nginx_folder_s3_key
 
+    # auto-scaling
+    #
+    rp_asg_max_size                  = var.rp_asg_max_size
+    rp_asg_min_size                  = var.rp_asg_min_size
+    rp_asg_desired_capacity          = var.rp_asg_desired_capacity
+    rp_asg_health_check_grace_period = var.rp_asg_health_check_grace_period
+    rp_asg_health_check_type         = var.rp_asg_health_check_type
+
+    rp_asg_tags = local.rp_asg_tags
+
+    deployment_s3_bucket = var.deployment_s3_bucket
+    logfile_s3_bucket    = var.logfile_s3_bucket
+
     # certificates
     #
     ssl_cert_arn = data.aws_ssm_parameter.wildcard_certificate_arn
@@ -103,6 +126,6 @@ module "reverse-proxy" {
     public_domain_name = var.cloudfront_public_origin_id
 
     tags = merge(local.tags, {
-        service = "reverse-proxy-private-beta"
+        service = "private-beta-reverse-proxy"
     })
 }

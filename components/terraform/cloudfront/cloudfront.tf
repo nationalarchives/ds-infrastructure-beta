@@ -1,7 +1,7 @@
 resource "aws_cloudfront_distribution" "private_beta" {
     origin {
-        domain_name = lookup(var.cloudfront_distributions, "cfd_domain_name", "")
-        origin_id   = var.cloudfront_public_origin_id
+        domain_name = lookup(var.cf_dist, "cfd_domain_name", "")
+        origin_id   = lookup(var.cf_dist, "cfd_origin_id", "")
 
           custom_origin_config {
             http_port              = 80
@@ -12,38 +12,38 @@ resource "aws_cloudfront_distribution" "private_beta" {
       }
 
     http_version = "http1.1"
-    price_class = lookup(var.cloudfront_distributions, "cfd_price_class", "")
-    enabled     = lookup(var.cloudfront_distributions, "cfd_enabled", "")
+    price_class = lookup(var.cf_dist, "cfd_price_class", "")
+    enabled     = lookup(var.cf_dist, "cfd_enabled", "")
 
-    aliases = lookup(var.cloudfront_distributions, "cfd_aliases", "")
+    aliases = lookup(var.cf_dist, "cfd_aliases", "")
 
     default_cache_behavior {
-        target_origin_id = lookup(var.cloudfront_distributions, "cfd_origin_id", "")
-        allowed_methods  = lookup(var.cloudfront_distributions, "cfd_default_behaviour_allowed_methods", "")
-        cached_methods   = lookup(var.cloudfront_distributions, "cfd_default_behaviour_cached_methods", "")
+        target_origin_id = lookup(var.cf_dist, "cfd_origin_id", "")
+        allowed_methods  = lookup(var.cf_dist, "cfd_default_behaviour_allowed_methods", "")
+        cached_methods   = lookup(var.cf_dist, "cfd_default_behaviour_cached_methods", "")
 
-        cache_policy_id          = lookup(var.cloudfront_distributions, "cfd_Managed_CachingOptimized_cache_policy_id", "")
-        origin_request_policy_id = lookup(var.cloudfront_distributions, "cfd_Managed_AllViewer_origin_request_policy_id", "")
+        cache_policy_id          = lookup(var.cf_dist, "cfd_Managed_CachingOptimized_cache_policy_id", "")
+        origin_request_policy_id = lookup(var.cf_dist, "cfd_Managed_AllViewer_origin_request_policy_id", "")
 
-        viewer_protocol_policy = lookup(var.cloudfront_distributions, "cfd_behaviour_default_viewer_protocol_policy", "")
-        compress               = lookup(var.cloudfront_distributions, "cfd_behaviour_compress", "")
+        viewer_protocol_policy = lookup(var.cf_dist, "cfd_behaviour_default_viewer_protocol_policy", "")
+        compress               = lookup(var.cf_dist, "cfd_behaviour_compress", "")
     }
 
     # Managed Caching Disabled and Managed All Viewer policies
     dynamic "ordered_cache_behavior" {
-        for_each = lookup(var.cloudfront_distributions, "cfd_cache_disabled_path_patterns", "")
+        for_each = lookup(var.cf_dist, "cfd_cache_disabled_path_patterns", "")
         iterator = b
         content {
             path_pattern     = b.value
-            target_origin_id = lookup(var.cloudfront_distributions, "cfd_origin_id", "")
-            allowed_methods  = lookup(var.cloudfront_distributions, "cfd_default_behaviour_allowed_methods", "")
-            cached_methods   = lookup(var.cloudfront_distributions, "cfd_default_behaviour_cached_methods", "")
+            target_origin_id = lookup(var.cf_dist, "cfd_origin_id", "")
+            allowed_methods  = lookup(var.cf_dist, "cfd_default_behaviour_allowed_methods", "")
+            cached_methods   = lookup(var.cf_dist, "cfd_default_behaviour_cached_methods", "")
 
-            cache_policy_id          = lookup(var.cloudfront_distributions, "cfd_Managed_CachingDisabled_cache_policy_id", "")
-            origin_request_policy_id = lookup(var.cloudfront_distributions, "cfd_Managed_AllViewer_origin_request_policy_id", "")
+            cache_policy_id          = lookup(var.cf_dist, "cfd_Managed_CachingDisabled_cache_policy_id", "")
+            origin_request_policy_id = lookup(var.cf_dist, "cfd_Managed_AllViewer_origin_request_policy_id", "")
 
-            viewer_protocol_policy = lookup(var.cloudfront_distributions, "cfd_behaviour_viewer_protocol_policy", "")
-            compress               = lookup(var.cloudfront_distributions, "cfd_behaviour_compress", "")
+            viewer_protocol_policy = lookup(var.cf_dist, "cfd_behaviour_viewer_protocol_policy", "")
+            compress               = lookup(var.cf_dist, "cfd_behaviour_compress", "")
         }
     }
 
@@ -56,7 +56,7 @@ resource "aws_cloudfront_distribution" "private_beta" {
     tags = merge(
     local.default_tags,
     {
-      Service = "Website_Cloudfront"
+      Service = "private-beta-cloudfront"
     },
   )
 

@@ -21,6 +21,19 @@ variable "rp_root_block_device_size" {}
 variable "rp_efs_mount_dir" {}
 variable "rp_nginx_folder_s3_key" {}
 
+# auto-scaling
+#
+variable "rp_asg_max_size" {}
+variable "rp_asg_min_size" {}
+variable "rp_asg_desired_capacity" {}
+variable "rp_asg_health_check_grace_period" {}
+variable "rp_asg_health_check_type" {}
+
+variable "rp_asg_tags" {}
+
+variable "deployment_s3_bucket" {}
+variable "logfile_s3_bucket" {}
+
 variable "ssl_cert_arn" {}
 
 variable "tags" {}
