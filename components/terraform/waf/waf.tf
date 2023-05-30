@@ -4,8 +4,9 @@
 terraform {
     required_providers {
         aws = {
-            version               = ">= 4.67.0"
-            source                = "hashicorp/aws"
+            version = ">= 4.67.0"
+            source  = "hashicorp/aws"
+
             configuration_aliases = [
                 aws.aws-cf-waf
             ]
@@ -16,34 +17,13 @@ terraform {
 # ===================================================================================================================
 # VARIABLES
 # ===================================================================================================================
-variable "web_acl_default_action_allow" {
-    description = "indicating the general waf behavior"
-    default     = true
-}
+variable "web_acl_default_action_allow" {}
 
-variable "web_acl_requests_in_5_minutes" {
-    default = false
-}
-
-variable "web_acl_shield_advanced_active" {
-    default = false
-}
-
-variable "web_acl_amazon_ip_reputation_list" {
-    default = false
-}
-
-variable "web_acl_managed_rules_linux_rule_set" {
-    default = false
-}
-
-variable "web_acl_managed_rules_php_rule_set" {
-    default = false
-}
-
-variable "web_acl_managed_rules_wordpress_rule_set" {
-    default = false
-}
+variable "web_acl_requests_in_5_minutes" {}
+variable "web_acl_shield_advanced_active" {}
+variable "web_acl_amazon_ip_reputation_list" {}
+variable "web_acl_managed_rules_linux_rule_set" {}
+variable "web_acl_managed_rules_php_rule_set" {}
 
 variable "site_ips" {
     description = "ip addresses opposing to general waf behaviour"
@@ -55,11 +35,11 @@ variable "tags" {}
 # RESOURCES
 # ===================================================================================================================
 
-resource "aws_wafv2_ip_set" "wp_website_access" {
+resource "aws_wafv2_ip_set" "private_beta_access" {
     provider = aws.aws-cf-waf
 
     name               = "wp-website-access"
-    description        = "IP set allowing access or blocking opposing main website"
+    description        = "IP set allowing access or blocking opposing to default action setting in WAF"
     scope              = "CLOUDFRONT"
     ip_address_version = "IPV4"
     addresses          = var.site_ips
@@ -67,7 +47,7 @@ resource "aws_wafv2_ip_set" "wp_website_access" {
     tags = var.tags
 }
 
-resource "aws_wafv2_web_acl" "wp_website" {
+resource "aws_wafv2_web_acl" "private_beta" {
     provider = aws.aws-cf-waf
 
     name  = "wp-website"
@@ -101,7 +81,7 @@ resource "aws_wafv2_web_acl" "wp_website" {
 
         statement {
             ip_set_reference_statement {
-                arn = aws_wafv2_ip_set.wp_website_access.arn
+                arn = aws_wafv2_ip_set.private_beta_access.arn
             }
         }
 
@@ -174,52 +154,116 @@ resource "aws_wafv2_web_acl" "wp_website" {
                 name        = "AWSManagedRulesBotControlRuleSet"
                 vendor_name = "AWS"
 
-                excluded_rule {
-                    name = "CategoryMonitoring"
-                }
-                excluded_rule {
+                rule_action_override {
+                    action_to_use {
+                        count {}
+                    }
+
                     name = "CategoryAdvertising"
                 }
-                excluded_rule {
+                rule_action_override {
+                    action_to_use {
+                        count {}
+                    }
+
                     name = "CategoryArchiver"
                 }
-                excluded_rule {
+                rule_action_override {
+                    action_to_use {
+                        count {}
+                    }
+
                     name = "CategoryContentFetcher"
                 }
-                excluded_rule {
+                rule_action_override {
+                    action_to_use {
+                        count {}
+                    }
+
                     name = "CategoryEmailClient"
                 }
-                excluded_rule {
+                rule_action_override {
+                    action_to_use {
+                        count {}
+                    }
+
                     name = "CategoryHttpLibrary"
                 }
-                excluded_rule {
+                rule_action_override {
+                    action_to_use {
+                        count {}
+                    }
+
                     name = "CategoryLinkChecker"
                 }
-                excluded_rule {
+                rule_action_override {
+                    action_to_use {
+                        count {}
+                    }
+
                     name = "CategoryMiscellaneous"
                 }
-                excluded_rule {
+                rule_action_override {
+                    action_to_use {
+                        count {}
+                    }
+
+                    name = "CategoryMonitoring"
+                }
+                rule_action_override {
+                    action_to_use {
+                        count {}
+                    }
+
                     name = "CategoryScrapingFramework"
                 }
-                excluded_rule {
+                rule_action_override {
+                    action_to_use {
+                        count {}
+                    }
+
                     name = "CategorySecurity"
                 }
-                excluded_rule {
+                rule_action_override {
+                    action_to_use {
+                        count {}
+                    }
+
                     name = "CategorySearchEngine"
                 }
-                excluded_rule {
+                rule_action_override {
+                    action_to_use {
+                        count {}
+                    }
+
                     name = "CategorySeo"
                 }
-                excluded_rule {
+                rule_action_override {
+                    action_to_use {
+                        count {}
+                    }
+
                     name = "CategorySocialMedia"
                 }
-                excluded_rule {
+                rule_action_override {
+                    action_to_use {
+                        count {}
+                    }
+
                     name = "SignalAutomatedBrowser"
                 }
-                excluded_rule {
+                rule_action_override {
+                    action_to_use {
+                        count {}
+                    }
+
                     name = "SignalKnownBotDataCenter"
                 }
-                excluded_rule {
+                rule_action_override {
+                    action_to_use {
+                        count {}
+                    }
+
                     name = "SignalNonBrowserUserAgent"
                 }
             }
@@ -244,7 +288,6 @@ resource "aws_wafv2_web_acl" "wp_website" {
 
 
             statement {
-
                 managed_rule_group_statement {
                     name        = "AWSManagedRulesAmazonIpReputationList"
                     vendor_name = "AWS"
@@ -267,12 +310,10 @@ resource "aws_wafv2_web_acl" "wp_website" {
             priority = 5
 
             override_action {
-
                 none {}
             }
 
             statement {
-
                 managed_rule_group_statement {
                     name        = "AWSManagedRulesLinuxRuleSet"
                     vendor_name = "AWS"
@@ -295,12 +336,10 @@ resource "aws_wafv2_web_acl" "wp_website" {
             priority = 7
 
             override_action {
-
                 none {}
             }
 
             statement {
-
                 managed_rule_group_statement {
                     name        = "AWSManagedRulesPHPRuleSet"
                     vendor_name = "AWS"
@@ -310,33 +349,6 @@ resource "aws_wafv2_web_acl" "wp_website" {
             visibility_config {
                 cloudwatch_metrics_enabled = true
                 metric_name                = "AWS-AWSManagedRulesPHPRuleSet"
-                sampled_requests_enabled   = true
-            }
-        }
-    }
-
-    dynamic rule {
-        for_each = var.web_acl_managed_rules_wordpress_rule_set == true ? [""] : []
-        content {
-            name     = "AWS-AWSManagedRulesWordPressRuleSet"
-            priority = 8
-
-            override_action {
-
-                none {}
-            }
-
-            statement {
-
-                managed_rule_group_statement {
-                    name        = "AWSManagedRulesWordPressRuleSet"
-                    vendor_name = "AWS"
-                }
-            }
-
-            visibility_config {
-                cloudwatch_metrics_enabled = true
-                metric_name                = "AWS-AWSManagedRulesWordPressRuleSet"
                 sampled_requests_enabled   = true
             }
         }
@@ -372,18 +384,4 @@ resource "aws_wafv2_web_acl" "wp_website" {
         metric_name                = "aws-waf-logs-wp-website"
         sampled_requests_enabled   = true
     }
-}
-
-resource "aws_wafv2_regex_pattern_set" "wp_admin_url_pattern" {
-    provider = aws.aws-cf-waf
-
-    name        = "wp-admin-url-pattern"
-    description = "pattern for website admin section"
-    scope       = "CLOUDFRONT"
-
-    regular_expression {
-        regex_string = "^https:\\/\\/wp-admin/*"
-    }
-
-    tags = var.tags
 }

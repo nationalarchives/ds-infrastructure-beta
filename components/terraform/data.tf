@@ -20,8 +20,36 @@ data "aws_ssm_parameter" "private_subnet_2a_id" {
     name = "/infrastructure/private_subnet_2a_id"
 }
 
+data "aws_ssm_parameter" "private_subnet_2a_cidr" {
+    name = "/infrastructure/private_subnet_2a_cidr"
+}
+
 data "aws_ssm_parameter" "private_subnet_2b_id" {
     name = "/infrastructure/private_subnet_2b_id"
+}
+
+data "aws_ssm_parameter" "private_subnet_2b_cidr" {
+    name = "/infrastructure/private_subnet_2b_cidr"
+}
+
+data "aws_ssm_parameter" "private_db_subnet_2a_id" {
+    name = "/infrastructure/private_subnet_2a_id"
+}
+
+data "aws_ssm_parameter" "private_db_subnet_2a_cidr" {
+    name = "/infrastructure/private_subnet_2a_cidr"
+}
+
+data "aws_ssm_parameter" "private_db_subnet_2b_id" {
+    name = "/infrastructure/private_subnet_2b_id"
+}
+
+data "aws_ssm_parameter" "private_db_subnet_2b_cidr" {
+    name = "/infrastructure/private_subnet_2b_cidr"
+}
+
+data "aws_ssm_parameter" "client_vpc_cidr" {
+    name = "/infrastructure/client_vpc_cidr"
 }
 
 # amis
@@ -72,20 +100,56 @@ data "aws_ami" "private_beta_wagtail_ami" {
     ]
 }
 
-data "aws_caller_identity" "current" {}
+data "aws_ami" "private_beta_postgres_source_ami" {
+    most_recent = true
 
-# ip_set for waf
-#
-data "aws_ssm_parameter" "private_beta_waf_ipset" {
-    name = "/infrastructure/private_beta_waf_ipset"
+    filter {
+        name   = "name"
+        values = [
+            "private-beta-postgres-source-primer*"
+        ]
+    }
+
+    filter {
+        name   = "virtualization-type"
+        values = [
+            "hvm"
+        ]
+    }
+
+    owners = [
+        data.aws_caller_identity.current.account_id,
+        "amazon"
+    ]
 }
+
+data "aws_ami" "private_beta_postgres_replica_ami" {
+    most_recent = true
+
+    filter {
+        name   = "name"
+        values = [
+            "private-beta-postgres-replica-primer*"
+        ]
+    }
+
+    filter {
+        name   = "virtualization-type"
+        values = [
+            "hvm"
+        ]
+    }
+
+    owners = [
+        data.aws_caller_identity.current.account_id,
+        "amazon"
+    ]
+}
+
+data "aws_caller_identity" "current" {}
 
 data "aws_ssm_parameter" "zone_id" {
     name = "/infrastructure/zone_id"
-}
-
-data "aws_secretsmanager_secret" "wp" {
-    arn = var.wp_secretsmanager_secret_arn
 }
 
 data "aws_secretsmanager_secret_version" "wp" {
@@ -116,4 +180,10 @@ data "aws_ssm_parameter" "web_db_sg_id" {
 # ----------------
 data "aws_ssm_parameter" "s3_deployment_source_arn" {
     name = "/infrastructure/s3/deployment_source_arn"
+}
+
+# cloudfront
+#
+data "aws_ssm_parameter" "cf_waf_ip_set" {
+    name = "/application/private_beta/waf/ip_set"
 }

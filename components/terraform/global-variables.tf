@@ -16,6 +16,7 @@ locals {
 ## variables - cross all modules
 
 variable "environment" {}
+variable "region" {}
 
 variable "public_domain_name" {}
 variable "internal_domain_name" {}

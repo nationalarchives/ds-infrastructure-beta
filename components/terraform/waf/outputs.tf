@@ -1,3 +1,3 @@
-output "website_waf_info" {
-  value = aws_wafv2_web_acl.wp_website.arn
+output "private_beta_waf_info" {
+  value = aws_wafv2_web_acl.private_beta.arn
 }
