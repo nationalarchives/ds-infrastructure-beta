@@ -24,7 +24,7 @@ resource "aws_iam_role" "dw_role" {
 resource "aws_iam_instance_profile" "dw_profile" {
     name = "private-beta-dw-instance-profile"
     path = "/"
-    role = aws_iam_role.dw_role
+    role = aws_iam_role.dw_role.name
 }
 
 # roles and profiles for reverse proxy
