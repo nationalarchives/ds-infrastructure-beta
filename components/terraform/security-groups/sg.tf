@@ -11,7 +11,7 @@ resource "aws_security_group" "dw" {
     })
 }
 
-resource "aws_security_group_rule" "dw_http_ingress" {
+resource "aws_security_group_rule" "dw_rp_http_ingress" {
     from_port                = 80
     protocol                 = "tcp"
     security_group_id        = aws_security_group.dw.id
@@ -40,7 +40,7 @@ resource "aws_security_group_rule" "dw_http_egress" {
     ]
 }
 
-resource "aws_security_group_rule" "dw_https_ingress" {
+resource "aws_security_group_rule" "dw_rp_https_ingress" {
     from_port                = 443
     protocol                 = "tcp"
     security_group_id        = aws_security_group.dw.id
@@ -228,16 +228,6 @@ resource "aws_security_group_rule" "rp_efs_egress" {
     cidr_blocks       = [
         "0.0.0.0/0"
     ]
-}
-
-resource "aws_security_group" "rp_efs" {
-    name        = "private-beta-rp-efs-sg"
-    description = "Reverse proxy EFS storage security group"
-    vpc_id      = var.vpc_id
-
-    tags = merge(var.tags, {
-        Name = "private-beta-reverse-proxy-efs-sg"
-    })
 }
 
 resource "aws_vpc_security_group_ingress_rule" "rp_efs_http" {
