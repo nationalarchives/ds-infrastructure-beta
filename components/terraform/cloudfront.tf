@@ -20,8 +20,6 @@ locals {
 
 ## -----------------------------------------------------------------------------
 ## module variable definitions
-variable "cloudfront_origin_id" {}
-variable "cloudfront_domain_name" {}
 
 ## -----------------------------------------------------------------------------
 ##modules
@@ -32,7 +30,6 @@ module "cloudfront_public" {
     cf_dist = local.cf_dist
 
     website_waf_info         = module.waf.private_beta_waf_info
-    cloudfront_distributions = var.cf_dist
     wildcard_certificate_arn = data.aws_ssm_parameter.us_east_1_wildcard_certificate_arn.value
 
     tags = merge(local.tags, {
