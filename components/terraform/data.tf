@@ -1,51 +1,51 @@
 # networking
 #
 data "aws_ssm_parameter" "vpc_id" {
-    name = "/infrastructure/vpc_id"
+    name = "/infrastructure/network/base/vpc_id"
 }
 
 data "aws_ssm_parameter" "vpc_cidr" {
-    name = "/infrastructure/vpc_cidr"
+    name = "/infrastructure/network/base/vpc_cidr"
 }
 
 data "aws_ssm_parameter" "public_subnet_2a_id" {
-    name = "/infrastructure/public_subnet_2a_id"
+    name = "/infrastructure/network/base/public_subnet_2a_id"
 }
 
 data "aws_ssm_parameter" "public_subnet_2b_id" {
-    name = "/infrastructure/public_subnet_2b_id"
+    name = "/infrastructure/network/base/public_subnet_2b_id"
 }
 
 data "aws_ssm_parameter" "private_subnet_2a_id" {
-    name = "/infrastructure/private_subnet_2a_id"
+    name = "/infrastructure/network/base/private_subnet_2a_id"
 }
 
 data "aws_ssm_parameter" "private_subnet_2a_cidr" {
-    name = "/infrastructure/private_subnet_2a_cidr"
+    name = "/infrastructure/network/base/private_subnet_2a_cidr"
 }
 
 data "aws_ssm_parameter" "private_subnet_2b_id" {
-    name = "/infrastructure/private_subnet_2b_id"
+    name = "/infrastructure/network/base/private_subnet_2b_id"
 }
 
 data "aws_ssm_parameter" "private_subnet_2b_cidr" {
-    name = "/infrastructure/private_subnet_2b_cidr"
+    name = "/infrastructure/network/base/private_subnet_2b_cidr"
 }
 
 data "aws_ssm_parameter" "private_db_subnet_2a_id" {
-    name = "/infrastructure/private_subnet_2a_id"
+    name = "/infrastructure/network/base/private_db_subnet_2a_id"
 }
 
 data "aws_ssm_parameter" "private_db_subnet_2a_cidr" {
-    name = "/infrastructure/private_subnet_2a_cidr"
+    name = "/infrastructure/network/base/private_db_subnet_2a_cidr"
 }
 
 data "aws_ssm_parameter" "private_db_subnet_2b_id" {
-    name = "/infrastructure/private_subnet_2b_id"
+    name = "/infrastructure/network/base/private_db_subnet_2b_id"
 }
 
 data "aws_ssm_parameter" "private_db_subnet_2b_cidr" {
-    name = "/infrastructure/private_subnet_2b_cidr"
+    name = "/infrastructure/network/base/private_db_subnet_2b_cidr"
 }
 
 data "aws_ssm_parameter" "client_vpc_cidr" {
@@ -83,7 +83,7 @@ data "aws_ami" "private_beta_ami" {
     filter {
         name   = "name"
         values = [
-            "private-beta-primer*"
+            "private-beta-dw-primer*"
         ]
     }
 
