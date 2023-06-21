@@ -15,8 +15,8 @@ variable "dw_efs_backup_kms_key_arn" {}
 module "efs" {
     source = "./efs"
 
-    private_subnet_a_id = data.aws_ssm_parameter.private_db_subnet_2a_id
-    private_subnet_b_id = data.aws_ssm_parameter.private_db_subnet_2b_id
+    private_subnet_a_id = data.aws_ssm_parameter.private_db_subnet_2a_id.value
+    private_subnet_b_id = data.aws_ssm_parameter.private_db_subnet_2b_id.value
 
     rp_efs_sg_id                     = module.sgs.rp_efs_sg_id
     rp_efs_backup_role_arn           = module.roles.rp_efs_backup_arn

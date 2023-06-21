@@ -75,11 +75,11 @@ module "reverse-proxy" {
     # networking
     #
     vpc_id              = data.aws_ssm_parameter.vpc_id.value
-    vpc_cidr            = data.aws_ssm_parameter.vpc_cidr
-    public_subnet_a_id  = data.aws_ssm_parameter.public_subnet_2a_id
-    public_subnet_b_id  = data.aws_ssm_parameter.public_subnet_2b_id
-    private_subnet_a_id = data.aws_ssm_parameter.private_subnet_2a_id
-    private_subnet_b_id = data.aws_ssm_parameter.private_subnet_2b_id
+    vpc_cidr            = data.aws_ssm_parameter.vpc_cidr.value
+    public_subnet_a_id  = data.aws_ssm_parameter.public_subnet_2a_id.value
+    public_subnet_b_id  = data.aws_ssm_parameter.public_subnet_2b_id.value
+    private_subnet_a_id = data.aws_ssm_parameter.private_subnet_2a_id.value
+    private_subnet_b_id = data.aws_ssm_parameter.private_subnet_2b_id.value
 
     rp_lb_sg_id               = module.sgs.rp_lb_sg_id
     rp_profile_name           = module.roles.rp_profile_name
@@ -109,7 +109,7 @@ module "reverse-proxy" {
 
     # certificates
     #
-    ssl_cert_arn = data.aws_ssm_parameter.wildcard_certificate_arn
+    ssl_cert_arn = data.aws_ssm_parameter.wildcard_certificate_arn.value
 
     tags = merge(local.tags, {
         service = "private-beta-reverse-proxy"

@@ -15,8 +15,8 @@ module "django-wagtail" {
     source = "./django-wagtail"
 
     vpc_id              = data.aws_ssm_parameter.vpc_id.value
-    private_subnet_a_id = data.aws_ssm_parameter.private_db_subnet_2a_id
-    private_subnet_b_id = data.aws_ssm_parameter.private_db_subnet_2b_id
+    private_subnet_a_id = data.aws_ssm_parameter.private_db_subnet_2a_id.value
+    private_subnet_b_id = data.aws_ssm_parameter.private_db_subnet_2b_id.value
 
     reverse_proxy_app_sg_id = module.sgs.dw_sg_id
     dw_efs_id               = module.sgs.dw_efs_sg_id

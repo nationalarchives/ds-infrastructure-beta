@@ -13,7 +13,7 @@ module "waf" {
 
     source = "./waf"
 
-    site_ips = split(",", data.aws_ssm_parameter.cf_waf_ip_set)
+    site_ips = split(",", data.aws_ssm_parameter.cf_waf_ip_set.value)
     tags     = local.tags
 
     web_acl_default_action_allow         = var.web_acl_default_action_allow

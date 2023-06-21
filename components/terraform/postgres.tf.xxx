@@ -3,14 +3,14 @@ variable "instances" {}
 module "postgres_instances" {
     source = "./postgres"
 
-    vpc_id = data.aws_ssm_parameter.vpc_id
+    vpc_id = data.aws_ssm_parameter.vpc_id.value
 
     source_ingress_cidrs = [
-        data.aws_ssm_parameter.private_subnet_2a_cidr,
-        data.aws_ssm_parameter.private_subnet_2b_cidr,
-        data.aws_ssm_parameter.private_db_subnet_2a_cidr,
-        data.aws_ssm_parameter.private_db_subnet_2b_cidr,
-        data.aws_ssm_parameter.client_vpc_cidr,
+        data.aws_ssm_parameter.private_subnet_2a_cidr.value,
+        data.aws_ssm_parameter.private_subnet_2b_cidr.value,
+        data.aws_ssm_parameter.private_db_subnet_2a_cidr.value,
+        data.aws_ssm_parameter.private_db_subnet_2b_cidr.value,
+        data.aws_ssm_parameter.client_vpc_cidr.value,
     ]
 
     source_ami_id                      = data.aws_ami.private_beta_postgres_source_ami.id
@@ -21,7 +21,7 @@ module "postgres_instances" {
     source_key_name                    = var.instances.source.key_name
     source_monitoring                  = var.instances.source.monitoring
     source_root_block_device           = var.instances.source.root_block_device
-    source_subnet_id                   = data.aws_ssm_parameter.private_db_subnet_2a_id
+    source_subnet_id                   = data.aws_ssm_parameter.private_db_subnet_2a_id.value
     source_userdata                    = templatefile("${module.root}/templates/userdata-postgres-source.sh", {
         region     = var.region,
         volumeName = "postgres-shared-data-source",
@@ -30,11 +30,11 @@ module "postgres_instances" {
     })
 
     replica_ingress_cidrs = [
-        data.aws_ssm_parameter.private_subnet_2a_cidr,
-        data.aws_ssm_parameter.private_subnet_2b_cidr,
-        data.aws_ssm_parameter.private_db_subnet_2a_cidr,
-        data.aws_ssm_parameter.private_db_subnet_2b_cidr,
-        data.aws_ssm_parameter.client_vpc_cidr,
+        data.aws_ssm_parameter.private_subnet_2a_cidr.value,
+        data.aws_ssm_parameter.private_subnet_2b_cidr.value,
+        data.aws_ssm_parameter.private_db_subnet_2a_cidr.value,
+        data.aws_ssm_parameter.private_db_subnet_2b_cidr.value,
+        data.aws_ssm_parameter.client_vpc_cidr.value,
     ]
 
     replica_ami_id                      = data.aws_ami.private_beta_postgres_replica_ami.id
@@ -45,7 +45,7 @@ module "postgres_instances" {
     replica_key_name                    = var.instances.replica.key_name
     replica_monitoring                  = var.instances.replica.monitoring
     replica_root_block_device           = var.instances.replica.root_block_device
-    replica_subnet_id                   = data.aws_ssm_parameter.private_db_subnet_2a_id
+    replica_subnet_id                   = data.aws_ssm_parameter.private_db_subnet_2a_id.value
     replica_userdata                    = templatefile("${module.root}/templates/userdata-postgres-replica.sh", {
         region     = var.region,
         volumeName = "postgres-shared-data-replica",
