@@ -31,7 +31,7 @@ resource "aws_iam_instance_profile" "dw_profile" {
 resource "aws_iam_role" "rp_efs_backup" {
     name = "private-beta-rp-efs-backup-role"
 
-    assume_role_policy  = file("${path.root}/templates/efs_backup_assume_role")
+    assume_role_policy  = file("${path.root}/templates/efs_backup_assume_role.json")
     managed_policy_arns = [
         "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup"
     ]

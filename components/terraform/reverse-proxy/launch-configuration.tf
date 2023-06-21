@@ -8,7 +8,7 @@ resource "aws_launch_configuration" "rp" {
 
     user_data = templatefile("${path.root}/scripts/userdata.sh", {
         service              = "private-beta",
-        mount_target         = aws_efs_file_system.rp_efs.dns_name,
+        mount_target         = var.rp_efs_dns_name,
         mount_dir            = var.rp_efs_mount_dir,
         deployment_s3_bucket = var.deployment_s3_bucket,
         nginx_folder_s3_key  = var.rp_nginx_folder_s3_key
