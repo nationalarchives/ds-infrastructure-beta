@@ -15,8 +15,8 @@ resource "aws_route53_record" "reverse_proxy_public" {
     type    = "A"
 
     alias {
-        name                   = var.cloudfront_dns
-        zone_id                = var.cloudfront_zone_id
+        name                   = module.cloudfront_public.cloudfront_dns
+        zone_id                = module.cloudfront_public.cloudfront_zone_id
         evaluate_target_health = false
     }
 }
