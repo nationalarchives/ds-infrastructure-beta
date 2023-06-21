@@ -77,13 +77,13 @@ data "aws_ami" "private_beta_rp_ami" {
     ]
 }
 
-data "aws_ami" "private_beta_wagtail_ami" {
+data "aws_ami" "private_beta_ami" {
     most_recent = true
 
     filter {
         name   = "name"
         values = [
-            "private-beta-wagtail-primer*"
+            "private-beta-primer*"
         ]
     }
 
@@ -100,51 +100,51 @@ data "aws_ami" "private_beta_wagtail_ami" {
     ]
 }
 
-data "aws_ami" "private_beta_postgres_source_ami" {
-    most_recent = true
+#data "aws_ami" "private_beta_postgres_source_ami" {
+#    most_recent = true
+#
+#    filter {
+#        name   = "name"
+#        values = [
+#            "private-beta-postgres-source-primer*"
+#        ]
+#    }
+#
+#    filter {
+#        name   = "virtualization-type"
+#        values = [
+#            "hvm"
+#        ]
+#    }
+#
+#    owners = [
+#        data.aws_caller_identity.current.account_id,
+#        "amazon"
+#    ]
+#}
 
-    filter {
-        name   = "name"
-        values = [
-            "private-beta-postgres-source-primer*"
-        ]
-    }
-
-    filter {
-        name   = "virtualization-type"
-        values = [
-            "hvm"
-        ]
-    }
-
-    owners = [
-        data.aws_caller_identity.current.account_id,
-        "amazon"
-    ]
-}
-
-data "aws_ami" "private_beta_postgres_replica_ami" {
-    most_recent = true
-
-    filter {
-        name   = "name"
-        values = [
-            "private-beta-postgres-replica-primer*"
-        ]
-    }
-
-    filter {
-        name   = "virtualization-type"
-        values = [
-            "hvm"
-        ]
-    }
-
-    owners = [
-        data.aws_caller_identity.current.account_id,
-        "amazon"
-    ]
-}
+#data "aws_ami" "private_beta_postgres_replica_ami" {
+#    most_recent = true
+#
+#    filter {
+#        name   = "name"
+#        values = [
+#            "private-beta-postgres-replica-primer*"
+#        ]
+#    }
+#
+#    filter {
+#        name   = "virtualization-type"
+#        values = [
+#            "hvm"
+#        ]
+#    }
+#
+#    owners = [
+#        data.aws_caller_identity.current.account_id,
+#        "amazon"
+#    ]
+#}
 
 data "aws_caller_identity" "current" {}
 

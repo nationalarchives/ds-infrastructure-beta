@@ -53,12 +53,7 @@ resource "aws_cloudfront_distribution" "private_beta" {
         }
     }
 
-    tags = merge(
-    local.default_tags,
-    {
-      Service = "private-beta-cloudfront"
-    },
-  )
+    tags = var.tags
 
     viewer_certificate {
         cloudfront_default_certificate = false
@@ -77,9 +72,9 @@ resource "aws_cloudfront_cache_policy" "help_with_your_research" {
     name    = "help-with-your-research"
     comment = "include host to header and limit query strings"
 
-    default_ttl = 3600
+    default_ttl = 300
     min_ttl     = 2
-    max_ttl     = 86400
+    max_ttl     = 3600
 
     parameters_in_cache_key_and_forwarded_to_origin {
         cookies_config {

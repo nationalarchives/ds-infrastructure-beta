@@ -1,8 +1,8 @@
-cfd_origin_id   = "dev-public-beta.nationalarchives.gov.uk"
+cfd_origin_id   = "dev-private-beta.nationalarchives.gov.uk"
 cfd_price_class = "PriceClass_100"
 cfd_enabled     = true
 cfd_aliases     = [
-    "dev-public-beta.nationalarchives.gov.uk"
+    "dev-private-beta.nationalarchives.gov.uk"
 ]
 
 cfd_default_behaviour_allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
