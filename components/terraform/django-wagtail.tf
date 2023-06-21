@@ -19,16 +19,17 @@ module "django-wagtail" {
     private_subnet_b_id = data.aws_ssm_parameter.private_db_subnet_2b_id
 
     reverse_proxy_app_sg_id = module.sgs.rp_id
-    dw_efs_id               = module.sgs.dw_efs_id
+    dw_efs_id               = module.sgs.dw_efs_sg_id
 
+    lc_efs_dns_name     = module.efs.dw_efs_dns_name
     lc_ami_id           = data.aws_ami.private_beta_ami.id
     lc_instance_type    = var.lc_instance_type
     lc_instance_profile = module.roles.dw_profile_name
     lc_key_name         = var.lc_key_name
     lc_sg_id            = module.sgs.dw_app_id
 
-    efs_backup_arn = module.roles.dw_efs_backup_arn
-    efs_mount_dir  = "/mnt/efs"
+    efs_mount_dir = "/mnt/efs"
+    efs_dns_name  = module.efs.dw_efs_dns_name
 
     patch_group_name = var.dw_patch_group_name
     deployment_group = var.dw_deployment_group

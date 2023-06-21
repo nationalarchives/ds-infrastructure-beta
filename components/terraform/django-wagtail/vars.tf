@@ -5,14 +5,15 @@ variable "private_subnet_b_id" {}
 variable "reverse_proxy_app_sg_id" {}
 variable "dw_efs_id" {}
 
+variable "lc_efs_dns_name" {}
 variable "lc_ami_id" {}
 variable "lc_instance_type" {}
 variable "lc_instance_profile" {}
 variable "lc_key_name" {}
 variable "lc_sg_id" {}
 
-variable "efs_backup_arn" {}
 variable "efs_mount_dir" {}
+variable "efs_dns_name" {}
 
 variable "patch_group_name" {}
 variable "deployment_group" {}

@@ -54,13 +54,6 @@ locals {
 variable "rp_nginx_patch_group" {}
 variable "rp_nginx_deployment_group" {}
 
-variable "rp_efs_backup_schedule" {}
-variable "rp_efs_backup_start_window" {}
-variable "rp_efs_backup_completion_window" {}
-variable "rp_efs_backup_cold_storage_after" {}
-variable "rp_efs_backup_delete_after" {}
-variable "rp_efs_backup_kms_key_arn" {}
-
 variable "rp_instance_type" {}
 variable "rp_key_name" {}
 variable "rp_efs_mount_dir" {}
@@ -88,15 +81,10 @@ module "reverse-proxy" {
     private_subnet_a_id = data.aws_ssm_parameter.private_subnet_2a_id
     private_subnet_b_id = data.aws_ssm_parameter.private_subnet_2b_id
 
-    # efs
-    #
-    rp_efs_backup_schedule           = var.rp_efs_backup_schedule
-    rp_efs_backup_start_window       = var.rp_efs_backup_start_window
-    rp_efs_backup_completion_window  = var.rp_efs_backup_completion_window
-    rp_efs_backup_cold_storage_after = var.rp_efs_backup_cold_storage_after
-    rp_efs_backup_delete_after       = var.rp_efs_backup_delete_after
-    rp_efs_backup_kms_key_arn        = var.rp_efs_backup_kms_key_arn
-
+    rp_lb_sg_id               = module.sgs.rp_lb_sg_id
+    rp_profile_name           = module.roles.rp_profile_name
+    rp_efs_dns_name           = module.efs.rp_efs_dns_name
+    rp_lc_sg_id = module.sgs.rp_sg_id
     # launch configuration
     #
     rp_image_id               = data.aws_ami.private_beta_rp_ami.id

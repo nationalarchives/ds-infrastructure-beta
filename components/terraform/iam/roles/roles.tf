@@ -1,7 +1,9 @@
-resource "aws_iam_role" "efs_backup" {
-    name               = "private-beta-dw-efs-backup-role"
-    assume_role_policy = file("${module.root}/templates/efs_backup_assume_role.json")
+# roles and profiles for Django/Wagtail
+#
+resource "aws_iam_role" "dw_efs_backup" {
+    name = "private-beta-dw-efs-backup-role"
 
+    assume_role_policy  = file("${module.root}/templates/efs_backup_assume_role.json")
     managed_policy_arns = [
         "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup"
     ]
@@ -20,7 +22,36 @@ resource "aws_iam_role" "dw_role" {
 }
 
 resource "aws_iam_instance_profile" "dw_profile" {
-    name = "private-beta-dw-iam-instance-profile"
+    name = "private-beta-dw-instance-profile"
     path = "/"
     role = aws_iam_role.dw_role
 }
+
+# roles and profiles for reverse proxy
+resource "aws_iam_role" "rp_efs_backup" {
+    name = "private-beta-rp-efs-backup-role"
+
+    assume_role_policy  = file("${path.root}/templates/efs_backup_assume_role")
+    managed_policy_arns = [
+        "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup"
+    ]
+
+    tags = var.tags
+}
+
+resource "aws_iam_role" "rp_role" {
+    name               = "private-beta-rp-role"
+    assume_role_policy = file("${path.root}/templates/ec2_assume_role.json")
+
+    managed_policy_arns = [
+        var.rp_config_s3_policy_arn,
+        "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
+    ]
+}
+
+resource "aws_iam_instance_profile" "rp_profile" {
+    name = "private-beta-rp-profile"
+    path = "/"
+    role = aws_iam_role.rp_role.name
+}
+

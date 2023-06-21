@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
-# application servers
+# application servers Django/Wagtail
 # -----------------------------------------------------------------------------
-resource "aws_security_group" "dw_app" {
+resource "aws_security_group" "dw" {
     name        = "private-beta-app-sg"
     description = "access to application"
     vpc_id      = var.vpc_id
@@ -11,26 +11,26 @@ resource "aws_security_group" "dw_app" {
     })
 }
 
-resource "aws_security_group_rule" "app_http_ingress" {
+resource "aws_security_group_rule" "dw_http_ingress" {
     from_port                = 80
     protocol                 = "tcp"
-    security_group_id        = aws_security_group.dw_app.id
+    security_group_id        = aws_security_group.dw.id
     to_port                  = 80
     type                     = "ingress"
     source_security_group_id = aws_security_group.rp.id
 }
 
-resource "aws_security_group_rule" "http_ingress" {
+resource "aws_security_group_rule" "dw_http_ingress" {
     from_port                = 80
     protocol                 = "tcp"
-    security_group_id        = aws_security_group.dw_app.id
+    security_group_id        = aws_security_group.dw.id
     to_port                  = 80
     type                     = "ingress"
-    source_security_group_id = aws_security_group.dw_app.id
+    source_security_group_id = aws_security_group.dw.id
 }
 
-resource "aws_security_group_rule" "app_http_egress" {
-    security_group_id = aws_security_group.dw_app.id
+resource "aws_security_group_rule" "dw_http_egress" {
+    security_group_id = aws_security_group.dw.id
     type              = "egress"
     from_port         = 0
     to_port           = 0
@@ -40,22 +40,22 @@ resource "aws_security_group_rule" "app_http_egress" {
     ]
 }
 
-resource "aws_security_group_rule" "app_https_ingress" {
+resource "aws_security_group_rule" "dw_https_ingress" {
     from_port                = 443
     protocol                 = "tcp"
-    security_group_id        = aws_security_group.dw_app.id
+    security_group_id        = aws_security_group.dw.id
     to_port                  = 443
     type                     = "ingress"
     source_security_group_id = aws_security_group.rp.id
 }
 
-resource "aws_security_group_rule" "https_ingress" {
+resource "aws_security_group_rule" "dw_https_ingress" {
     from_port                = 443
     protocol                 = "tcp"
-    security_group_id        = aws_security_group.dw_app.id
+    security_group_id        = aws_security_group.dw.id
     to_port                  = 443
     type                     = "ingress"
-    source_security_group_id = aws_security_group.dw_app.id
+    source_security_group_id = aws_security_group.dw.id
 }
 
 # EFS access
@@ -95,16 +95,16 @@ resource "aws_security_group_rule" "efs_egress" {
 # Security Group public access (load balancer)
 #
 resource "aws_security_group" "rp_lb" {
-    name        = "private-beta-reverse-proxy-lb-sg"
+    name        = "private-beta-rp-lb-sg"
     description = "Reverse Proxy Security Group HTTP and HTTPS access"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-reverse-proxy-lb-sg"
+        Name = "private-beta-rp-lb-sg"
     })
 }
 
-resource "aws_security_group_rule" "lb_http_ingress" {
+resource "aws_security_group_rule" "rp_lb_http_ingress" {
     from_port         = 80
     protocol          = "tcp"
     security_group_id = aws_security_group.rp_lb.id
@@ -115,7 +115,7 @@ resource "aws_security_group_rule" "lb_http_ingress" {
     ]
 }
 
-resource "aws_security_group_rule" "lb_http_egress" {
+resource "aws_security_group_rule" "rp_lb_http_egress" {
     security_group_id = aws_security_group.rp_lb.id
     type              = "egress"
     from_port         = 0
@@ -126,7 +126,7 @@ resource "aws_security_group_rule" "lb_http_egress" {
     ]
 }
 
-resource "aws_security_group_rule" "lb_https_ingress" {
+resource "aws_security_group_rule" "rp_lb_https_ingress" {
     from_port         = 443
     protocol          = "tcp"
     security_group_id = aws_security_group.rp_lb.id
@@ -201,7 +201,7 @@ resource "aws_security_group_rule" "rp_egress" {
 # Security group reverse proxy EFS
 #
 resource "aws_security_group" "rp_efs" {
-    name        = "private-beta-reverse-proxy-efs-sg"
+    name        = "private-beta-rp-efs-sg"
     description = "Reverse proxy EFS storage security group"
     vpc_id      = var.vpc_id
 
@@ -228,4 +228,69 @@ resource "aws_security_group_rule" "rp_efs_egress" {
     cidr_blocks       = [
         "0.0.0.0/0"
     ]
+}
+
+resource "aws_security_group" "rp_efs" {
+    name        = "private-beta-rp-efs-sg"
+    description = "Reverse proxy EFS storage security group"
+    vpc_id      = var.vpc_id
+
+    tags = merge(var.tags, {
+        Name = "private-beta-reverse-proxy-efs-sg"
+    })
+}
+
+resource "aws_vpc_security_group_ingress_rule" "rp_efs_http" {
+  security_group_id = aws_security_group.rp_efs.id
+
+  cidr_ipv4   = "0.0.0.0/0"
+  from_port   = 0
+  ip_protocol = "tcp"
+  to_port     = 65535
+}
+
+resource "aws_vpc_security_group_egress_rule" "rp_efs_outwards_all" {
+  security_group_id = aws_security_group.rp_efs.id
+
+  cidr_ipv4   = "0.0.0.0/0"
+  from_port   = 0
+  ip_protocol = "-1"
+  to_port     = 0
+}
+
+resource "aws_security_group" "rp_lc" {
+    name        = "private-beta-rp-lc-sg"
+    description = "reverse proxy security group"
+    vpc_id      = var.vpc_id
+
+    tags = merge(var.tags, {
+        Name = "private-beta-reverse-proxy-sg"
+    })
+}
+
+resource "aws_vpc_security_group_ingress_rule" "rp_lc_http" {
+    security_group_id = aws_security_group.rp_lc.id
+
+    cidr_ipv4   = "0.0.0.0/0"
+    from_port   = 80
+    ip_protocol = "tcp"
+    to_port     = 80
+}
+
+resource "aws_vpc_security_group_ingress_rule" "rp_lc_https" {
+    security_group_id = aws_security_group.rp_lc.id
+
+    cidr_ipv4   = "0.0.0.0/0"
+    from_port   = 1024
+    ip_protocol = "tcp"
+    to_port     = 65535
+}
+
+resource "aws_vpc_security_group_egress_rule" "rp_lc_outwards_all" {
+    security_group_id = aws_security_group.rp_lc.id
+
+    cidr_ipv4   = "0.0.0.0/0"
+    from_port   = 0
+    ip_protocol = "-1"
+    to_port     = 0
 }

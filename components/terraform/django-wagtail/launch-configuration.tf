@@ -8,8 +8,8 @@ resource "aws_launch_configuration" "website" {
     iam_instance_profile = var.lc_instance_profile
     key_name             = var.lc_key_name
 
-    user_data = templatefile("${path.root}/scripts/userdata.sh", {
-        mount_target = aws_efs_file_system.website.dns_name
+    user_data = templatefile("${path.module}/scripts/userdata.sh", {
+        mount_target = var.efs_dns_name
         mount_dir    = var.efs_mount_dir
     })
 
