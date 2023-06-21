@@ -13,4 +13,6 @@ module "roles" {
     deployment_s3_policy = module.policies.deployment_s3_policy_arn
 
     rp_config_s3_policy_arn = module.policies.rp_config_s3_policy_arn
+
+    tags = local.tags
 }
