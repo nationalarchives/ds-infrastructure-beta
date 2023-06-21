@@ -4,14 +4,14 @@ variable "db_record" {}
 # Public domain name (reverse proxy) and alias to reverse proxy instance
 #
 resource "aws_route53_zone" "reverse_proxy_public" {
-    name  = var.public_domain_name
+    name  = module.cloudfront_public.cloudfront_dns
 
     tags = local.tags
 }
 
 resource "aws_route53_record" "reverse_proxy_public" {
     zone_id = aws_route53_zone.reverse_proxy_public.zone_id
-    name    = var.public_domain_name
+    name    = module.cloudfront_public.cloudfront_dns
     type    = "A"
 
     alias {

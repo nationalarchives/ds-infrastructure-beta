@@ -6,7 +6,7 @@ resource "aws_launch_configuration" "rp" {
     iam_instance_profile = var.rp_profile_name
     key_name             = var.rp_key_name
 
-    user_data = templatefile("${path.root}/scripts/userdata.sh", {
+    user_data = templatefile("${path.module}/scripts/userdata.sh", {
         service              = "private-beta",
         mount_target         = var.rp_efs_dns_name,
         mount_dir            = var.rp_efs_mount_dir,
