@@ -111,8 +111,6 @@ module "reverse-proxy" {
     #
     ssl_cert_arn = data.aws_ssm_parameter.wildcard_certificate_arn
 
-    public_domain_name = lookup(local.cf_dist, "cfd_origin_id", "")
-
     tags = merge(local.tags, {
         service = "private-beta-reverse-proxy"
     })

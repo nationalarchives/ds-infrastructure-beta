@@ -21,7 +21,6 @@ variable "service" {}
 
 variable "on_prem_cidrs" {}
 
-variable "public_domain_name" {}
 variable "internal_domain_name" {}
 variable "ciim_domain_name" {}
 

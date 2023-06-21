@@ -5,7 +5,6 @@ environment = "dev"
 region      = "eu-west-2"
 service     = "private-beta"
 
-public_domain_name   = "private-beta.nationalarchives.gov.uk"
 internal_domain_name = "private-beta.dev.local"
 ciim_domain_name     = "ciim.dev.local"
 
