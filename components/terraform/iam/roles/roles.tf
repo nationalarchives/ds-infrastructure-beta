@@ -20,7 +20,6 @@ resource "aws_iam_role" "dw_role" {
 }
 
 resource "aws_iam_instance_profile" "dw_profile" {
-resource "aws_iam_instance_profile" "dw_profile" {
     name = "private-beta-dw-iam-instance-profile"
     path = "/"
     role = aws_iam_role.dw_role
