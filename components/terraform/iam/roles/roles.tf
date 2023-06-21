@@ -3,7 +3,7 @@
 resource "aws_iam_role" "dw_efs_backup" {
     name = "private-beta-dw-efs-backup-role"
 
-    assume_role_policy  = file("${module.root}/templates/efs_backup_assume_role.json")
+    assume_role_policy  = file("${path.root}/templates/efs_backup_assume_role.json")
     managed_policy_arns = [
         "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup"
     ]
@@ -11,7 +11,7 @@ resource "aws_iam_role" "dw_efs_backup" {
 
 resource "aws_iam_role" "dw_role" {
     name               = "private-beta-dw-assume-role"
-    assume_role_policy = file("${module.root}/templates/ec2_assume_role.json")
+    assume_role_policy = file("${path.root}/templates/ec2_assume_role.json")
 
     managed_policy_arns = [
         "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM",
