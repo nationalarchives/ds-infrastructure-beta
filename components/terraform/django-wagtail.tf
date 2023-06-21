@@ -14,7 +14,7 @@ variable "dw_asg_health_check_type" {}
 module "django-wagtail" {
     source = "./django-wagtail"
 
-    vpc_id              = data.aws_ssm_parameter.vpc_id
+    vpc_id              = data.aws_ssm_parameter.vpc_id.value
     private_subnet_a_id = data.aws_ssm_parameter.private_db_subnet_2a_id
     private_subnet_b_id = data.aws_ssm_parameter.private_db_subnet_2b_id
 

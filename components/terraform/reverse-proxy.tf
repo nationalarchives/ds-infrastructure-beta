@@ -74,7 +74,7 @@ module "reverse-proxy" {
 
     # networking
     #
-    vpc_id              = data.aws_ssm_parameter.vpc_id
+    vpc_id              = data.aws_ssm_parameter.vpc_id.value
     vpc_cidr            = data.aws_ssm_parameter.vpc_cidr
     public_subnet_a_id  = data.aws_ssm_parameter.public_subnet_2a_id
     public_subnet_b_id  = data.aws_ssm_parameter.public_subnet_2b_id
