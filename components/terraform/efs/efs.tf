@@ -28,7 +28,7 @@ resource "aws_efs_mount_target" "rp_efs_private_b" {
     ]
 }
 
-resource "aws_backup_selection" "efs_backup" {
+resource "aws_backup_selection" "rp_efs_backup" {
     name         = "private-beta-rp-efs-backup"
     plan_id      = aws_backup_plan.efs_backup.id
     iam_role_arn = var.rp_efs_backup_role_arn
@@ -38,7 +38,7 @@ resource "aws_backup_selection" "efs_backup" {
     ]
 }
 
-resource "aws_backup_plan" "efs_backup" {
+resource "aws_backup_plan" "rp_efs_backup" {
     name = "private-beta-rp-efs-backup-plan"
 
     rule {
@@ -56,7 +56,7 @@ resource "aws_backup_plan" "efs_backup" {
     tags = var.tags
 }
 
-resource "aws_backup_vault" "efs_backup" {
+resource "aws_backup_vault" "rp_efs_backup" {
     name        = "private-beta-rp-efs-backup-vault"
     kms_key_arn = var.rp_efs_backup_kms_key_arn
 
@@ -73,7 +73,7 @@ resource "aws_efs_file_system" "dw_efs" {
     })
 }
 
-resource "aws_efs_mount_target" "efs_private_a" {
+resource "aws_efs_mount_target" "dw_efs_private_a" {
     file_system_id  = aws_efs_file_system.dw_efs.id
     security_groups = [
         var.dw_efs_sg_id
@@ -81,7 +81,7 @@ resource "aws_efs_mount_target" "efs_private_a" {
     subnet_id = var.private_subnet_a_id
 }
 
-resource "aws_efs_mount_target" "efs_private_b" {
+resource "aws_efs_mount_target" "dw_efs_private_b" {
     file_system_id  = aws_efs_file_system.dw_efs.id
     security_groups = [
         var.dw_efs_sg_id
@@ -89,7 +89,7 @@ resource "aws_efs_mount_target" "efs_private_b" {
     subnet_id = var.private_subnet_b_id
 }
 
-resource "aws_backup_selection" "efs_backup" {
+resource "aws_backup_selection" "dw_efs_backup" {
     name         = "private-beta-dw-efs-backup"
     plan_id      = aws_backup_plan.efs_backup.id
     iam_role_arn = var.dw_efs_backup_role_arn
@@ -99,7 +99,7 @@ resource "aws_backup_selection" "efs_backup" {
     ]
 }
 
-resource "aws_backup_plan" "efs_backup" {
+resource "aws_backup_plan" "dw_efs_backup" {
     name = "private-beta-dw-efs-backup-plan"
 
     rule {
@@ -117,7 +117,7 @@ resource "aws_backup_plan" "efs_backup" {
     tags = var.tags
 }
 
-resource "aws_backup_vault" "efs_backup" {
+resource "aws_backup_vault" "dw_efs_backup" {
     name        = "private-beta-dw-efs-backup-vault"
     kms_key_arn = var.dw_efs_backup_kms_key_arn
 
