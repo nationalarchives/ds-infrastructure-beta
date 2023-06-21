@@ -152,9 +152,9 @@ data "aws_ssm_parameter" "zone_id" {
     name = "/infrastructure/zone_id"
 }
 
-data "aws_secretsmanager_secret_version" "wp" {
-    secret_id = data.aws_secretsmanager_secret.wp.id
-}
+#data "aws_secretsmanager_secret_version" "wp" {
+#    secret_id = data.aws_secretsmanager_secret.wp.id
+#}
 
 data "aws_ssm_parameter" "sns_slack_alert" {
     name = "/infrastructure/sns_slack_alert_arn"
