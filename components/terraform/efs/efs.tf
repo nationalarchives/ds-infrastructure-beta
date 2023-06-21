@@ -30,7 +30,7 @@ resource "aws_efs_mount_target" "rp_efs_private_b" {
 
 resource "aws_backup_selection" "rp_efs_backup" {
     name         = "private-beta-rp-efs-backup"
-    plan_id      = aws_backup_plan.efs_backup.id
+    plan_id      = aws_backup_plan.rp_efs_backup.id
     iam_role_arn = var.rp_efs_backup_role_arn
 
     resources = [
@@ -43,7 +43,7 @@ resource "aws_backup_plan" "rp_efs_backup" {
 
     rule {
         rule_name         = "private-beta-rp-efs-backup-rule"
-        target_vault_name = aws_backup_vault.efs_backup.name
+        target_vault_name = aws_backup_vault.rp_efs_backup.name
         schedule          = var.rp_efs_backup_schedule
         start_window      = var.rp_efs_backup_start_window
         completion_window = var.rp_efs_backup_completion_window
@@ -91,7 +91,7 @@ resource "aws_efs_mount_target" "dw_efs_private_b" {
 
 resource "aws_backup_selection" "dw_efs_backup" {
     name         = "private-beta-dw-efs-backup"
-    plan_id      = aws_backup_plan.efs_backup.id
+    plan_id      = aws_backup_plan.dw_efs_backup.id
     iam_role_arn = var.dw_efs_backup_role_arn
 
     resources = [
@@ -104,7 +104,7 @@ resource "aws_backup_plan" "dw_efs_backup" {
 
     rule {
         rule_name         = "private-beta-dw-efs-backup-rule"
-        target_vault_name = aws_backup_vault.efs_backup.name
+        target_vault_name = aws_backup_vault.dw_efs_backup.name
         schedule          = var.dw_efs_backup_schedule
         start_window      = var.dw_efs_backup_start_window
         completion_window = var.dw_efs_backup_completion_window
