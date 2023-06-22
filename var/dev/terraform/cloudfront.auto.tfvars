@@ -1,6 +1,6 @@
 cf_dist = {
     "create_distribution"                            = true
-    "cfd_domain_name"                                = ""
+    #"cfd_domain_name"                                = ""
     "cfd_origin_id"                                  = "dev-private-beta.nationalarchives.gov.uk"
     "cfd_price_class"                                = "PriceClass_100"
     "cfd_enabled"                                    = true
