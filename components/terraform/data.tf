@@ -77,7 +77,7 @@ data "aws_ami" "private_beta_rp_ami" {
     ]
 }
 
-data "aws_ami" "private_beta_ami" {
+data "aws_ami" "private_beta_dw_ami" {
     most_recent = true
 
     filter {
