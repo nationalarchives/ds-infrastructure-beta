@@ -22,7 +22,7 @@ module "django-wagtail" {
     dw_efs_id               = module.sgs.dw_efs_sg_id
 
     lc_efs_dns_name     = module.efs.dw_efs_dns_name
-    lc_ami_id           = data.aws_ami.private_beta_ami.id
+    lc_ami_id           = data.aws_ami.private_beta_dw_ami.id
     lc_instance_type    = var.lc_instance_type
     lc_instance_profile = module.roles.dw_profile_name
     lc_key_name         = var.lc_key_name
