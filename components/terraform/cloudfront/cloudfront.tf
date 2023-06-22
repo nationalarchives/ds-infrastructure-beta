@@ -1,6 +1,6 @@
 resource "aws_cloudfront_distribution" "private_beta" {
     origin {
-        domain_name = lookup(var.cf_dist, "cfd_domain_name", "")
+        domain_name = lookup(var.cf_dist, "cfd_domain_name", var.lb_dns_name)
         origin_id   = lookup(var.cf_dist, "cfd_origin_id", "")
 
           custom_origin_config {

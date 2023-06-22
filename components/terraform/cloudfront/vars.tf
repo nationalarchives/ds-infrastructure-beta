@@ -2,6 +2,7 @@
 ## variable definitions
 
 variable "cf_dist" {}
+variable "lb_dns_name" {}
 
 variable "wildcard_certificate_arn" {}
 
