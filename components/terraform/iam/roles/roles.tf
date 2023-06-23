@@ -22,7 +22,7 @@ resource "aws_iam_role" "dw_role" {
 }
 
 resource "aws_iam_instance_profile" "dw_profile" {
-    name = "private-beta-dw-instance-profile"
+    name = "private-beta-dw-profile"
     path = "/"
     role = aws_iam_role.dw_role.name
 }

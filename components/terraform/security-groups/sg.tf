@@ -2,12 +2,12 @@
 # application servers Django/Wagtail
 # -----------------------------------------------------------------------------
 resource "aws_security_group" "dw" {
-    name        = "private-beta-app-sg"
+    name        = "private-beta-dw-sg"
     description = "access to application"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-app-sg"
+        Name = "private-beta-dw-sg"
     })
 }
 
@@ -141,12 +141,12 @@ resource "aws_security_group_rule" "rp_lb_https_ingress" {
 # - allowing ports 22, 53 and 80
 #
 resource "aws_security_group" "rp" {
-    name        = "private-beta-reverse-proxy-sg"
+    name        = "private-beta-rp-sg"
     description = "Reverse proxy security group"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-reverse-proxy-sg"
+        Name = "private-beta-rp-sg"
     })
 }
 
@@ -206,7 +206,7 @@ resource "aws_security_group" "rp_efs" {
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-reverse-proxy-efs-sg"
+        Name = "private-beta-rp-efs-sg"
     })
 }
 

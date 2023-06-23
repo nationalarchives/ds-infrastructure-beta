@@ -23,7 +23,7 @@ resource "aws_route53_record" "reverse_proxy_public" {
 
 # Private zone CNAME record for Django/Wagtail load balancer
 #
-resource "aws_route53_record" "app" {
+resource "aws_route53_record" "dw-app" {
     zone_id = data.aws_ssm_parameter.zone_id.value
     name    = "private-beta.${var.environment}.local"
     type    = "CNAME"

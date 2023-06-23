@@ -65,37 +65,3 @@ resource "aws_cloudfront_distribution" "private_beta" {
     # get arn to indicate WAFv2
      web_acl_id = element(split(",", var.private_beta_waf_info), 1)
 }
-
-## TODO
-#  TTL values need to validated
-resource "aws_cloudfront_cache_policy" "help_with_your_research" {
-    name    = "help-with-your-research"
-    comment = "include host to header and limit query strings"
-
-    default_ttl = 300
-    min_ttl     = 2
-    max_ttl     = 3600
-
-    parameters_in_cache_key_and_forwarded_to_origin {
-        cookies_config {
-            cookie_behavior = "none"
-        }
-        headers_config {
-            header_behavior = "whitelist"
-            headers {
-                items = ["Host"]
-            }
-        }
-        query_strings_config {
-            query_string_behavior = "whitelist"
-            query_strings {
-                items = [
-                    "research-category",
-                    "letter"
-                ]
-            }
-        }
-        enable_accept_encoding_brotli = true
-        enable_accept_encoding_gzip   = true
-    }
-}
