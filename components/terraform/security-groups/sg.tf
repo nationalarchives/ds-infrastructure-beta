@@ -40,7 +40,7 @@ resource "aws_security_group_rule" "dw_http_egress" {
     ]
 }
 
-resource "aws_security_group_rule" "dw_rp_https_ingress" {
+resource "aws_security_group_rule" "dw_dw_https_ingress" {
     from_port                = 443
     protocol                 = "tcp"
     security_group_id        = aws_security_group.dw.id
@@ -70,7 +70,7 @@ resource "aws_security_group" "dw_efs" {
     })
 }
 
-resource "aws_security_group_rule" "efs_ingress" {
+resource "aws_security_group_rule" "dw_efs_ingress" {
     from_port                = 0
     protocol                 = "tcp"
     security_group_id        = aws_security_group.dw_efs.id
