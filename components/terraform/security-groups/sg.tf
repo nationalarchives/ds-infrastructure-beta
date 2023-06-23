@@ -231,21 +231,21 @@ resource "aws_security_group_rule" "rp_efs_egress" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "rp_efs_http" {
-  security_group_id = aws_security_group.rp_efs.id
-
-  cidr_ipv4   = "0.0.0.0/0"
-  from_port   = 0
-  ip_protocol = "tcp"
-  to_port     = 65535
+    security_group_id = aws_security_group.rp_efs.id
+    type              = "ingress"
+    cidr_ipv4         = "0.0.0.0/0"
+    from_port         = 0
+    ip_protocol       = "tcp"
+    to_port           = 65535
 }
 
 resource "aws_vpc_security_group_egress_rule" "rp_efs_outwards_all" {
-  security_group_id = aws_security_group.rp_efs.id
-
-  cidr_ipv4   = "0.0.0.0/0"
-  from_port   = 0
-  ip_protocol = "-1"
-  to_port     = 0
+    security_group_id = aws_security_group.rp_efs.id
+    type              = "egress"
+    cidr_ipv4         = "0.0.0.0/0"
+    from_port         = 0
+    ip_protocol       = "-1"
+    to_port           = 0
 }
 
 resource "aws_security_group" "rp_lc" {
@@ -260,27 +260,27 @@ resource "aws_security_group" "rp_lc" {
 
 resource "aws_vpc_security_group_ingress_rule" "rp_lc_http" {
     security_group_id = aws_security_group.rp_lc.id
-
-    cidr_ipv4   = "0.0.0.0/0"
-    from_port   = 80
-    ip_protocol = "tcp"
-    to_port     = 80
+    type              = "ingress"
+    cidr_ipv4         = "0.0.0.0/0"
+    from_port         = 80
+    ip_protocol       = "tcp"
+    to_port           = 80
 }
 
 resource "aws_vpc_security_group_ingress_rule" "rp_lc_https" {
     security_group_id = aws_security_group.rp_lc.id
-
-    cidr_ipv4   = "0.0.0.0/0"
-    from_port   = 1024
-    ip_protocol = "tcp"
-    to_port     = 65535
+    type              = "egress"
+    cidr_ipv4         = "0.0.0.0/0"
+    from_port         = 1024
+    ip_protocol       = "tcp"
+    to_port           = 65535
 }
 
 resource "aws_vpc_security_group_egress_rule" "rp_lc_outwards_all" {
     security_group_id = aws_security_group.rp_lc.id
-
-    cidr_ipv4   = "0.0.0.0/0"
-    from_port   = 0
-    ip_protocol = "-1"
-    to_port     = 0
+    type              = "egress"
+    cidr_ipv4         = "0.0.0.0/0"
+    from_port         = 0
+    ip_protocol       = "-1"
+    to_port           = 0
 }
