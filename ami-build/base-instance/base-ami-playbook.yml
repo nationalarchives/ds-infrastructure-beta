@@ -121,8 +121,8 @@
 
   - name: template userdata
     vars:
-      db_host: "db.{{ service }}wp.{{ env }}.local"
-      db_name: "{{ service }}wp"
+      db_host: "db.{{ service }}.{{ env }}.local"
+      db_name: "{{ service }}"
     template:
       src: "./templates/userdata.sh.j2"
       dest: "./userdata.sh"
@@ -140,7 +140,7 @@
       metadata_options:
         http_endpoint: "enabled"
         http_tokens: "required"
-      name : "{{ service }}-wp-primer-{{ env }}"
+      name : "{{ service }}-primer-{{ env }}"
       network:
         assign_public_ip: yes
         delete_on_termination: yes
@@ -218,13 +218,6 @@
     until: "init_finished.stat.exists"
     retries: 45
     delay: 20
-
-  - ansible.builtin.debug:
-      msg:
-        - "====================================================================="
-        - "wp-config.php"
-        - "{{ wpconfig_finished.stat.exists }}"
-        - "====================================================================="
 
 - name: switch to localhost
   hosts: localhost

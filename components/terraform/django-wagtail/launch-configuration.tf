@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # Launch config
 # -----------------------------------------------------------------------------
-resource "aws_launch_configuration" "website" {
+resource "aws_launch_configuration" "private_beta" {
     name_prefix          = "private-beta-app"
     image_id             = var.lc_ami_id
     instance_type        = var.lc_instance_type

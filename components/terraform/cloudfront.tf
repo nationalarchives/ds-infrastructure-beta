@@ -10,7 +10,7 @@ module "cloudfront_public" {
 
     lb_dns_name = module.reverse-proxy.reverse_proxy_lb_dns_name
 
-    website_waf_info         = module.waf.private_beta_waf_info
+    private_beta_waf_info         = module.waf.private_beta_waf_info
     wildcard_certificate_arn = data.aws_ssm_parameter.us_east_1_wildcard_certificate_arn.value
 
     tags = merge(local.tags, {

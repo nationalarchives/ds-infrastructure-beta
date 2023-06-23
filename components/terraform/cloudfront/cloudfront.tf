@@ -63,7 +63,7 @@ resource "aws_cloudfront_distribution" "private_beta" {
     }
 
     # get arn to indicate WAFv2
-     web_acl_id = element(split(",", var.website_waf_info), 1)
+     web_acl_id = element(split(",", var.private_beta_waf_info), 1)
 }
 
 ## TODO

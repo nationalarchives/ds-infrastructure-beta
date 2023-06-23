@@ -11,7 +11,7 @@ variable "wildcard_certificate_arn" {}
 # ======================================================================================================================
 variable "tags" {}
 
-variable "website_waf_info" {
+variable "private_beta_waf_info" {
   description = "Taken from aws ssm parameter store data"
   default     = {}
 }
