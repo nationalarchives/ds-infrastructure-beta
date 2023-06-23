@@ -1,5 +1,5 @@
 resource "aws_autoscaling_group" "rp" {
-    name                 = "private-beta-reverse-proxy-asg"
+    name                 = "private-beta-rp-asg"
     launch_configuration = aws_launch_configuration.rp.name
 
     vpc_zone_identifier = [
