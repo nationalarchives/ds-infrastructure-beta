@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------
 resource "aws_autoscaling_group" "private_beta" {
     name                 = "private-beta-dw-asg"
-    launch_configuration = aws_launch_configuration.private_bate.name
+    launch_configuration = aws_launch_configuration.private_beta.name
 
     vpc_zone_identifier = [
         var.private_subnet_a_id,
