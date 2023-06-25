@@ -2,7 +2,7 @@ locals {
     rp_asg_tags = [
         {
             key                 = "Name"
-            value               = "private-beta-reverse-proxy-nginx"
+            value               = "private-beta-rp"
             propagate_at_launch = "true"
         },
         {
