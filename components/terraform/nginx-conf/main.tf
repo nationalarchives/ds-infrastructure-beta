@@ -7,6 +7,13 @@ resource "aws_s3_object" "nginx_conf" {
     })
 }
 
+resource "aws_s3_object" "redirects_conf" {
+    bucket      = var.deployment_s3_bucket
+    key         = "${var.service}/${var.nginx_folder_s3_key}/redirects.conf"
+    source      = "${path.module}/scripts/redirects.conf"
+    source_hash = filemd5("${path.module}/scripts/redirects.conf")
+}
+
 resource "aws_s3_object" "cloudfront_ips_conf" {
     bucket      = var.deployment_s3_bucket
     key         = "${var.service}/${var.nginx_folder_s3_key}/cloudfront_ips.conf"
