@@ -12,7 +12,7 @@ resource "aws_route53_zone" "reverse_proxy_public" {
 
 resource "aws_route53_record" "reverse_proxy_public" {
     zone_id = aws_route53_zone.reverse_proxy_public.zone_id
-    name    = module.cloudfront_public.cloudfront_dns
+    name    = var.public_domain
     type    = "A"
 
     alias {
