@@ -5,5 +5,5 @@ service: "private-beta-wagtail"
 env: "staging"
 volume_size: 20
 s3_deployment_bucket: "ds-staging-deployment-source"
-s3_deployment_root: "private-beta-wagtail"
+s3_deployment_root: "private-beta"
 ...

@@ -2,7 +2,7 @@ variable "vpc_id" {}
 variable "private_subnet_a_id" {}
 variable "private_subnet_b_id" {}
 
-variable "reverse_proxy_app_sg_id" {}
+variable "reverse_proxy_dw_sg_id" {}
 variable "dw_efs_id" {}
 
 variable "lc_efs_dns_name" {}

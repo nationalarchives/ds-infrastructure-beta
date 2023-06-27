@@ -245,7 +245,7 @@ resource "aws_security_group" "rp_lc" {
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-reverse-proxy-sg"
+        Name = "private-beta-rp-sg"
     })
 }
 

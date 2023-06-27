@@ -2,7 +2,7 @@
 # Public Load Balancer
 # -----------------------------------------------------------------------------
 resource "aws_lb" "rp_public" {
-    name               = "private-beta-reverse-proxy-lb"
+    name               = "private-beta-rp-lb"
     internal           = false
     load_balancer_type = "application"
 
@@ -19,7 +19,7 @@ resource "aws_lb" "rp_public" {
 }
 
 resource "aws_lb_target_group" "rp_public" {
-    name     = "private-beta-reverse-proxy"
+    name     = "private-beta-rp"
     port     = 80
     protocol = "HTTP"
     vpc_id   = var.vpc_id

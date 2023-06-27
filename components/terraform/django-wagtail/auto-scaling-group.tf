@@ -83,7 +83,7 @@ resource "aws_autoscaling_group" "private_beta" {
 
 resource "aws_autoscaling_attachment" "private_beta" {
     autoscaling_group_name = aws_autoscaling_group.private_beta.id
-    lb_target_group_arn    = aws_lb_target_group.private_beta_app_tg.arn
+    lb_target_group_arn    = aws_lb_target_group.private_beta_dw_tg.arn
 }
 
 resource "aws_autoscaling_policy" "private_beta_up_policy" {

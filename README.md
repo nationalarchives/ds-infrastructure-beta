@@ -23,4 +23,4 @@ This are database or other secrets which are confidential and should not be save
 ### AMI builds
 Please read any documentation in the **ds-ami-build** repo in regards of the required build for further information.
 * NginX instance - private-beta-rp-primer*
-* Wagtail instance - private-beta-wagtail-primer*
+* Wagtail instance - private-beta-dw-primer*
