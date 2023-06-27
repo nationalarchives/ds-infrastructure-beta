@@ -1,10 +1,11 @@
+variable "public_domain" {}
 variable "private_record" {}
 variable "db_record" {}
 
 # Public domain name (reverse proxy) and alias to reverse proxy instance
 #
 resource "aws_route53_zone" "reverse_proxy_public" {
-    name  = module.cloudfront_public.cloudfront_dns
+    name  = var.public_domain
 
     tags = local.tags
 }
