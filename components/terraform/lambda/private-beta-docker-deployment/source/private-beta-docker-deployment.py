@@ -3,7 +3,7 @@ import datetime
 
 def private_beta_docker_deployment(event, context):
     script = """
-    echo "Hello World!" > /home/ec2-user/helloworld.txt
+    /home/ec2-user/get-image.sh
     pwd >> /home/ec2-user/helloworld.txt
     """
     #Define the tag possessed by the EC2 instances that we want to execute the script on
