@@ -69,17 +69,19 @@
             ],
             "Resource": [
                 "arn:aws:ssm:eu-west-2:${account_id}:document/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": "ssm:SendCommand",
+            "Resource": [
+                "arn:aws:ssm:eu-west-2:${account_id}:instance/*"
             ],
             "Condition": {
                 "StringEquals": {
                     "ec2:ResourceTag/Name": "private-beta-dw"
                 }
             }
-        },
-        {
-            "Effect": "Allow",
-            "Action": "ssm:SendCommand",
-            "Resource": "arn:aws:ssm:eu-west-2:${account_id}:instance/*"
         },
         {
             "Effect": "Allow",
