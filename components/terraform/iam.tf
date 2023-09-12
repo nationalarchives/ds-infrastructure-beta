@@ -5,6 +5,8 @@ module "policies" {
     service = var.service
 
     logfile_s3_bucket = var.logfile_s3_bucket
+
+    account_id = data.aws_caller_identity.current.account_id
 }
 
 module "roles" {

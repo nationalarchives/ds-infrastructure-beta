@@ -61,6 +61,11 @@
                 "logs:PutLogEvents"
             ],
             "Resource": "arn:aws:logs:*:*:*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "ssm:SendCommand",
+            "Resource": "arn:aws:ssm:eu-west-2:${account_id}:document/AWS-RunShellScript"
         }
     ]
 }

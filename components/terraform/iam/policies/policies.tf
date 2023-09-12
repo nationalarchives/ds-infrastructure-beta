@@ -25,6 +25,8 @@ resource "aws_iam_policy" "lambda_private_beta_docker_deployment_policy" {
     name        = "lambda-private-beta-docker-deployment-policy"
     description = "receive instance data and manipulate status"
 
-    policy = file("${path.root}/templates/lambda-private-beta-docker-deployment-policy.json")
+    policy = templatefile("${path.root}/templates/lambda-private-beta-docker-deployment-policy.json", {
+        account_id = var.account_id
+    })
 }
 
