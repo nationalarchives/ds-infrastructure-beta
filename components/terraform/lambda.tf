@@ -34,7 +34,9 @@ module "private_beta_docker_deployment" {
         aws_lambda_layer_version.datetime.arn
     ]
 
-    security_group_ids = module.sgs.lambda_private_beta_deployment_id
+    security_group_ids = [
+        module.sgs.lambda_private_beta_deployment_id,
+    ]
 
     environment = var.environment
 
