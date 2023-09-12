@@ -25,8 +25,8 @@ module "private_beta_docker_deployment" {
     private_beta_docker_deployment_role_arn = module.roles.lambda_private_beta_docker_deployment_role_arn
 
     subnet_ids = [
-        data.aws_ssm_parameter.private_subnet_2a_id,
-        data.aws_ssm_parameter.private_subnet_2b_id,
+        data.aws_ssm_parameter.private_subnet_2a_id.value,
+        data.aws_ssm_parameter.private_subnet_2b_id.value,
     ]
 
     layers = [
