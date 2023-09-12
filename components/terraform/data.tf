@@ -83,7 +83,7 @@ data "aws_ami" "private_beta_dw_ami" {
     filter {
         name   = "name"
         values = [
-            "private-beta-dw-primer*"
+            "docker-general-primer*"
         ]
     }
 
