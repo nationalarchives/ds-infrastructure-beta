@@ -14,5 +14,7 @@ module "roles" {
 
     rp_config_s3_policy_arn = module.policies.rp_config_s3_policy_arn
 
+    lambda_private_beta_docker_deployment_policy_arn = module.policies.lambda_private_beta_docker_deployment_policy_arn
+
     tags = local.tags
 }

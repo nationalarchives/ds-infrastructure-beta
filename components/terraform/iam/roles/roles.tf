@@ -55,3 +55,15 @@ resource "aws_iam_instance_profile" "rp_profile" {
     role = aws_iam_role.rp_role.name
 }
 
+resource "aws_iam_role" "lambda_private_beta_docker_deployment_role" {
+    name               = "lambda-ec2-office-hours-role"
+    assume_role_policy = file("${path.root}/templates/assume-role-lambda-policy.json")
+
+    managed_policy_arns = [
+        var.lambda_private_beta_docker_deployment_policy_arn
+    ]
+
+    description = "allow lambda to call script on instances"
+
+    tags = var.tags
+}
