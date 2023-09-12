@@ -64,8 +64,31 @@
         },
         {
             "Effect": "Allow",
+            "Action": [
+                "ssm:SendCommand"
+            ],
+            "Resource": [
+                "arn:aws:ssm:eu-west-2:${account_id}:document/*"
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "ec2:ResourceTag/Name": "private-beta-dw"
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
             "Action": "ssm:SendCommand",
             "Resource": "arn:aws:ssm:eu-west-2:${account_id}:instance/*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ssm:GetCommandInvocation"
+            ],
+            "Resource": [
+                "arn:aws:ssm:eu-west-2:${account_id}:*"
+            ]
         }
     ]
 }
