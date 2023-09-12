@@ -60,6 +60,7 @@ resource "aws_iam_role" "lambda_private_beta_docker_deployment_role" {
     assume_role_policy = file("${path.root}/templates/assume-role-lambda-policy.json")
 
     managed_policy_arns = [
+        "arn:aws:iam::aws:policy/AmazonSSMFullAccess",
         var.lambda_private_beta_docker_deployment_policy_arn
     ]
 
