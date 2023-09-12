@@ -266,3 +266,46 @@ resource "aws_vpc_security_group_ingress_rule" "rp_lc_https" {
     ip_protocol = "tcp"
     to_port     = 65535
 }
+
+# lambda - deployment
+#
+resource "aws_security_group" "lambda_private_beta_deployment" {
+    name        = "lambda-private-beta-deployment-sg"
+    description = "lambda private beta deployment security group"
+    vpc_id      = var.vpc_id
+
+    tags = merge(var.tags, {
+        Name = "lambda-private-beta-deployment-sg"
+    })
+}
+
+resource "aws_vpc_security_group_ingress_rule" "lambda_private_beta_deployment" {
+    security_group_id = aws_security_group.lambda_private_beta_deployment.id
+
+    cidr_ipv4   = "10.128.224.0/23"
+    from_port   = 1024
+    ip_protocol = "tcp"
+    to_port     = 65535
+}
+
+resource "aws_security_group_rule" "lambda_private_beta_egress_443" {
+    security_group_id = aws_security_group.lambda_private_beta_deployment.id
+    type              = "egress"
+    from_port         = 443
+    to_port           = 443
+    protocol          = "tcp"
+    cidr_blocks       = [
+        "0.0.0.0/0"
+    ]
+}
+
+resource "aws_security_group_rule" "lambda_private_beta_egress_general" {
+    security_group_id = aws_security_group.lambda_private_beta_deployment.id
+    type              = "egress"
+    from_port         = 1024
+    to_port           = 65535
+    protocol          = "tcp"
+    cidr_blocks       = [
+        "10.128.224.0/23"
+    ]
+}

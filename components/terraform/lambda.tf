@@ -20,6 +20,23 @@ resource "aws_lambda_layer_version" "datetime" {
 }
 
 module "private_beta_docker_deployment" {
-    source = "./lambda/private-beta-docker-deployment"
+    source = "./lambda"
 
+    private_beta_docker_deployment_role_arn = module.roles.lambda_private_beta_docker_deployment_role_arn
+
+    subnet_ids = [
+        data.aws_ssm_parameter.private_subnet_2a_id,
+        data.aws_ssm_parameter.private_subnet_2b_id,
+    ]
+
+    layers = [
+        data.klayers_package_latest_version.boto3.arn,
+        aws_lambda_layer_version.datetime.arn
+    ]
+
+    security_group_ids = module.sgs.lambda_private_beta_deployment_id
+
+    environment = var.environment
+
+    tags = local.tags
 }

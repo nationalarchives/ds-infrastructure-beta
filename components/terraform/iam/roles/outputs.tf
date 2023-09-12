@@ -16,3 +16,6 @@ output "rp_role_id" {
 output "rp_profile_name" {
     value = aws_iam_instance_profile.rp_profile.name
 }
+output "lambda_private_beta_docker_deployment_role_arn" {
+    value = aws_iam_role.lambda_private_beta_docker_deployment_role.arn
+}

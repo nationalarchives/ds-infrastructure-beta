@@ -11,7 +11,7 @@ resource "aws_lambda_function" "private_beta_docker_deployment" {
     source_code_hash = data.archive_file.private_beta_docker_deployment.output_base64sha256
 
     function_name = "private_beta_docker_deployment"
-    role          = var.private_beta_docker_deployment
+    role          = var.private_beta_docker_deployment_role_arn
 
     layers = var.layers
 

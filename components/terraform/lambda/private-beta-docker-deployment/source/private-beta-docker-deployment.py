@@ -1,4 +1,5 @@
 import boto3
+import datetime
 
 script = """
 echo "Hello World!" > /home/ec2-user/helloworld.txt
