@@ -18,11 +18,11 @@ resource "aws_lambda_function" "private_beta_docker_deployment" {
     handler = "private_beta_docker_deployment.private_beta_docker_deployment"
     runtime = "python3.11"
 
-    memory_size = 256
+    memory_size = 512
     timeout     = 300
 
     ephemeral_storage {
-        size = 256
+        size = 512
     }
 
     vpc_config {
