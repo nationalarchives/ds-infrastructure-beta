@@ -2,7 +2,15 @@ terraform {
     required_version = ">= 1.4.6"
 
     required_providers {
-        aws = "4.67.0"
+       aws = {
+          source  = "hashicorp/aws"
+          version = "~> 5.0"
+        }
+
+        klayers = {
+            version = "~> 1.0.0"
+            source  = "ldcorentin/klayer"
+        }
     }
 }
 
