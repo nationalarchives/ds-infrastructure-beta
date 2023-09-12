@@ -15,7 +15,7 @@ resource "aws_lambda_function" "private_beta_docker_deployment" {
 
     layers = var.layers
 
-    handler = "private_beta_docker_deployment.private_beta_docker_deployment"
+    handler = "private-beta-docker-deployment.private_beta_docker_deployment"
     runtime = "python3.11"
 
     memory_size = 512
