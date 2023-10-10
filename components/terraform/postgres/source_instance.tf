@@ -12,9 +12,9 @@ resource "aws_instance" "source" {
         volume_size           = var.source_root_block_device.volume_size
         volume_type           = var.source_root_block_device.volume_type
     }
-    subnet_id = aws_security_group.postgres_wagtail.id
+    subnet_id = aws_security_group.postgres_dw.id
     vpc_security_group_ids = [
-        aws_security_group.postgres_wagtail.id
+        aws_security_group.postgres_dw.id
     ]
 
     tags = merge(var.tags, {

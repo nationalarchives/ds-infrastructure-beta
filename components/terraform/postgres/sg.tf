@@ -1,5 +1,5 @@
-resource "aws_security_group" "postgres_wagtail" {
-    name        = "postgres-wagtail"
+resource "aws_security_group" "postgres_dw" {
+    name        = "postgres-dw"
     description = "allow postgres access"
     vpc_id      = var.vpc_id
 

@@ -1,9 +1,0 @@
----
-key_name: "private-beta-wagtail-live-eu-west-2"
-region: "eu-west-2"
-service: "private-beta-wagtail"
-env: "live"
-volume_size: 20
-s3_deployment_bucket: "ds-live-deployment-source"
-s3_deployment_root: "private-beta-wagtail"
-...

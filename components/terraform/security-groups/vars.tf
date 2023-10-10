@@ -1,3 +1,9 @@
 variable "vpc_id" {}
-variable "on_prem_cidrs" {}
+
+variable "rp_lb_cidr" {}
+variable "rp_instance_cidr" {}
+
+variable "dw_lb_cidr" {}
+variable "dw_instance_cidr" {}
+
 variable "tags" {}

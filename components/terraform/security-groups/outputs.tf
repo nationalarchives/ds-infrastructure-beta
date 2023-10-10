@@ -1,3 +1,6 @@
+output "dw_lb_sg_id" {
+    value = aws_security_group.dw_lb.id
+}
 output "dw_sg_id" {
     value = aws_security_group.dw.id
 }

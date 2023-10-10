@@ -1,7 +1,20 @@
 #!/bin/bash
 
 # Update yum
-sudo yum update -y
+sudo dnf -y update
+
+sudo dnf -y install docker
+# install docker compose
+sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+sudo usermod -aG docker ssm-user
+sudo usermod -aG docker ec2-user
+
+sudo mkdir /var/docker
+
+
+
 
 # Create mount directory and set file permissions
 sudo mkdir -p ${mount_dir}
@@ -27,3 +40,5 @@ sudo systemctl restart httpd
 #sudo wget https://aws-codedeploy-eu-west-2.s3.eu-west-2.amazonaws.com/latest/install
 #sudo chmod +x ./install
 #sudo ./install auto
+
+docker inspect --format='{{range $key, $value := .NetworkSettings.Networks}}{{if eq $key "'"traefik_webgateway"'"}}{{$value.IPAddress}}{{end}}{{end}}' "blue-dw"

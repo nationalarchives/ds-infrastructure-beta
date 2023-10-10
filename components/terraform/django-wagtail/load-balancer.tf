@@ -7,7 +7,7 @@ resource "aws_lb" "private_beta_dw_lb" {
     load_balancer_type = "application"
 
     security_groups = [
-        var.lc_sg_id
+        var.dw_lb_sg_id
     ]
 
     subnets = [
@@ -18,8 +18,8 @@ resource "aws_lb" "private_beta_dw_lb" {
     tags = var.tags
 }
 
-resource "aws_lb_target_group" "private_beta_dw_tg" {
-    name     = "private-beta-dw-tg"
+resource "aws_lb_target_group" "private_beta_dw" {
+    name     = "private-beta-dw"
     port     = 80
     protocol = "HTTP"
     vpc_id   = var.vpc_id
@@ -40,7 +40,7 @@ resource "aws_lb_target_group" "private_beta_dw_tg" {
 resource "aws_lb_listener" "internal_http" {
     default_action {
         type             = "forward"
-        target_group_arn = aws_lb_target_group.private_beta_dw_tg.arn
+        target_group_arn = aws_lb_target_group.private_beta_dw.arn
     }
     protocol          = "HTTP"
     load_balancer_arn = aws_lb.private_beta_dw_lb.arn

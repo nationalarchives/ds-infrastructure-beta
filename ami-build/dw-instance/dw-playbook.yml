@@ -23,7 +23,7 @@
       role_session_name: "s-devops"
     register: assumed_role
 
-  - name: get linux2 AMI
+  - name: get docker AMI
     amazon.aws.ec2_ami_info:
       aws_access_key: "{{ assumed_role.sts_creds.access_key }}"
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
@@ -31,7 +31,7 @@
       owners: amazon
       region: "{{ region }}"
       filters:
-        name: "amzn2-ami-hvm*"
+        name: "{{ lookup('env', 'AMI_PREFIX') }}-primer-*"
     register: findami
 
   - name: set latest AMI
@@ -41,13 +41,10 @@
 
   - name: set secrets
     vars:
-      secret_data: "{{ lookup('amazon.aws.aws_secret', '/devops/private-beta', region=region, aws_access_key=assumed_role.sts_creds.access_key, aws_secret_key=assumed_role.sts_creds.secret_key, aws_security_token=assumed_role.sts_creds.session_token, on_denied='warn') | from_json }}"
+      secret_data: "{{ lookup('amazon.aws.aws_secret', 'application/private-beta/database', region=region, aws_access_key=assumed_role.sts_creds.access_key, aws_secret_key=assumed_role.sts_creds.secret_key, aws_security_token=assumed_role.sts_creds.session_token, on_denied='warn') | from_json }}"
     set_fact:
         db_user: "{{ secret_data.db_username }}"
         db_pass: "{{ secret_data.db_password }}"
-        github_token: "{{ secret_data.github_token }}"
-        ses_user: "{{ secret_data.ses_username }}"
-        ses_pass: "{{ secret_data.ses_password }}"
 
   - name: template deployment policy
     template:
@@ -60,7 +57,7 @@
       aws_access_key: "{{ assumed_role.sts_creds.access_key }}"
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
       security_token: "{{ assumed_role.sts_creds.session_token }}"
-      policy_name: "ansible-ami-pb-wagtail-s3-policy"
+      policy_name: "ansible-ami-pb-dw-s3-policy"
       policy: "{{ lookup('file', './instance-role-policy.json') }}"
       state: "present"
     register: s3_policy
@@ -70,7 +67,7 @@
       aws_access_key: "{{ assumed_role.sts_creds.access_key }}"
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
       security_token: "{{ assumed_role.sts_creds.session_token }}"
-      name: "ansible-ami-pb-wagtail-role"
+      name: "ansible-ami-pb-dw-role"
       region: "{{ region }}"
       assume_role_policy_document: "{{ lookup('file', './ec2-assume-role-policy.json') }}"
       managed_policies: ["{{ s3_policy.policy.arn }}"]
@@ -85,7 +82,7 @@
       aws_access_key: "{{ assumed_role.sts_creds.access_key }}"
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
       security_token: "{{ assumed_role.sts_creds.session_token }}"
-      name: "ansible-ami-pb-wagtail-sg"
+      name: "ansible-ami-pb-dw-sg"
       description: "security group allowing updates and downloads"
       region: "{{ region }}"
       vpc_id: "{{ lookup( 'env', 'VPC_ID') }}"
@@ -123,6 +120,8 @@
     vars:
       db_host: "db.{{ service }}.{{ env }}.local"
       db_name: "{{ service }}"
+      db_user: "{{ db_user }}"
+      db_pass: "{{ db_pass }}"
     template:
       src: "./templates/userdata.sh.j2"
       dest: "./userdata.sh"
@@ -135,7 +134,7 @@
       security_token: "{{ assumed_role.sts_creds.session_token }}"
       key_name: "{{ key_name }}"
       image_id: "{{ latest_ami.image_id }}"#
-      instance_role: "ansible-ami-pb-wagtail-role"
+      instance_role: "ansible-ami-pb-dw-role"
       instance_type: "t3a.large"
       metadata_options:
         http_endpoint: "enabled"
@@ -201,6 +200,7 @@
 
 - name: switch to ec2hosts - checking if setup has finished
   hosts: ec2hosts
+  become: yes
   gather_facts: false
   tasks:
   - ansible.builtin.debug:
@@ -209,6 +209,54 @@
         - "checking status of new instance before ami can be build"
         - "20 second interval with max duration of 15 minutes"
         - "====================================================================="
+
+  - name: load variables
+    ansible.builtin.include_vars:
+      file: "{{ ansible_var_file }}"
+
+  - name: copy compose.yml
+    ansible.builtin.copy:
+      src: ./docker/compose.yml
+      dest: /var/docker/
+
+  - name: copy compose.traefik.yml
+    ansible.builtin.copy:
+      src: ./docker/compose.traefik.yml
+      dest: /var/docker/
+
+  - name: copy traefik.yml
+    ansible.builtin.copy:
+      src: ./docker/traefik.yml
+      dest: /var/docker/
+
+  - name: copy env_file
+    ansible.builtin.copy:
+      src: ./docker/env_file
+      dest: /var/docker/
+
+  - name: copy docker-blue-green-deploy.sh
+    ansible.builtin.copy:
+      src: ./scripts/website-blue-green-deploy.sh
+      dest: /usr/local/bin/
+      mode: '0755'
+
+  - name: copy startup.sh
+    ansible.builtin.copy:
+      src: ./scripts/startup.sh
+      dest: /usr/local/bin/
+      mode: '0755'
+
+  - name: copy traefik-run.sh
+    ansible.builtin.copy:
+      src: ./scripts/run-traefik.sh
+      dest: /usr/local/bin/
+      mode: '0755'
+
+  - name: copy traefik-stop.sh
+    ansible.builtin.copy:
+      src: ./scripts/run-traefik.sh
+      dest: /usr/local/bin/
+      mode: '0755'
 
   - name: check if ec2 instance is ready
     ansible.builtin.stat:
@@ -257,7 +305,7 @@
       aws_access_key: "{{ assumed_role.sts_creds.access_key }}"
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
       security_token: "{{ assumed_role.sts_creds.session_token }}"
-      name: "ansible-ami-pb-wagtail-sg"
+      name: "ansible-ami-pb-dw-sg"
       region: "{{ region }}"
       state: "absent"
 
@@ -266,7 +314,7 @@
       aws_access_key: "{{ assumed_role.sts_creds.access_key }}"
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
       security_token: "{{ assumed_role.sts_creds.session_token }}"
-      name: "ansible-ami-pb-wagtail-role"
+      name: "ansible-ami-pb-dw-role"
       region: "{{ region }}"
       delete_instance_profile: yes
       state: "absent"
@@ -276,6 +324,6 @@
       aws_access_key: "{{ assumed_role.sts_creds.access_key }}"
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
       security_token: "{{ assumed_role.sts_creds.session_token }}"
-      policy_name: "ansible-ami-pb-wagtail-s3-policy"
+      policy_name: "ansible-ami-pb-dw-s3-policy"
       state: "absent"
 ...

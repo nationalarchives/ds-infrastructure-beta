@@ -1,5 +1,5 @@
 ---
-name: Private Beta Wagtail AMI
+name: Django-Wagtail AMI
 
 permissions:
   id-token: write
@@ -15,28 +15,32 @@ on:
         options:
         - dev
         - staging
-        - live
+        - production
+      ami-prefix:
+        type: string
+        description: AMI prefix - defaults to private-beta-dw
+        default: private-beta-dw
 
 jobs:
 # ------------------------------------------------------------------------------
 # dev deployment
 # ------------------------------------------------------------------------------
-  wagtail-ami-deployment-dev:
+  dw-ami-deployment-dev:
     if: github.event.inputs.deploy-environment == 'dev'
     runs-on: ubuntu-latest
     environment: dev
     steps:
       - name: checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: "${{ github.event.inputs.branch }}"
 
       - name: set ansible var file for dev
         run: |
           echo "ANSIBLE_VAR_FILE=vars_dev.yml" >> $GITHUB_ENV
-          echo "SSH_KEY_FILE=private-beta-wagtail-dev-eu-west-2" >> $GITHUB_ENV
+          echo "SSH_KEY_FILE=private-beta-dw-dev-eu-west-2" >> $GITHUB_ENV
 
-      - name: aws variable settings
+      - name: set environment variables
         run: |
           echo AWS_ROLE_ARN=${{ secrets.AWS_ROLE_ARN }} >> $GITHUB_ENV
           echo AWS_DEFAULT_REGION=eu-west-2 >> $GITHUB_ENV
@@ -51,30 +55,31 @@ jobs:
       - name: install python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.11'
           cache: 'pip'
-          cache-dependency-path: '**/wagtail-instance-req.txt'
+          cache-dependency-path: '**/requirements.txt'
 
-      - run: pip install -r ${{ github.workspace }}/.github/workflows/wagtail-instance-req.txt
+      - run: pip install -r ${{ github.workspace }}/.github/workflows/dw-instance-req.txt
 
       - name: run ansible playbook
         env:
           AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           VPC_ID: ${{ secrets.VPC_ID }}
           SUBNET_ID: ${{ secrets.SUBNET_ID }}
-          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AMI_PREFIX: ${{ github.event.inputs.ami-prefix }}
         run: |
           cur_dir=$(pwd)
           cd $cur_dir/ami-build/base-instance
           export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
           export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
           export AWS_DEFAULT_REGION=eu-west-2
-          ansible-playbook --extra-vars "ansible_var_file='${{ env.ANSIBLE_VAR_FILE }}'" --private-key $cur_dir/${{ env.SSH_KEY_FILE }} base-ami-playbook.yml
+          ansible-playbook --extra-vars "ansible_var_file='${{ env.ANSIBLE_VAR_FILE }}'" --private-key $cur_dir/${{ env.SSH_KEY_FILE }} dw-playbook.yml
 
 # ------------------------------------------------------------------------------
 # staging deployment
 # ------------------------------------------------------------------------------
-  wagtail-ami-deployment-staging:
+  dw-ami-deployment-staging:
     if: github.event.inputs.deploy-environment == 'staging'
     runs-on: ubuntu-latest
     environment: staging
@@ -87,7 +92,7 @@ jobs:
       - name: set ansible var file for staging
         run: |
           echo "ANSIBLE_VAR_FILE=vars_staging.yml" >> $GITHUB_ENV
-          echo "SSH_KEY_FILE=private-beta-wagtail-staging-eu-west-2" >> $GITHUB_ENV
+          echo "SSH_KEY_FILE=private-beta-dw-staging-eu-west-2" >> $GITHUB_ENV
 
       - name: aws variable settings
         run: |
@@ -106,9 +111,9 @@ jobs:
         with:
           python-version: '3.10'
           cache: 'pip'
-          cache-dependency-path: '**/wagtail-instance-req.txt'
+          cache-dependency-path: '**/dw-instance-req.txt'
 
-      - run: pip install -r ${{ github.workspace }}/.github/workflows/wagtail-instance-req.txt
+      - run: pip install -r ${{ github.workspace }}/.github/workflows/dw-instance-req.txt
 
       - name: run ansible playbook
         env:
@@ -116,9 +121,10 @@ jobs:
           VPC_ID: ${{ secrets.VPC_ID }}
           SUBNET_ID: ${{ secrets.SUBNET_ID }}
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AMI_PREFIX: ${{ github.event.inputs.ami-prefix }}
         run: |
           cur_dir=$(pwd)
-          cd $cur_dir/wagtail-instance
+          cd $cur_dir/dw-instance
           export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
           export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
           export AWS_DEFAULT_REGION=eu-west-2
@@ -127,8 +133,8 @@ jobs:
 # ------------------------------------------------------------------------------
 # live deployment
 # ------------------------------------------------------------------------------
-  wagtail-ami-deployment-live:
-    if: github.event.inputs.deploy-environment == 'live'
+  dw-ami-deployment-live:
+    if: github.event.inputs.deploy-environment == 'production'
     runs-on: ubuntu-latest
     environment: live
     steps:
@@ -140,7 +146,7 @@ jobs:
       - name: set ansible var file for live
         run: |
           echo "ANSIBLE_VAR_FILE=vars_live.yml" >> $GITHUB_ENV
-          echo "SSH_KEY_FILE=private-beta-wagtail-live-eu-west-2" >> $GITHUB_ENV
+          echo "SSH_KEY_FILE=private-beta-dw-live-eu-west-2" >> $GITHUB_ENV
 
       - name: aws variable settings
         run: |
@@ -159,9 +165,9 @@ jobs:
         with:
           python-version: '3.10'
           cache: 'pip'
-          cache-dependency-path: '**/wagtail-instance-req.txt'
+          cache-dependency-path: '**/dw-instance-req.txt'
 
-      - run: pip install -r ${{ github.workspace }}/.github/workflows/wagtail-instance-req.txt
+      - run: pip install -r ${{ github.workspace }}/.github/workflows/dw-instance-req.txt
 
       - name: run ansible playbook
         env:
@@ -169,9 +175,10 @@ jobs:
           VPC_ID: ${{ secrets.VPC_ID }}
           SUBNET_ID: ${{ secrets.SUBNET_ID }}
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AMI_PREFIX: ${{ github.event.inputs.ami-prefix }}
         run: |
           cur_dir=$(pwd)
-          cd $cur_dir/wagtail-instance
+          cd $cur_dir/dw-instance
           export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
           export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
           export AWS_DEFAULT_REGION=eu-west-2

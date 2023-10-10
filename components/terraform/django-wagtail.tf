@@ -1,3 +1,54 @@
+locals {
+    dw_asg_tags = [
+        {
+            key                 = "Name"
+            value               = "private-beta-rp"
+            propagate_at_launch = "true"
+        },
+        {
+            key                 = "Service"
+            value               = "private-beta"
+            propagate_at_launch = "true"
+        },
+        {
+            key                 = "Owner"
+            value               = local.tags.Owner
+            propagate_at_launch = "true"
+        },
+        {
+            key                 = "CostCentre"
+            value               = local.tags.CostCentre
+            propagate_at_launch = "true"
+        },
+        {
+            key                 = "Terraform"
+            value               = "true"
+            propagate_at_launch = "true"
+        },
+        {
+            key                 = "Patch Group"
+            value               = var.rp_nginx_patch_group
+            propagate_at_launch = "true"
+        },
+        {
+            key                 = "Deployment-Group"
+            value               = var.rp_nginx_deployment_group
+            propagate_at_launch = "true"
+        },
+        {
+            key                 = "AutoSwitchOn"
+            value               = "true"
+            propagate_at_launch = "true"
+        },
+        {
+            key                 = "AutoSwitchOff"
+            value               = "true"
+            propagate_at_launch = "true"
+        },
+    ]
+
+}
+
 variable "lc_key_name" {}
 variable "lc_instance_type" {}
 variable "dw_patch_group_name" {}
@@ -15,11 +66,12 @@ module "django-wagtail" {
     source = "./django-wagtail"
 
     vpc_id              = data.aws_ssm_parameter.vpc_id.value
-    private_subnet_a_id = data.aws_ssm_parameter.private_db_subnet_2a_id.value
-    private_subnet_b_id = data.aws_ssm_parameter.private_db_subnet_2b_id.value
+    private_subnet_a_id = data.aws_ssm_parameter.private_subnet_2a_id.value
+    private_subnet_b_id = data.aws_ssm_parameter.private_subnet_2b_id.value
 
-    reverse_proxy_dw_sg_id = module.sgs.dw_sg_id
-    dw_efs_id               = module.sgs.dw_efs_sg_id
+    dw_lb_sg_id = module.sgs.dw_lb_sg_id
+
+    dw_efs_id   = module.sgs.dw_efs_sg_id
 
     lc_efs_dns_name     = module.efs.dw_efs_dns_name
     lc_ami_id           = data.aws_ami.private_beta_dw_ami.id
@@ -41,6 +93,8 @@ module "django-wagtail" {
     dw_asg_desired_capacity          = var.dw_asg_desired_capacity
     dw_asg_health_check_grace_period = var.dw_asg_health_check_grace_period
     dw_asg_health_check_type         = var.dw_asg_health_check_type
+
+    dw_asg_tags = local.dw_asg_tags
 
     tags = local.tags
 }

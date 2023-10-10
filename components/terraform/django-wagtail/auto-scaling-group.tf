@@ -34,56 +34,19 @@ resource "aws_autoscaling_group" "private_beta" {
         ]
     }
 
-    tag {
-        key                 = "Name"
-        value               = "private-beta-dw"
-        propagate_at_launch = "true"
-    }
-    tag {
-        key                 = "Service"
-        value               = "private-beta"
-        propagate_at_launch = "true"
-    }
-    tag {
-        key                 = "Owner"
-        value               = "Digital Services"
-        propagate_at_launch = "true"
-    }
-    tag {
-        key                 = "CostCentre"
-        value               = "53"
-        propagate_at_launch = "true"
-    }
-    tag {
-        key                 = "Terraform"
-        value               = "true"
-        propagate_at_launch = "true"
-    }
-    tag {
-        key                 = "Patch Group"
-        value               = var.patch_group_name
-        propagate_at_launch = "true"
-    }
-    tag {
-        key                 = "Deployment-Group"
-        value               = var.deployment_group
-        propagate_at_launch = "true"
-    }
-    tag {
-        key                 = "AutoSwitchOn"
-        value               = var.auto_switch_on
-        propagate_at_launch = "true"
-    }
-    tag {
-        key                 = "AutoSwitchOff"
-        value               = var.auto_switch_off
-        propagate_at_launch = "true"
+    dynamic "tag" {
+        for_each = var.dw_asg_tags
+        content {
+            key                 = tag.value["key"]
+            value               = tag.value["value"]
+            propagate_at_launch = tag.value["propagate_at_launch"]
+        }
     }
 }
 
 resource "aws_autoscaling_attachment" "private_beta" {
     autoscaling_group_name = aws_autoscaling_group.private_beta.id
-    lb_target_group_arn    = aws_lb_target_group.private_beta_dw_tg.arn
+    lb_target_group_arn    = aws_lb_target_group.private_beta_dw.arn
 }
 
 resource "aws_autoscaling_policy" "private_beta_up_policy" {

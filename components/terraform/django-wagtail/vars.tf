@@ -2,7 +2,7 @@ variable "vpc_id" {}
 variable "private_subnet_a_id" {}
 variable "private_subnet_b_id" {}
 
-variable "reverse_proxy_dw_sg_id" {}
+variable "dw_lb_sg_id" {}
 variable "dw_efs_id" {}
 
 variable "lc_efs_dns_name" {}
@@ -25,5 +25,7 @@ variable "dw_asg_min_size" {}
 variable "dw_asg_desired_capacity" {}
 variable "dw_asg_health_check_grace_period" {}
 variable "dw_asg_health_check_type" {}
+
+variable "dw_asg_tags" {}
 
 variable "tags" {}

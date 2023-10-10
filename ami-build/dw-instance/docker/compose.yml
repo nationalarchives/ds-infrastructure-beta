@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  blue-dw: &django_wagtail
+    container_name: blue-dw
+    #image: ghcr.io/nationalarchives/national-archives-website:latest
+    image: traefik/whoami
+    env_file: /var/docker/env_file
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network='dw_web'"
+      - "traefik.http.routers.django_wagtail.entrypoints='django_wagtail'"
+      - "traefik.http.routers.django_wagtail.rule=Host(`private-beta.dev.local`) || PathPrefix(`/`)"
+      - "traefik.http.middlewares.test-retry.retry.attempts=5"
+      - "traefik.http.middlewares.test-retry.retry.initialinterval=200ms"
+      - "traefik.http.services.django_wagtail.loadbalancer.healthCheck.path=/"
+      - "traefik.http.services.django_wagtail.loadbalancer.healthCheck.interval=10s"
+      - "traefik.http.services.django_wagtail.loadbalancer.healthCheck.timeout=1s"
+    restart: "unless-stopped"
+    networks:
+      - "traefik"
+
+  green-dw:
+    <<: *django_wagtail
+    container_name: green-dw
+
+networks:
+  traefik:
+    name: dw_web
+    external: true
