@@ -65,7 +65,7 @@ resource "aws_security_group_rule" "dw_http_ingress" {
     type                     = "ingress"
 }
 
-resource "aws_security_group_rule" "dw_http_ingress" {
+resource "aws_security_group_rule" "dw_group_http_ingress" {
     cidr_blocks       = var.dw_instance_cidr
     description       = "traffic from Client-VPN and load balancer"
     from_port         = 80
