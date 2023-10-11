@@ -76,10 +76,10 @@ module "reverse-proxy" {
     #
     vpc_id              = data.aws_ssm_parameter.vpc_id.value
     vpc_cidr            = data.aws_ssm_parameter.vpc_cidr.value
-    public_subnet_a_id  = data.aws_ssm_parameter.public_subnet_2a_cidr.value
-    public_subnet_b_id  = data.aws_ssm_parameter.public_subnet_2b_cidr.value
-    private_subnet_a_id = data.aws_ssm_parameter.private_subnet_2a_cidr.value
-    private_subnet_b_id = data.aws_ssm_parameter.private_subnet_2b_cidr.value
+    public_subnet_a_id  = data.aws_ssm_parameter.public_subnet_2a_id.value
+    public_subnet_b_id  = data.aws_ssm_parameter.public_subnet_2b_id.value
+    private_subnet_a_id = data.aws_ssm_parameter.private_subnet_2a_id.value
+    private_subnet_b_id = data.aws_ssm_parameter.private_subnet_2b_id.value
 
     rp_lb_sg_id               = module.sgs.rp_lb_sg_id
     rp_profile_name           = module.roles.rp_profile_name

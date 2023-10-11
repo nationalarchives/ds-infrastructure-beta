@@ -2,7 +2,7 @@
 # Autoscaling group
 # -----------------------------------------------------------------------------
 resource "aws_autoscaling_group" "dw" {
-    name                 = "private-beta-dw-asg"
+    name                 = "private-beta-dw"
     launch_configuration = aws_launch_configuration.dw.name
 
     vpc_zone_identifier = [

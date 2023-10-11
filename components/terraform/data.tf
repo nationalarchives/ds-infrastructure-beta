@@ -8,8 +8,16 @@ data "aws_ssm_parameter" "vpc_cidr" {
     name = "/infrastructure/network/base/vpc_cidr"
 }
 
+data "aws_ssm_parameter" "public_subnet_2a_id" {
+    name = "/infrastructure/network/base/public_subnet_2a_id"
+}
+
 data "aws_ssm_parameter" "public_subnet_2a_cidr" {
     name = "/infrastructure/network/base/public_subnet_2a_cidr"
+}
+
+data "aws_ssm_parameter" "public_subnet_2b_id" {
+    name = "/infrastructure/network/base/public_subnet_2b_id"
 }
 
 data "aws_ssm_parameter" "public_subnet_2b_cidr" {
