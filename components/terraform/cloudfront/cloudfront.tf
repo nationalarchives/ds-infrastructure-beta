@@ -11,7 +11,7 @@ resource "aws_cloudfront_distribution" "private_beta" {
           }
       }
 
-    http_version = "http1.1"
+    http_version = "http2"
     price_class = lookup(var.cf_dist, "cfd_price_class", "")
     enabled     = lookup(var.cf_dist, "cfd_enabled", "")
 
