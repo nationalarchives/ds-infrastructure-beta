@@ -15,7 +15,7 @@ variable "lc_sg_id" {}
 variable "efs_mount_dir" {}
 variable "efs_dns_name" {}
 
-variable "patch_group_name" {}
+variable "patch_group" {}
 variable "deployment_group" {}
 variable "auto_switch_on" {}
 variable "auto_switch_off" {}

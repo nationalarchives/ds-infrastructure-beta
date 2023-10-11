@@ -1,8 +1,8 @@
 # -----------------------------------------------------------------------------
 # Internal Load Balancer
 # -----------------------------------------------------------------------------
-resource "aws_lb" "private_beta_dw_lb" {
-    name               = "private-beta-dw-lb"
+resource "aws_lb" "private_beta_dw" {
+    name               = "private-beta-dw"
     internal           = true
     load_balancer_type = "application"
 
@@ -43,6 +43,6 @@ resource "aws_lb_listener" "internal_http" {
         target_group_arn = aws_lb_target_group.private_beta_dw.arn
     }
     protocol          = "HTTP"
-    load_balancer_arn = aws_lb.private_beta_dw_lb.arn
+    load_balancer_arn = aws_lb.private_beta_dw.arn
     port              = 80
 }

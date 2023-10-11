@@ -27,12 +27,12 @@ locals {
         },
         {
             key                 = "Patch Group"
-            value               = var.rp_nginx_patch_group
+            value               = var.dw_patch_group
             propagate_at_launch = "true"
         },
         {
             key                 = "Deployment-Group"
-            value               = var.rp_nginx_deployment_group
+            value               = var.dw_deployment_group
             propagate_at_launch = "true"
         },
         {
@@ -51,7 +51,7 @@ locals {
 
 variable "lc_key_name" {}
 variable "lc_instance_type" {}
-variable "dw_patch_group_name" {}
+variable "dw_patch_group" {}
 variable "dw_deployment_group" {}
 variable "dw_auto_switch_on" {}
 variable "dw_auto_switch_off" {}
@@ -71,7 +71,7 @@ module "django-wagtail" {
 
     dw_lb_sg_id = module.sgs.dw_lb_sg_id
 
-    dw_efs_id   = module.sgs.dw_efs_sg_id
+    dw_efs_id = module.sgs.dw_efs_sg_id
 
     lc_efs_dns_name     = module.efs.dw_efs_dns_name
     lc_ami_id           = data.aws_ami.private_beta_dw_ami.id
@@ -83,7 +83,7 @@ module "django-wagtail" {
     efs_mount_dir = "/mnt/efs"
     efs_dns_name  = module.efs.dw_efs_dns_name
 
-    patch_group_name = var.dw_patch_group_name
+    patch_group      = var.dw_patch_group
     deployment_group = var.dw_deployment_group
     auto_switch_on   = var.dw_auto_switch_on
     auto_switch_off  = var.dw_auto_switch_off

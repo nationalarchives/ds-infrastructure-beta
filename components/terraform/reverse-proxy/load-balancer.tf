@@ -2,7 +2,7 @@
 # Public Load Balancer
 # -----------------------------------------------------------------------------
 resource "aws_lb" "rp_public" {
-    name               = "private-beta-rp-lb"
+    name               = "private-beta-rp"
     internal           = false
     load_balancer_type = "application"
 
