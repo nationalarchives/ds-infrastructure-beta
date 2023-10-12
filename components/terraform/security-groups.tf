@@ -21,5 +21,10 @@ module "sgs" {
         data.aws_ssm_parameter.client_vpc_cidr.value,
     ]
 
+    db_instance_cidr = [
+        data.aws_ssm_parameter.private_subnet_2a_cidr.value,
+        data.aws_ssm_parameter.private_subnet_2b_cidr.value,
+    ]
+
     tags = local.tags
 }

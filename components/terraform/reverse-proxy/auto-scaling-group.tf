@@ -1,6 +1,9 @@
 resource "aws_autoscaling_group" "rp" {
-    name                 = "private-beta-rp"
-    launch_configuration = aws_launch_configuration.rp.name
+    name = "private-beta-rp"
+    launch_template {
+        id      = aws_launch_template.reverse_proxy.id
+        version = "$Latest"
+    }
 
     vpc_zone_identifier = [
         var.private_subnet_a_id,
