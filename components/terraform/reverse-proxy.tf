@@ -82,7 +82,7 @@ module "reverse-proxy" {
     private_subnet_b_id = data.aws_ssm_parameter.private_subnet_2b_id.value
 
     rp_lb_sg_id               = module.sgs.rp_lb_sg_id
-    rp_profile_name           = module.roles.rp_profile_name
+    rp_profile_arn           = module.roles.rp_profile_arn
     rp_efs_dns_name           = module.efs.rp_efs_dns_name
     rp_lc_sg_id = module.sgs.rp_sg_id
     # launch configuration

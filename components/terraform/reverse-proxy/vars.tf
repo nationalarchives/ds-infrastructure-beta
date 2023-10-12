@@ -6,7 +6,7 @@ variable "private_subnet_a_id" {}
 variable "private_subnet_b_id" {}
 
 variable "rp_lb_sg_id" {}
-variable "rp_profile_name" {}
+variable "rp_profile_arn" {}
 variable "rp_efs_dns_name" {}
 variable "rp_lc_sg_id" {}
 

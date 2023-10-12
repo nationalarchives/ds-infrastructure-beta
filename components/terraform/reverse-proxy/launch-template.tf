@@ -5,7 +5,7 @@ resource "aws_launch_template" "reverse_proxy" {
     name = "private-beta-rp"
 
     iam_instance_profile {
-        arn = var.rp_profile_name
+        arn = var.rp_profile_arn
     }
 
     image_id               = var.rp_image_id

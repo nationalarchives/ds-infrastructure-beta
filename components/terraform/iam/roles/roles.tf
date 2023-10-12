@@ -51,7 +51,6 @@ resource "aws_iam_role" "rp_role" {
 
 resource "aws_iam_instance_profile" "rp_profile" {
     name = "private-beta-rp-profile"
-    path = "/"
     role = aws_iam_role.rp_role.name
 }
 
