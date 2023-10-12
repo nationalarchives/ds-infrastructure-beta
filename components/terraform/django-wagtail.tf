@@ -49,8 +49,10 @@ locals {
 
 }
 
-variable "lc_key_name" {}
-variable "lc_instance_type" {}
+variable "dw_key_name" {}
+variable "dw_instance_type" {}
+variable "dw_block_device" {}
+
 variable "dw_patch_group" {}
 variable "dw_deployment_group" {}
 variable "dw_auto_switch_on" {}
@@ -69,16 +71,16 @@ module "django-wagtail" {
     private_subnet_a_id = data.aws_ssm_parameter.private_subnet_2a_id.value
     private_subnet_b_id = data.aws_ssm_parameter.private_subnet_2b_id.value
 
-    dw_lb_sg_id = module.sgs.dw_lb_sg_id
+    lb_sg_id = module.sgs.dw_lb_sg_id
 
-    dw_efs_id = module.sgs.dw_efs_sg_id
+    efs_id = module.sgs.dw_efs_sg_id
 
-    lc_efs_dns_name     = module.efs.dw_efs_dns_name
-    lc_ami_id           = data.aws_ami.private_beta_dw_ami.id
-    lc_instance_type    = var.lc_instance_type
-    lc_instance_profile = module.roles.dw_profile_name
-    lc_key_name         = var.lc_key_name
-    lc_sg_id            = module.sgs.dw_sg_id
+    ami_id                 = data.aws_ami.private_beta_dw_ami.id
+    instance_type          = var.dw_instance_type
+    instance_profile_arn   = module.roles.dw_profile_arn
+    key_name               = var.dw_key_name
+    sg_id                  = module.sgs.dw_sg_id
+    root_block_device_size = var.dw_block_device-size
 
     efs_mount_dir = "/mnt/efs"
     efs_dns_name  = module.efs.dw_efs_dns_name
@@ -88,13 +90,16 @@ module "django-wagtail" {
     auto_switch_on   = var.dw_auto_switch_on
     auto_switch_off  = var.dw_auto_switch_off
 
-    dw_asg_min_size                  = var.dw_asg_min_size
-    dw_asg_max_size                  = var.dw_asg_max_size
-    dw_asg_desired_capacity          = var.dw_asg_desired_capacity
-    dw_asg_health_check_grace_period = var.dw_asg_health_check_grace_period
-    dw_asg_health_check_type         = var.dw_asg_health_check_type
+    asg_min_size                  = var.dw_asg_min_size
+    asg_max_size                  = var.dw_asg_max_size
+    asg_desired_capacity          = var.dw_asg_desired_capacity
+    asg_health_check_grace_period = var.dw_asg_health_check_grace_period
+    asg_health_check_type         = var.dw_asg_health_check_type
 
-    dw_asg_tags = local.dw_asg_tags
+    deployment_s3_bucket = var.deployment_s3_bucket
+    folder_s3_key        = var.logfile_s3_bucket
+
+    asg_tags = local.dw_asg_tags
 
     tags = local.tags
 }

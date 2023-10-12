@@ -10,11 +10,11 @@ resource "aws_autoscaling_group" "dw" {
         var.private_subnet_b_id
     ]
 
-    max_size                  = var.dw_asg_max_size
-    min_size                  = var.dw_asg_min_size
-    desired_capacity          = var.dw_asg_desired_capacity
-    health_check_grace_period = var.dw_asg_health_check_grace_period
-    health_check_type         = var.dw_asg_health_check_type
+    max_size                  = var.asg_max_size
+    min_size                  = var.asg_min_size
+    desired_capacity          = var.asg_desired_capacity
+    health_check_grace_period = var.asg_health_check_grace_period
+    health_check_type         = var.asg_health_check_type
 
     enabled_metrics = [
         "GroupMinSize",
@@ -35,7 +35,7 @@ resource "aws_autoscaling_group" "dw" {
     }
 
     dynamic "tag" {
-        for_each = var.dw_asg_tags
+        for_each = var.asg_tags
         content {
             key                 = tag.value["key"]
             value               = tag.value["value"]
