@@ -51,7 +51,7 @@ locals {
 
 variable "dw_key_name" {}
 variable "dw_instance_type" {}
-variable "dw_block_device" {}
+variable "dw_root_block_device_size" {}
 
 variable "dw_patch_group" {}
 variable "dw_deployment_group" {}
@@ -80,7 +80,7 @@ module "django-wagtail" {
     instance_profile_arn   = module.roles.dw_profile_arn
     key_name               = var.dw_key_name
     sg_id                  = module.sgs.dw_sg_id
-    root_block_device_size = var.dw_block_device-size
+    root_block_device_size = var.dw_root_block_device_size
 
     efs_mount_dir = "/mnt/efs"
     efs_dns_name  = module.efs.dw_efs_dns_name

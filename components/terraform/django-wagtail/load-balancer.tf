@@ -7,7 +7,7 @@ resource "aws_lb" "private_beta_dw" {
     load_balancer_type = "application"
 
     security_groups = [
-        var.dw_lb_sg_id
+        var.lb_sg_id
     ]
 
     subnets = [

@@ -14,7 +14,7 @@ resource "aws_launch_template" "reverse_proxy" {
     update_default_version = true
 
     vpc_security_group_ids = [
-        var.rp_lc_sg_id
+        var.sg_id
     ]
 
     user_data = base64encode(templatefile("${path.module}/scripts/userdata.sh", {

@@ -7,7 +7,7 @@ resource "aws_lb" "rp_public" {
     load_balancer_type = "application"
 
     security_groups = [
-        var.rp_lb_sg_id
+        var.lb_sg_id
     ]
 
     subnets = [
