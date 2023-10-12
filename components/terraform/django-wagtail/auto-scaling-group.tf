@@ -3,7 +3,10 @@
 # -----------------------------------------------------------------------------
 resource "aws_autoscaling_group" "dw" {
     name                 = "private-beta-dw"
-    launch_configuration = aws_launch_configuration.dw.name
+    launch_template {
+        id      = aws_launch_template.django_wagtail.id
+        version = "$Latest"
+    }
 
     vpc_zone_identifier = [
         var.private_subnet_a_id,
