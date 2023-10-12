@@ -4,20 +4,21 @@
 # load balancer
 #
 resource "aws_security_group" "dw_lb" {
-    name        = "private-beta-dw-lb-sg"
+    name        = "private-beta-dw-lb"
     description = "Reverse Proxy Security Group HTTP access"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-rp-lb-sg"
+        Name = "private-beta-dw-lb"
     })
 }
 
 resource "aws_security_group_rule" "dw_lb_http_ingress" {
     cidr_blocks       = var.dw_lb_cidr
+    description = "port 80 traffic from RPs"
     from_port         = 80
     protocol          = "tcp"
-    security_group_id = aws_security_group.rp_lb.id
+    security_group_id = aws_security_group.rp.id
     to_port           = 80
     type              = "ingress"
 }
@@ -36,42 +37,32 @@ resource "aws_security_group_rule" "dw_lb_http_egress" {
 # instance
 #
 resource "aws_security_group" "dw" {
-    name        = "private-beta-dw-sg"
+    name        = "private-beta-dw"
     description = "access to application"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-dw-sg"
+        Name = "private-beta-dw"
     })
 }
 
-resource "aws_security_group_rule" "dw_rp_http_ingress" {
-    description              = "traffic from reverse proxy group members"
+resource "aws_security_group_rule" "dw_lb_http_ingress" {
+    description              = "port 80 traffic from LB"
     from_port                = 80
     protocol                 = "tcp"
     security_group_id        = aws_security_group.dw.id
-    source_security_group_id = aws_security_group.rp.id
+    source_security_group_id = aws_security_group.dw_lb.id
     to_port                  = 80
     type                     = "ingress"
 }
 
-resource "aws_security_group_rule" "dw_http_ingress" {
-    description              = "traffic between group members"
-    from_port                = 80
-    protocol                 = "tcp"
-    source_security_group_id = aws_security_group.dw.id
-    security_group_id        = aws_security_group.dw.id
-    to_port                  = 80
-    type                     = "ingress"
-}
-
-resource "aws_security_group_rule" "dw_group_http_ingress" {
+resource "aws_security_group_rule" "dw_response_ingress" {
     cidr_blocks       = var.dw_instance_cidr
     description       = "traffic from Client-VPN and load balancer"
-    from_port         = 80
+    from_port         = 1024
     protocol          = "tcp"
     security_group_id = aws_security_group.dw.id
-    to_port           = 80
+    to_port           = 65535
     type              = "ingress"
 }
 
@@ -123,17 +114,28 @@ resource "aws_security_group_rule" "efs_egress" {
 # load balancer
 #
 resource "aws_security_group" "rp_lb" {
-    name        = "private-beta-rp-lb-sg"
-    description = "Reverse Proxy Security Group HTTP and HTTPS access"
+    name        = "private-beta-rp-lb"
+    description = "reverse proxy HTTP and HTTPS access"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-rp-lb-sg"
+        Name = "private-beta-rp-lb"
     })
 }
 
 resource "aws_security_group_rule" "rp_lb_https_ingress" {
-    cidr_blocks       = var.rp_lb_cidr
+    cidr_blocks       = ["0.0.0.0/0"]
+    description       = "port 80 will be redirected to 443"
+    from_port         = 80
+    protocol          = "tcp"
+    security_group_id = aws_security_group.rp_lb.id
+    to_port           = 443
+    type              = "ingress"
+}
+
+resource "aws_security_group_rule" "rp_lb_https_ingress" {
+    cidr_blocks       = ["0.0.0.0/0"]
+    description       = "443 traffic from anywhere"
     from_port         = 443
     protocol          = "tcp"
     security_group_id = aws_security_group.rp_lb.id
@@ -142,9 +144,7 @@ resource "aws_security_group_rule" "rp_lb_https_ingress" {
 }
 
 resource "aws_security_group_rule" "rp_lb_http_egress" {
-    cidr_blocks = [
-        "0.0.0.0/0"
-    ]
+    cidr_blocks = ["0.0.0.0/0"]
     security_group_id = aws_security_group.rp_lb.id
     type              = "egress"
     from_port         = 0
@@ -155,16 +155,17 @@ resource "aws_security_group_rule" "rp_lb_http_egress" {
 # instance
 #
 resource "aws_security_group" "rp" {
-    name        = "private-beta-rp-sg"
+    name        = "private-beta-rp"
     description = "Reverse proxy security group"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-rp-sg"
+        Name = "private-beta-rp"
     })
 }
 
 resource "aws_security_group_rule" "rp_http_ingress" {
+    description              = "port 80 traffic from LB"
     from_port                = 80
     to_port                  = 80
     protocol                 = "tcp"
@@ -173,17 +174,9 @@ resource "aws_security_group_rule" "rp_http_ingress" {
     type                     = "ingress"
 }
 
-resource "aws_security_group_rule" "rp_group_http_ingress" {
+resource "aws_security_group_rule" "rp_response_ingress" {
     cidr_blocks       = var.rp_instance_cidr
-    from_port         = 80
-    to_port           = 80
-    protocol          = "tcp"
-    security_group_id = aws_security_group.rp.id
-    type              = "ingress"
-}
-
-resource "aws_security_group_rule" "rp_group_ingress" {
-    cidr_blocks       = var.rp_instance_cidr
+    description = "allow response from internal subnets"
     from_port         = 1024
     to_port           = 65535
     protocol          = "tcp"

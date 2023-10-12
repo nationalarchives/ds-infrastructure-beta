@@ -14,14 +14,14 @@ TRAEFIK_NETWORK="traefik_webgateway"
 TRAEFIK_API_URL="http://localhost:8080/api/http/services"
 
 # record running container ids
-BLUE_ID=$(docker ps --all --filter "name=blue-dw" --format "{{.ID}}")
-GREEN_ID=$(docker ps --all --filter "name=green-dw" --format "{{.ID}}")
+BLUE_ID=$(sudo docker ps --all --filter "name=blue-dw" --format "{{.ID}}")
+GREEN_ID=$(sudo docker ps --all --filter "name=green-dw" --format "{{.ID}}")
 
 # Find which service is currently active
-if docker ps --format "{{.Names}}" | grep -q "$BLUE_SERVICE"; then
+if sudo docker ps --format "{{.Names}}" | grep -q "$BLUE_SERVICE"; then
   ACTIVE_SERVICE=$BLUE_SERVICE
   INACTIVE_SERVICE=$GREEN_SERVICE
-elif docker ps --format "{{.Names}}" | grep -q "$GREEN_SERVICE"; then
+elif sudo docker ps --format "{{.Names}}" | grep -q "$GREEN_SERVICE"; then
   ACTIVE_SERVICE=$GREEN_SERVICE
   INACTIVE_SERVICE=$BLUE_SERVICE
 else

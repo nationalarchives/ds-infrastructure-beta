@@ -8,7 +8,7 @@ api:
   insecure: true
 
 entryPoints:
-  django-wagtail:
+  django_wagtail:
     address: ":80"
 
 providers:
@@ -16,4 +16,4 @@ providers:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
     watch: true
-    network: "dw_web"
+    network: traefik_webgateway
