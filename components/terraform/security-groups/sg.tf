@@ -46,7 +46,7 @@ resource "aws_security_group" "dw" {
     })
 }
 
-resource "aws_security_group_rule" "dw_lb_http_ingress" {
+resource "aws_security_group_rule" "dw_http_ingress" {
     description              = "port 80 traffic from LB"
     from_port                = 80
     protocol                 = "tcp"
@@ -123,7 +123,7 @@ resource "aws_security_group" "rp_lb" {
     })
 }
 
-resource "aws_security_group_rule" "rp_lb_https_ingress" {
+resource "aws_security_group_rule" "rp_lb_http_ingress" {
     cidr_blocks       = ["0.0.0.0/0"]
     description       = "port 80 will be redirected to 443"
     from_port         = 80
