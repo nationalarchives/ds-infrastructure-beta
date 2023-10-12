@@ -24,14 +24,12 @@ resource "aws_security_group_rule" "dw_lb_http_ingress" {
 }
 
 resource "aws_security_group_rule" "dw_lb_http_egress" {
-    security_group_id = aws_security_group.rp_lb.id
+    security_group_id = aws_security_group.dw_lb.id
     type              = "egress"
     from_port         = 0
     to_port           = 0
     protocol          = "-1"
-    cidr_blocks       = [
-        "0.0.0.0/0"
-    ]
+    cidr_blocks       = ["0.0.0.0/0"]
 }
 
 # instance
