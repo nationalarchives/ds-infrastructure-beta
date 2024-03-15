@@ -2,12 +2,12 @@ locals {
     dw_asg_tags = [
         {
             key                 = "Name"
-            value               = "private-beta-dw"
+            value               = "beta-dw"
             propagate_at_launch = "true"
         },
         {
             key                 = "Service"
-            value               = "private-beta"
+            value               = "beta"
             propagate_at_launch = "true"
         },
         {

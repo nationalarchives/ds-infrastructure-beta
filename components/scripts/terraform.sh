@@ -60,7 +60,7 @@ tf_dir=${components_dir}/terraform
 
 client_abbr=$(cat < "${tf_vars}/environment.tfvars" | grep "client_abbr" | awk -F"=" '{print $2}' | awk -F'"' '{print $2}')
 region="eu-west-2"
-s3_backend="${client_abbr}-terraform-backend-state-private-beta-${region}-${AWS_ACCOUNT}"
+s3_backend="${client_abbr}-terraform-backend-state-beta-${region}-${AWS_ACCOUNT}"
 s3_backend_key="${base_dir_name}/${environment}.tfstate"
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -72,7 +72,7 @@ if [ ! -d "$tf_vars" ]; then
 fi
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Export TF_VARS 
+# Export TF_VARS
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 export TF_DATA_DIR="${tf_vars}/.terraform"

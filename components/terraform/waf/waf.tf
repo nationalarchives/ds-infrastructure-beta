@@ -38,7 +38,7 @@ variable "tags" {}
 resource "aws_wafv2_ip_set" "private_beta_access" {
     provider = aws.aws-cf-waf
 
-    name               = "private-beta-access"
+    name               = "beta-access"
     description        = "IP set allowing access or blocking opposing to default action setting in WAF"
     scope              = "CLOUDFRONT"
     ip_address_version = "IPV4"
@@ -50,7 +50,7 @@ resource "aws_wafv2_ip_set" "private_beta_access" {
 resource "aws_wafv2_web_acl" "private_beta" {
     provider = aws.aws-cf-waf
 
-    name  = "private-beta"
+    name  = "beta"
     scope = "CLOUDFRONT"
 
     default_action {
@@ -381,7 +381,7 @@ resource "aws_wafv2_web_acl" "private_beta" {
 
     visibility_config {
         cloudwatch_metrics_enabled = true
-        metric_name                = "aws-waf-logs-private-beta"
+        metric_name                = "aws-waf-logs-beta"
         sampled_requests_enabled   = true
     }
 }

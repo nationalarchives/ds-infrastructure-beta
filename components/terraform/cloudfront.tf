@@ -17,6 +17,6 @@ module "cloudfront_public" {
     custom_header_value = jsondecode(data.aws_secretsmanager_secret_version.etna_custom_header.secret_string)["header_value"]
 
     tags = merge(local.tags, {
-        service = "private-beta-cloudfront"
+        service = "beta-cloudfront"
     })
 }

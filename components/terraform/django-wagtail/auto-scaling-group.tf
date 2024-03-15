@@ -2,7 +2,7 @@
 # Autoscaling group
 # -----------------------------------------------------------------------------
 resource "aws_autoscaling_group" "dw" {
-    name                 = "private-beta-dw"
+    name                 = "beta-dw"
     launch_template {
         id      = aws_launch_template.django_wagtail.id
         version = "$Latest"
@@ -53,7 +53,7 @@ resource "aws_autoscaling_attachment" "dw" {
 }
 
 resource "aws_autoscaling_policy" "dw_up_policy" {
-    name                   = "private-beta-dw-up-policy"
+    name                   = "beta-dw-up-policy"
     scaling_adjustment     = 1
     adjustment_type        = "ChangeInCapacity"
     cooldown               = 300
@@ -61,7 +61,7 @@ resource "aws_autoscaling_policy" "dw_up_policy" {
 }
 
 resource "aws_autoscaling_policy" "dw_down_policy" {
-    name                   = "private-beta-dw-down-policy"
+    name                   = "beta-dw-down-policy"
     scaling_adjustment     = -1
     adjustment_type        = "ChangeInCapacity"
     cooldown               = 300

@@ -9,23 +9,23 @@ resource "aws_iam_policy" "deployment_s3" {
 }
 
 resource "aws_iam_policy" "rp_config_s3" {
-    name        = "private-beta-rp-s3-policy"
+    name        = "beta-rp-s3-policy"
     description = "S3 access to nginx configuration files and log files"
 
     policy = templatefile("${path.root}/templates/reverse-proxy-s3-policy.json", {
         deployment_s3_bucket = var.deployment_s3_bucket,
         logfile_s3_bucket    = var.logfile_s3_bucket,
-        key                  = "private-beta/nginx"
+        key                  = "beta/nginx"
     })
 }
 
-# private-beta-docker-deployment
+# beta-docker-deployment
 #
 resource "aws_iam_policy" "lambda_private_beta_docker_deployment_policy" {
-    name        = "lambda-private-beta-docker-deployment-policy"
+    name        = "lambda-beta-docker-deployment-policy"
     description = "receive instance data and manipulate status"
 
-    policy = templatefile("${path.root}/templates/lambda-private-beta-docker-deployment-policy.json", {
+    policy = templatefile("${path.root}/templates/lambda-beta-docker-deployment-policy.json", {
         account_id = var.account_id
     })
 }

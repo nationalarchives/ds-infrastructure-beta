@@ -4,7 +4,7 @@
 # reverse proxy efs
 #
 resource "aws_efs_file_system" "rp_efs" {
-    creation_token = "private-beta-rp-efs"
+    creation_token = "beta-rp-efs"
     encrypted      = true
 
     tags = var.tags
@@ -29,7 +29,7 @@ resource "aws_efs_mount_target" "rp_efs_private_b" {
 }
 
 resource "aws_backup_selection" "rp_efs_backup" {
-    name         = "private-beta-rp-efs-backup"
+    name         = "beta-rp-efs-backup"
     plan_id      = aws_backup_plan.rp_efs_backup.id
     iam_role_arn = var.rp_efs_backup_role_arn
 
@@ -39,10 +39,10 @@ resource "aws_backup_selection" "rp_efs_backup" {
 }
 
 resource "aws_backup_plan" "rp_efs_backup" {
-    name = "private-beta-rp-efs-backup-plan"
+    name = "beta-rp-efs-backup-plan"
 
     rule {
-        rule_name         = "private-beta-rp-efs-backup-rule"
+        rule_name         = "beta-rp-efs-backup-rule"
         target_vault_name = aws_backup_vault.rp_efs_backup.name
         schedule          = var.rp_efs_backup_schedule
         start_window      = var.rp_efs_backup_start_window
@@ -57,7 +57,7 @@ resource "aws_backup_plan" "rp_efs_backup" {
 }
 
 resource "aws_backup_vault" "rp_efs_backup" {
-    name        = "private-beta-rp-efs-backup-vault"
+    name        = "beta-rp-efs-backup-vault"
     kms_key_arn = var.rp_efs_backup_kms_key_arn
 
     tags = var.tags
@@ -66,10 +66,10 @@ resource "aws_backup_vault" "rp_efs_backup" {
 # Django/Wagtail efs
 #
 resource "aws_efs_file_system" "dw_efs" {
-    creation_token = "private-beta-dw-efs"
+    creation_token = "beta-dw-efs"
 
     tags = merge(var.tags, {
-        Name = "private-beta-dw-efs"
+        Name = "beta-dw-efs"
     })
 }
 
@@ -90,7 +90,7 @@ resource "aws_efs_mount_target" "dw_efs_private_b" {
 }
 
 resource "aws_backup_selection" "dw_efs_backup" {
-    name         = "private-beta-dw-efs-backup"
+    name         = "beta-dw-efs-backup"
     plan_id      = aws_backup_plan.dw_efs_backup.id
     iam_role_arn = var.dw_efs_backup_role_arn
 
@@ -100,10 +100,10 @@ resource "aws_backup_selection" "dw_efs_backup" {
 }
 
 resource "aws_backup_plan" "dw_efs_backup" {
-    name = "private-beta-dw-efs-backup-plan"
+    name = "beta-dw-efs-backup-plan"
 
     rule {
-        rule_name         = "private-beta-dw-efs-backup-rule"
+        rule_name         = "beta-dw-efs-backup-rule"
         target_vault_name = aws_backup_vault.dw_efs_backup.name
         schedule          = var.dw_efs_backup_schedule
         start_window      = var.dw_efs_backup_start_window
@@ -118,7 +118,7 @@ resource "aws_backup_plan" "dw_efs_backup" {
 }
 
 resource "aws_backup_vault" "dw_efs_backup" {
-    name        = "private-beta-dw-efs-backup-vault"
+    name        = "beta-dw-efs-backup-vault"
     kms_key_arn = var.dw_efs_backup_kms_key_arn
 
     tags = var.tags

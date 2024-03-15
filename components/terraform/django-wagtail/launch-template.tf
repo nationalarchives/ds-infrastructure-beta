@@ -2,7 +2,7 @@
 # Launch Template
 # -----------------------------------------------------------------------------
 resource "aws_launch_template" "django_wagtail" {
-    name = "private-beta-dw"
+    name = "beta-dw"
 
     iam_instance_profile {
         arn = var.instance_profile_arn
@@ -18,7 +18,7 @@ resource "aws_launch_template" "django_wagtail" {
     ]
 
     user_data = base64encode(templatefile("${path.module}/scripts/userdata.sh", {
-        service              = "private-beta",
+        service              = "beta",
         mount_target         = var.efs_dns_name,
         mount_dir            = var.efs_mount_dir,
         deployment_s3_bucket = var.deployment_s3_bucket,

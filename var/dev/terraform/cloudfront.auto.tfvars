@@ -1,10 +1,10 @@
 cf_dist = {
     "create_distribution"                            = true
     #"cfd_domain_name"                                = ""
-    "cfd_origin_id"                                  = "dev-private-beta.nationalarchives.gov.uk"
+    "cfd_origin_id"                                  = "dev-beta.nationalarchives.gov.uk"
     "cfd_price_class"                                = "PriceClass_100"
     "cfd_enabled"                                    = true
-    "cfd_aliases"                                    = ["dev-private-beta.nationalarchives.gov.uk"]
+    "cfd_aliases"                                    = ["dev-beta.nationalarchives.gov.uk"]
     "cfd_default_behaviour_allowed_methods"          = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     "cfd_default_behaviour_cached_methods"           = ["GET", "HEAD"]
     "cfd_behaviour_default_viewer_protocol_policy"   = "redirect-to-https"

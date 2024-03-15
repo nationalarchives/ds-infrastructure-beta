@@ -26,7 +26,7 @@ resource "aws_route53_record" "reverse_proxy_public" {
 #
 resource "aws_route53_record" "dw-app" {
     zone_id = data.aws_ssm_parameter.zone_id.value
-    name    = "private-beta.${var.environment}.local"
+    name    = "beta.${var.environment}.local"
     type    = "CNAME"
     ttl     = 15
 

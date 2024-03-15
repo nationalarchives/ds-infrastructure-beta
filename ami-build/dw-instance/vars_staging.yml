@@ -1,9 +1,9 @@
 ---
-key_name: "private-beta-dw-staging-eu-west-2"
+key_name: "beta-dw-staging-eu-west-2"
 region: "eu-west-2"
 env: "staging"
-service: "private-beta"
+service: "beta"
 volume_size: 20
 s3_deployment_bucket: "ds-staging-deployment-source"
-s3_deployment_root: "private-beta"
+s3_deployment_root: "beta"
 ...

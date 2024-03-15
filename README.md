@@ -1,4 +1,4 @@
-# ds-infrastructure-private-beta
+# ds-infrastructure-beta
 
 ## Requisites
 Before a successful ```terraform apply``` can be run following requisites need to be in place.
@@ -22,5 +22,5 @@ Following values would need to be stored manually in the _Systems Manager Parame
 This are database or other secrets which are confidential and should not be saved in a repository.
 ### AMI builds
 Please read any documentation in the **ds-ami-build** repo in regards of the required build for further information.
-* NginX instance - private-beta-rp-primer*
-* Wagtail instance - private-beta-dw-primer*
+* NginX instance - beta-rp-primer*
+* Wagtail instance - beta-dw-primer*

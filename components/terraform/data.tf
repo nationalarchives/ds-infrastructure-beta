@@ -68,7 +68,7 @@ data "aws_ami" "private_beta_rp_ami" {
     filter {
         name   = "name"
         values = [
-            "private-beta-rp-primer*"
+            "beta-rp-primer*"
         ]
     }
 
@@ -114,7 +114,7 @@ data "aws_ami" "private_beta_postgres_source_ami" {
     filter {
         name   = "name"
         values = [
-            "private-beta-postgres-primer*"
+            "beta-postgres-primer*"
         ]
     }
 
@@ -137,7 +137,7 @@ data "aws_ami" "private_beta_postgres_source_ami" {
 #    filter {
 #        name   = "name"
 #        values = [
-#            "private-beta-postgres-source-primer*"
+#            "beta-postgres-source-primer*"
 #        ]
 #    }
 #
@@ -160,7 +160,7 @@ data "aws_ami" "private_beta_postgres_source_ami" {
 #    filter {
 #        name   = "name"
 #        values = [
-#            "private-beta-postgres-replica-primer*"
+#            "beta-postgres-replica-primer*"
 #        ]
 #    }
 #

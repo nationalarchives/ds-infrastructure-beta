@@ -18,6 +18,6 @@ resource "aws_instance" "replica" {
     ]
 
     tags = merge(var.tags, {
-        Name = "private-beta-postgres-replica"
+        Name = "beta-postgres-replica"
     })
 }

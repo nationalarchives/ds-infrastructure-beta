@@ -1,9 +1,9 @@
 ---
-key_name: "private-beta-dw-live-eu-west-2"
+key_name: "beta-dw-live-eu-west-2"
 region: "eu-west-2"
 env: "live"
-service: "private-beta"
+service: "beta"
 volume_size: 20
 s3_deployment_bucket: "ds-live-deployment-source"
-s3_deployment_root: "private-beta"
+s3_deployment_root: "beta"
 ...

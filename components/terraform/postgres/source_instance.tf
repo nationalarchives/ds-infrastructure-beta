@@ -18,6 +18,6 @@ resource "aws_instance" "source" {
     ]
 
     tags = merge(var.tags, {
-        Name = "private-beta-postgres-source"
+        Name = "beta-postgres-source"
     })
 }

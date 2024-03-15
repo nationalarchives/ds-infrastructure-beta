@@ -18,8 +18,8 @@ on:
         - production
       ami-prefix:
         type: string
-        description: AMI prefix - defaults to private-beta-dw
-        default: private-beta-dw
+        description: AMI prefix - defaults to beta-dw
+        default: beta-dw
 
 jobs:
 # ------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ jobs:
       - name: set ansible var file for dev
         run: |
           echo "ANSIBLE_VAR_FILE=vars_dev.yml" >> $GITHUB_ENV
-          echo "SSH_KEY_FILE=private-beta-dw-dev-eu-west-2" >> $GITHUB_ENV
+          echo "SSH_KEY_FILE=beta-dw-dev-eu-west-2" >> $GITHUB_ENV
 
       - name: set environment variables
         run: |
@@ -74,7 +74,7 @@ jobs:
           export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
           export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
           export AWS_DEFAULT_REGION=eu-west-2
-          ansible-playbook --extra-vars "ansible_var_file='${{ env.ANSIBLE_VAR_FILE }}'" --private-key $cur_dir/${{ env.SSH_KEY_FILE }} dw-playbook.yml
+          ansible-playbook --extra-vars "ansible_var_file='${{ env.ANSIBLE_VAR_FILE }}'" --key $cur_dir/${{ env.SSH_KEY_FILE }} dw-playbook.yml
 
 # ------------------------------------------------------------------------------
 # staging deployment
@@ -92,7 +92,7 @@ jobs:
       - name: set ansible var file for staging
         run: |
           echo "ANSIBLE_VAR_FILE=vars_staging.yml" >> $GITHUB_ENV
-          echo "SSH_KEY_FILE=private-beta-dw-staging-eu-west-2" >> $GITHUB_ENV
+          echo "SSH_KEY_FILE=beta-dw-staging-eu-west-2" >> $GITHUB_ENV
 
       - name: aws variable settings
         run: |
@@ -128,7 +128,7 @@ jobs:
           export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
           export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
           export AWS_DEFAULT_REGION=eu-west-2
-          ansible-playbook --extra-vars "ansible_var_file='${{ env.ANSIBLE_VAR_FILE }}'" --private-key $cur_dir/${{ env.SSH_KEY_FILE }} base-ami-playbook.yml
+          ansible-playbook --extra-vars "ansible_var_file='${{ env.ANSIBLE_VAR_FILE }}'" --key $cur_dir/${{ env.SSH_KEY_FILE }} base-ami-playbook.yml
 
 # ------------------------------------------------------------------------------
 # live deployment
@@ -146,7 +146,7 @@ jobs:
       - name: set ansible var file for live
         run: |
           echo "ANSIBLE_VAR_FILE=vars_live.yml" >> $GITHUB_ENV
-          echo "SSH_KEY_FILE=private-beta-dw-live-eu-west-2" >> $GITHUB_ENV
+          echo "SSH_KEY_FILE=beta-dw-live-eu-west-2" >> $GITHUB_ENV
 
       - name: aws variable settings
         run: |
@@ -182,5 +182,5 @@ jobs:
           export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
           export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
           export AWS_DEFAULT_REGION=eu-west-2
-          ansible-playbook --extra-vars "ansible_var_file='${{ env.ANSIBLE_VAR_FILE }}'" --private-key $cur_dir/${{ env.SSH_KEY_FILE }} base-ami-playbook.yml
+          ansible-playbook --extra-vars "ansible_var_file='${{ env.ANSIBLE_VAR_FILE }}'" --key $cur_dir/${{ env.SSH_KEY_FILE }} base-ami-playbook.yml
 ...

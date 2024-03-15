@@ -4,12 +4,12 @@
 # load balancer
 #
 resource "aws_security_group" "dw_lb" {
-    name        = "private-beta-dw-lb"
+    name        = "beta-dw-lb"
     description = "Reverse Proxy Security Group HTTP access"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-dw-lb"
+        Name = "beta-dw-lb"
     })
 }
 
@@ -35,12 +35,12 @@ resource "aws_security_group_rule" "dw_lb_http_egress" {
 # instance
 #
 resource "aws_security_group" "dw" {
-    name        = "private-beta-dw"
+    name        = "beta-dw"
     description = "access to application"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-dw"
+        Name = "beta-dw"
     })
 }
 
@@ -78,12 +78,12 @@ resource "aws_security_group_rule" "dw_http_egress" {
 # EFS access
 #
 resource "aws_security_group" "dw_efs" {
-    name        = "private-beta-dw-efs-access"
+    name        = "beta-dw-efs-access"
     description = "access to EFS storage"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-dw-efs-access"
+        Name = "beta-dw-efs-access"
     })
 }
 
@@ -112,12 +112,12 @@ resource "aws_security_group_rule" "efs_egress" {
 # load balancer
 #
 resource "aws_security_group" "rp_lb" {
-    name        = "private-beta-rp-lb"
+    name        = "beta-rp-lb"
     description = "reverse proxy HTTP and HTTPS access"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-rp-lb"
+        Name = "beta-rp-lb"
     })
 }
 
@@ -153,12 +153,12 @@ resource "aws_security_group_rule" "rp_lb_http_egress" {
 # instance
 #
 resource "aws_security_group" "rp" {
-    name        = "private-beta-rp"
+    name        = "beta-rp"
     description = "Reverse proxy security group"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-rp"
+        Name = "beta-rp"
     })
 }
 
@@ -199,12 +199,12 @@ resource "aws_security_group_rule" "rp_egress" {
 # instance
 #
 resource "aws_security_group" "postgre" {
-    name        = "private-beta-postgre"
+    name        = "beta-postgre"
     description = "Reverse proxy security group"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-postgre"
+        Name = "beta-postgre"
     })
 }
 
@@ -232,12 +232,12 @@ resource "aws_security_group_rule" "postgre_egress" {
 # Security group reverse proxy EFS
 #
 resource "aws_security_group" "rp_efs" {
-    name        = "private-beta-rp-efs-sg"
+    name        = "beta-rp-efs-sg"
     description = "Reverse proxy EFS storage security group"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-rp-efs-sg"
+        Name = "beta-rp-efs-sg"
     })
 }
 
@@ -271,12 +271,12 @@ resource "aws_vpc_security_group_ingress_rule" "rp_efs_http" {
 }
 
 resource "aws_security_group" "rp_lc" {
-    name        = "private-beta-rp-lc-sg"
+    name        = "beta-rp-lc-sg"
     description = "reverse proxy security group"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "private-beta-rp-sg"
+        Name = "beta-rp-sg"
     })
 }
 
@@ -301,12 +301,12 @@ resource "aws_vpc_security_group_ingress_rule" "rp_lc_https" {
 # lambda - deployment
 #
 resource "aws_security_group" "lambda_private_beta_deployment" {
-    name        = "lambda-private-beta-deployment-sg"
+    name        = "lambda-beta-deployment-sg"
     description = "lambda private beta deployment security group"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "lambda-private-beta-deployment-sg"
+        Name = "lambda-beta-deployment-sg"
     })
 }
 

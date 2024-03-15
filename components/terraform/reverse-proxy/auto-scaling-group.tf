@@ -1,5 +1,5 @@
 resource "aws_autoscaling_group" "rp" {
-    name = "private-beta-rp"
+    name = "beta-rp"
     launch_template {
         id      = aws_launch_template.reverse_proxy.id
         version = "$Latest"

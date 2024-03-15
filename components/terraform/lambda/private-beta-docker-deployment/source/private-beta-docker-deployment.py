@@ -4,7 +4,7 @@ import datetime
 
 def private_beta_docker_deployment(event, context):
     # Define the tag possessed by the EC2 instances that we want to execute the script on
-    tag = 'private-beta-dw'
+    tag = 'beta-dw'
 
     docker_tag = event["docker_tag"]
 

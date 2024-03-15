@@ -1,7 +1,7 @@
 # roles and profiles for Django/Wagtail
 #
 resource "aws_iam_role" "dw_efs_backup" {
-    name = "private-beta-dw-efs-backup-role"
+    name = "beta-dw-efs-backup-role"
 
     assume_role_policy  = file("${path.root}/templates/efs_backup_assume_role.json")
     managed_policy_arns = [
@@ -10,7 +10,7 @@ resource "aws_iam_role" "dw_efs_backup" {
 }
 
 resource "aws_iam_role" "dw_role" {
-    name               = "private-beta-dw-assume-role"
+    name               = "beta-dw-assume-role"
     assume_role_policy = file("${path.root}/templates/ec2_assume_role.json")
 
     managed_policy_arns = [
@@ -22,14 +22,14 @@ resource "aws_iam_role" "dw_role" {
 }
 
 resource "aws_iam_instance_profile" "dw_profile" {
-    name = "private-beta-dw-profile"
+    name = "beta-dw-profile"
     path = "/"
     role = aws_iam_role.dw_role.name
 }
 
 # roles and profiles for reverse proxy
 resource "aws_iam_role" "rp_efs_backup" {
-    name = "private-beta-rp-efs-backup-role"
+    name = "beta-rp-efs-backup-role"
 
     assume_role_policy  = file("${path.root}/templates/efs_backup_assume_role.json")
     managed_policy_arns = [
@@ -40,7 +40,7 @@ resource "aws_iam_role" "rp_efs_backup" {
 }
 
 resource "aws_iam_role" "rp_role" {
-    name               = "private-beta-rp-role"
+    name               = "beta-rp-role"
     assume_role_policy = file("${path.root}/templates/ec2_assume_role.json")
 
     managed_policy_arns = [
@@ -50,12 +50,12 @@ resource "aws_iam_role" "rp_role" {
 }
 
 resource "aws_iam_instance_profile" "rp_profile" {
-    name = "private-beta-rp-profile"
+    name = "beta-rp-profile"
     role = aws_iam_role.rp_role.name
 }
 
 resource "aws_iam_role" "lambda_private_beta_docker_deployment_role" {
-    name               = "lambda-private-beta-docker-deployment-role"
+    name               = "lambda-beta-docker-deployment-role"
     assume_role_policy = file("${path.root}/templates/assume-role-lambda-policy.json")
 
     managed_policy_arns = [

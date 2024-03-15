@@ -79,7 +79,7 @@
             ],
             "Condition": {
                 "StringEquals": {
-                    "ec2:ResourceTag/Name": "private-beta-dw"
+                    "ec2:ResourceTag/Name": "beta-dw"
                 }
             }
         },

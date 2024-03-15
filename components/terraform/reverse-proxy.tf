@@ -2,12 +2,12 @@ locals {
     rp_asg_tags = [
         {
             key                 = "Name"
-            value               = "private-beta-rp"
+            value               = "beta-rp"
             propagate_at_launch = "true"
         },
         {
             key                 = "Service"
-            value               = "private-beta"
+            value               = "beta"
             propagate_at_launch = "true"
         },
         {
@@ -112,6 +112,6 @@ module "reverse-proxy" {
     ssl_cert_arn = data.aws_ssm_parameter.wildcard_certificate_arn.value
 
     tags = merge(local.tags, {
-        service = "private-beta-reverse-proxy"
+        service = "beta-reverse-proxy"
     })
 }

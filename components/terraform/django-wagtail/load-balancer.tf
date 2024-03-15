@@ -2,7 +2,7 @@
 # Internal Load Balancer
 # -----------------------------------------------------------------------------
 resource "aws_lb" "private_beta_dw" {
-    name               = "private-beta-dw"
+    name               = "beta-dw"
     internal           = true
     load_balancer_type = "application"
 
@@ -19,7 +19,7 @@ resource "aws_lb" "private_beta_dw" {
 }
 
 resource "aws_lb_target_group" "private_beta_dw" {
-    name     = "private-beta-dw"
+    name     = "beta-dw"
     port     = 80
     protocol = "HTTP"
     vpc_id   = var.vpc_id

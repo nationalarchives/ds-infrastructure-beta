@@ -1,10 +1,10 @@
 data "archive_file" "private_beta_docker_deployment" {
     type        = "zip"
-    source_dir  = "${path.root}/lambda/private-beta-docker-deployment/source"
-    output_path = "${path.root}/lambda/private-beta-docker-deployment/private-beta-docker-deployment.zip"
+    source_dir  = "${path.root}/lambda/beta-docker-deployment/source"
+    output_path = "${path.root}/lambda/beta-docker-deployment/beta-docker-deployment.zip"
 }
 
-# private-beta-docker-deployment
+# beta-docker-deployment
 #
 resource "aws_lambda_function" "private_beta_docker_deployment" {
     filename         = data.archive_file.private_beta_docker_deployment.output_path
@@ -15,7 +15,7 @@ resource "aws_lambda_function" "private_beta_docker_deployment" {
 
     layers = var.layers
 
-    handler = "private-beta-docker-deployment.private_beta_docker_deployment"
+    handler = "beta-docker-deployment.private_beta_docker_deployment"
     runtime = "python3.11"
 
     memory_size = 512
@@ -34,7 +34,7 @@ resource "aws_lambda_function" "private_beta_docker_deployment" {
         Role            = "serverless"
         ApplicationType = "python"
         CreatedBy       = "devops@nationalarchives.gov.uk"
-        Service         = "private-beta-docker-deployment"
+        Service         = "beta-docker-deployment"
         Name            = "private_beta_docker_deployment"
     })
 }
