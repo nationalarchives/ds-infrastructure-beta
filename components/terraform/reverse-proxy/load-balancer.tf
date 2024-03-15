@@ -53,8 +53,13 @@ resource "aws_lb_listener" "public_http_lb_listener" {
 
 resource "aws_lb_listener" "public_https_lb_listener" {
     default_action {
-        target_group_arn = aws_lb_target_group.rp_public.arn
-        type             = "forward"
+        type = "fixed-response"
+
+        fixed_response {
+            content_type = "text/plain"
+            message_body = "Forbidden"
+            status_code  = "403"
+        }
     }
 
     protocol          = "HTTPS"
@@ -62,4 +67,23 @@ resource "aws_lb_listener" "public_https_lb_listener" {
     port              = 443
     ssl_policy        = "ELBSecurityPolicy-FS-1-2-Res-2019-08"
     certificate_arn   = var.ssl_cert_arn
+}
+
+resource "aws_lb_listener_rule" "custom_header" {
+    listener_arn = aws_lb_listener.public_https_lb_listener.arn
+    priority     = 99
+
+    action {
+        type             = "forward"
+        target_group_arn = aws_lb_target_group.rp_public.arn
+    }
+
+    condition {
+        http_header {
+            http_header_name = var.custom_header_name
+            values           = [
+                var.custom_header_value,
+            ]
+        }
+    }
 }

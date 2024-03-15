@@ -218,3 +218,11 @@ data "aws_ssm_parameter" "s3_deployment_source_arn" {
 data "aws_ssm_parameter" "cf_waf_ip_set" {
     name = "/application/private_beta/waf/ip_set"
 }
+
+# CloudFront custom headers
+data "aws_secretsmanager_secret" "etna_custom_header" {
+    name = "/infrastructure/etna/custom_header"
+}
+data "aws_secretsmanager_secret_version" "etna_custom_header" {
+    secret_id = data.aws_secretsmanager_secret.etna_custom_header.id
+}

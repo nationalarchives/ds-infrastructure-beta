@@ -8,7 +8,7 @@ api:
   insecure: true
 
 entryPoints:
-  django_wagtail:
+  web:
     address: ":80"
 
 providers:

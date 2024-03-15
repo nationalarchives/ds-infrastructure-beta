@@ -3,17 +3,22 @@ resource "aws_cloudfront_distribution" "private_beta" {
         domain_name = var.lb_dns_name
         origin_id   = lookup(var.cf_dist, "cfd_origin_id", "")
 
-          custom_origin_config {
+        custom_origin_config {
             http_port              = 80
             https_port             = 443
             origin_protocol_policy = "https-only"
             origin_ssl_protocols   = ["TLSv1.2"]
-          }
-      }
+        }
+
+        custom_header {
+            name  = var.custom_header_name
+            value = var.custom_header_value
+        }
+    }
 
     http_version = "http2"
-    price_class = lookup(var.cf_dist, "cfd_price_class", "")
-    enabled     = lookup(var.cf_dist, "cfd_enabled", "")
+    price_class  = lookup(var.cf_dist, "cfd_price_class", "")
+    enabled      = lookup(var.cf_dist, "cfd_enabled", "")
 
     aliases = lookup(var.cf_dist, "cfd_aliases", "")
 
@@ -49,7 +54,7 @@ resource "aws_cloudfront_distribution" "private_beta" {
 
     restrictions {
         geo_restriction {
-          restriction_type = "none"
+            restriction_type = "none"
         }
     }
 
@@ -57,11 +62,11 @@ resource "aws_cloudfront_distribution" "private_beta" {
 
     viewer_certificate {
         cloudfront_default_certificate = false
-        acm_certificate_arn = var.wildcard_certificate_arn
-        ssl_support_method  = "sni-only"
-        minimum_protocol_version = "TLSv1.2_2021"
+        acm_certificate_arn            = var.wildcard_certificate_arn
+        ssl_support_method             = "sni-only"
+        minimum_protocol_version       = "TLSv1.2_2021"
     }
 
     # get arn to indicate WAFv2
-     web_acl_id = element(split(",", var.private_beta_waf_info), 1)
+    web_acl_id = element(split(",", var.private_beta_waf_info), 1)
 }

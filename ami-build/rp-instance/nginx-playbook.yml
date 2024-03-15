@@ -1,6 +1,7 @@
+# NginX playbook
 ---
-# base AMI build
-- name: create base AMI
+
+- name: create Reverse Proxy Primer for Private Beta
   hosts: localhost
   gather_facts: false
 
@@ -23,7 +24,13 @@
       role_session_name: "s-devops"
     register: assumed_role
 
-  - name: get docker AMI
+  - name: show role switch
+    ansible.builtin.debug:
+     msg:
+      - "role changed  {{ assumed_role.changed }}"
+      - "role arn: {{ lookup ('env', 'AWS_ROLE_ARN') }}"
+
+  - name: get linux2 AMI
     amazon.aws.ec2_ami_info:
       aws_access_key: "{{ assumed_role.sts_creds.access_key }}"
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
@@ -31,20 +38,13 @@
       owners: amazon
       region: "{{ region }}"
       filters:
-        name: "{{ lookup('env', 'AMI_PREFIX') }}-primer-*"
+        name: "amzn2-ami-hvm*"
     register: findami
 
   - name: set latest AMI
     set_fact:
       latest_ami: >
         {{ findami.images | sort(attribute='creation_date') | last }}
-
-  - name: set secrets
-    vars:
-      secret_data: "{{ lookup('amazon.aws.aws_secret', 'application/private-beta/database', region=region, aws_access_key=assumed_role.sts_creds.access_key, aws_secret_key=assumed_role.sts_creds.secret_key, aws_security_token=assumed_role.sts_creds.session_token, on_denied='warn') | from_json }}"
-    set_fact:
-        db_user: "{{ secret_data.db_username }}"
-        db_pass: "{{ secret_data.db_password }}"
 
   - name: template deployment policy
     template:
@@ -57,32 +57,31 @@
       aws_access_key: "{{ assumed_role.sts_creds.access_key }}"
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
       security_token: "{{ assumed_role.sts_creds.session_token }}"
-      policy_name: "ansible-ami-pb-dw-s3-policy"
+      policy_name: "ansible-aim-private-beta-rp-s3-policy"
       policy: "{{ lookup('file', './instance-role-policy.json') }}"
       state: "present"
     register: s3_policy
 
-  - name: create Private Beta Wagtail IAM role
+  - name: create reverse proxy IAM role
     community.aws.iam_role:
       aws_access_key: "{{ assumed_role.sts_creds.access_key }}"
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
       security_token: "{{ assumed_role.sts_creds.session_token }}"
-      name: "ansible-ami-pb-dw-role"
+      name: "ansible-ami-private-beta-rp-role"
       region: "{{ region }}"
-      assume_role_policy_document: "{{ lookup('file', './ec2-assume-role-policy.json') }}"
-      managed_policies: ["{{ s3_policy.policy.arn }}"]
+      assume_role_policy_document: "{{ lookup('file', './rp-role-policy.json') }}"
+      managed_policies: ["{{ s3_policy.policy.arn }}", "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"]
       create_instance_profile: yes
-      delete_instance_profile: yes
       purge_policies: yes
       state: "present"
-    register: instance_iam_role
+    register: rp_iam_role
 
   - name: create security group - allowing updates and downloads
     amazon.aws.ec2_group:
       aws_access_key: "{{ assumed_role.sts_creds.access_key }}"
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
       security_token: "{{ assumed_role.sts_creds.session_token }}"
-      name: "ansible-ami-pb-dw-sg"
+      name: "ansible-ami-private-beta-rp-sg"
       description: "security group allowing updates and downloads"
       region: "{{ region }}"
       vpc_id: "{{ lookup( 'env', 'VPC_ID') }}"
@@ -117,25 +116,9 @@
     register: ec2_sec_group
 
   - name: template userdata
-    vars:
-      db_host: "db.{{ service }}.{{ env }}.local"
-      db_name: "{{ service }}"
-      db_user: "{{ db_user }}"
-      db_pass: "{{ db_pass }}"
     template:
       src: "./templates/userdata.sh.j2"
       dest: "./userdata.sh"
-      force: yes
-
-  - name: template env_file
-    vars:
-      db_host: "db.{{ service }}.{{ env }}.local"
-      db_name: "{{ service }}"
-      db_user: "{{ db_user }}"
-      db_pass: "{{ db_pass }}"
-    template:
-      src: "./templates/env_file.j2"
-      dest: "/var/docker/env_file"
       force: yes
 
   - name: provisioning instance
@@ -144,19 +127,19 @@
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
       security_token: "{{ assumed_role.sts_creds.session_token }}"
       key_name: "{{ key_name }}"
-      image_id: "{{ latest_ami.image_id }}"#
-      instance_role: "ansible-ami-pb-dw-role"
+      image_id: "{{ latest_ami.image_id }}"
+      instance_role: "ansible-ami-private-beta-rp-role"
       instance_type: "t3a.large"
       metadata_options:
         http_endpoint: "enabled"
         http_tokens: "required"
-      name : "{{ service }}-primer-{{ env }}"
+      name : "{{ service }}-rp-primer"
       network:
         assign_public_ip: yes
         delete_on_termination: yes
         subnet_id: "{{ lookup('env', 'SUBNET_ID') }}"
       region: "{{ region }}"
-      security_groups: ["{{ ec2_sec_group.group_id }}", "{{ db_sg.security_groups[0].group_id }}"]
+      security_groups: ["{{ ec2_sec_group.group_id }}"]
       state: "running"
       termination_protection: no
       user_data: "{{ lookup('file', './userdata.sh') }}"
@@ -197,7 +180,6 @@
       hostname: "{{ instance_public_ip }}"
       groups: ec2hosts
       ansible_user: ec2-user
-      remote_user: ec2-user
       gather_facts: no
 
   - name: wait for SSH service to bind on new instance
@@ -211,7 +193,6 @@
 
 - name: switch to ec2hosts - checking if setup has finished
   hosts: ec2hosts
-  become: yes
   gather_facts: false
   tasks:
   - ansible.builtin.debug:
@@ -220,49 +201,6 @@
         - "checking status of new instance before ami can be build"
         - "20 second interval with max duration of 15 minutes"
         - "====================================================================="
-
-  - name: load variables
-    ansible.builtin.include_vars:
-      file: "{{ ansible_var_file }}"
-
-  - name: copy compose.yml
-    ansible.builtin.copy:
-      src: ./docker/compose.yml
-      dest: /var/docker/
-
-  - name: copy compose.traefik.yml
-    ansible.builtin.copy:
-      src: ./docker/compose.traefik.yml
-      dest: /var/docker/
-
-  - name: copy traefik.yml
-    ansible.builtin.copy:
-      src: ./docker/traefik.yml
-      dest: /var/docker/
-
-  - name: copy docker-blue-green-deploy.sh
-    ansible.builtin.copy:
-      src: ./scripts/website-blue-green-deploy.sh
-      dest: /usr/local/bin/
-      mode: '0755'
-
-  - name: copy startup.sh
-    ansible.builtin.copy:
-      src: ./scripts/startup.sh
-      dest: /usr/local/bin/
-      mode: '0755'
-
-  - name: copy traefik-run.sh
-    ansible.builtin.copy:
-      src: ./scripts/run-traefik.sh
-      dest: /usr/local/bin/
-      mode: '0755'
-
-  - name: copy traefik-stop.sh
-    ansible.builtin.copy:
-      src: ./scripts/run-traefik.sh
-      dest: /usr/local/bin/
-      mode: '0755'
 
   - name: check if ec2 instance is ready
     ansible.builtin.stat:
@@ -284,13 +222,13 @@
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
       security_token: "{{ assumed_role.sts_creds.session_token }}"
       instance_id: "{{ instance_id }}"
-      name: "{{ service }}-primer-{{ ansible_date_time.date }} {{ ansible_date_time.hour }}-{{ ansible_date_time.minute }}-{{ ansible_date_time.second }}"
-      description: "Private Beta Frontend"
+      name: "{{ service }}-rp-primer--{{ ansible_date_time.date }} {{ ansible_date_time.hour }}-{{ ansible_date_time.minute }}-{{ ansible_date_time.second }}"
+      description: "private-beta reverse proxy - ready for deployment"
       region: "{{ region }}"
       state: "present"
       wait: yes
       tags:
-        Name: "{{ service }}-primer-{{ ansible_date_time.date }} {{ ansible_date_time.hour }}-{{ ansible_date_time.minute }}-{{ ansible_date_time.second }}"
+        Name: "{{ service }}-rp-primer-{{ ansible_date_time.date }} {{ ansible_date_time.hour }}-{{ ansible_date_time.minute }}-{{ ansible_date_time.second }}"
         Service: "{{ service }}"
         Owner: "Digital Services"
         CreatedBy: "ansible"
@@ -311,7 +249,7 @@
       aws_access_key: "{{ assumed_role.sts_creds.access_key }}"
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
       security_token: "{{ assumed_role.sts_creds.session_token }}"
-      name: "ansible-ami-pb-dw-sg"
+      name: "ansible-ami-private-beta-rp-sg"
       region: "{{ region }}"
       state: "absent"
 
@@ -320,7 +258,7 @@
       aws_access_key: "{{ assumed_role.sts_creds.access_key }}"
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
       security_token: "{{ assumed_role.sts_creds.session_token }}"
-      name: "ansible-ami-pb-dw-role"
+      name: "ansible-ami-private-beta-rp-role"
       region: "{{ region }}"
       delete_instance_profile: yes
       state: "absent"
@@ -330,6 +268,6 @@
       aws_access_key: "{{ assumed_role.sts_creds.access_key }}"
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
       security_token: "{{ assumed_role.sts_creds.session_token }}"
-      policy_name: "ansible-ami-pb-dw-s3-policy"
+      policy_name: "ansible-aim-private-beta-rp-s3-policy"
       state: "absent"
 ...

@@ -35,3 +35,6 @@ variable "logfile_s3_bucket" {}
 variable "ssl_cert_arn" {}
 
 variable "tags" {}
+
+variable "custom_header_value" {}
+variable "custom_header_name" {}

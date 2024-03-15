@@ -6,9 +6,10 @@ variable "lb_dns_name" {}
 
 variable "wildcard_certificate_arn" {}
 
-# ======================================================================================================================
-# Variables
-# ======================================================================================================================
+# customer header used to limit traffic to load balancers
+variable "custom_header_name" {}
+variable "custom_header_value" {}
+
 variable "tags" {}
 
 variable "private_beta_waf_info" {
