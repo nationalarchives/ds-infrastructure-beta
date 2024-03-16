@@ -2,18 +2,18 @@
 
 ## Requisites
 Before a successful ```terraform apply``` can be run following requisites need to be in place.
-* Run ```terraform apply``` on **ds-infrastructure**
+* Run ```terraform apply``` on **ds-infrastructure-beta**
 * Add values manually to _Systems Manager Parameter Store_
 * Add values manually to _Secrets Manager_
 * Create several AMIs in **ds-ami-build**
 ### ds-infrastructure
-Running ```terraform apply``` on **ds-infrastructure** will create most of the basic networking and services on which private beta will run.
+Running ```terraform apply``` on **ds-infrastructure-beta** will create most of the basic networking and services on which private beta will run.
 ### Database
 The private beta installation depends on the existence of a PostgreSQL database.
 It is highly recommended to run at least one replica in the live environment.
-Use the GitHub Action in **ds-ami-build** repo to prepare the ami(s) which will be use during ```terraform apply``` on **ds-infrastructure**.
+Use the GitHub Action in **ds-ami-build** repo to prepare the ami(s) which will be use during ```terraform apply``` on **ds-infrastructure-beta  **.
 ### Systems Manager Parameter Store
-Most values required will me set during ```terraform apply``` in **ds-infrastructure**.
+Most values required will me set during ```terraform apply``` in **ds-infrastructure-beta**.
 Following values would need to be stored manually in the _Systems Manager Parameter Store_:
 * /infrastrcuture/private_beta_waf_ipset - comma separated string containing either a list of allowed or blocked IP address ranges in CIDR notation.
 * /infrastructure/certificate-manager/wildcard-certificate-arn - containing the certificate arn for the valid wildcard certificate; might have been put in place by other application installations.
