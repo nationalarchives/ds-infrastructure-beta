@@ -85,6 +85,10 @@ module "reverse-proxy" {
     profile_arn           = module.roles.rp_profile_arn
     efs_dns_name           = module.efs.rp_efs_dns_name
     sg_id = module.sgs.rp_sg_id
+
+    custom_header_name = jsondecode(data.aws_secretsmanager_secret_version.etna_custom_header.secret_string)["header_name"]
+    custom_header_value = jsondecode(data.aws_secretsmanager_secret_version.etna_custom_header.secret_string)["header_value"]
+
     # launch configuration
     #
     image_id               = data.aws_ami.beta_rp_ami.id
