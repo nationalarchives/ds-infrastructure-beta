@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # Internal Load Balancer
 # -----------------------------------------------------------------------------
-resource "aws_lb" "private_beta_dw" {
+resource "aws_lb" "beta_dw" {
     name               = "beta-dw"
     internal           = true
     load_balancer_type = "application"
@@ -18,7 +18,7 @@ resource "aws_lb" "private_beta_dw" {
     tags = var.tags
 }
 
-resource "aws_lb_target_group" "private_beta_dw" {
+resource "aws_lb_target_group" "beta_dw" {
     name     = "beta-dw"
     port     = 80
     protocol = "HTTP"
@@ -40,9 +40,9 @@ resource "aws_lb_target_group" "private_beta_dw" {
 resource "aws_lb_listener" "internal_http" {
     default_action {
         type             = "forward"
-        target_group_arn = aws_lb_target_group.private_beta_dw.arn
+        target_group_arn = aws_lb_target_group.beta_dw.arn
     }
     protocol          = "HTTP"
-    load_balancer_arn = aws_lb.private_beta_dw.arn
+    load_balancer_arn = aws_lb.beta_dw.arn
     port              = 80
 }

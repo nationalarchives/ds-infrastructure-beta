@@ -13,7 +13,7 @@ module "postgres_instances" {
         data.aws_ssm_parameter.client_vpc_cidr.value,
     ]
 
-    source_ami_id                      = data.aws_ami.private_beta_postgres_source_ami.id
+    source_ami_id                      = data.aws_ami.beta_postgres_source_ami.id
     source_associate_public_ip_address = var.instances.source.associate_public_ip_address
     source_availability_zone           = "${var.region}${var.instances.source.availability_zone}"
     source_iam_instance_profile        = var.instances.source.iam_instance_profile
@@ -37,7 +37,7 @@ module "postgres_instances" {
         data.aws_ssm_parameter.client_vpc_cidr.value,
     ]
 
-    replica_ami_id                      = data.aws_ami.private_beta_postgres_replica_ami.id
+    replica_ami_id                      = data.aws_ami.beta_postgres_replica_ami.id
     replica_associate_public_ip_address = var.instances.replica.associate_public_ip_address
     replica_availability_zone           = "${var.region}${var.instances.replica.availability_zone}"
     replica_iam_instance_profile        = var.instances.replica.iam_instance_profile

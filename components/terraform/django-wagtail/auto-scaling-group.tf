@@ -49,7 +49,7 @@ resource "aws_autoscaling_group" "dw" {
 
 resource "aws_autoscaling_attachment" "dw" {
     autoscaling_group_name = aws_autoscaling_group.dw.id
-    lb_target_group_arn    = aws_lb_target_group.private_beta_dw.arn
+    lb_target_group_arn    = aws_lb_target_group.beta_dw.arn
 }
 
 resource "aws_autoscaling_policy" "dw_up_policy" {

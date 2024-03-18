@@ -12,7 +12,7 @@ variable "custom_header_value" {}
 
 variable "tags" {}
 
-variable "private_beta_waf_info" {
+variable "beta_waf_info" {
   description = "Taken from aws ssm parameter store data"
   default     = {}
 }

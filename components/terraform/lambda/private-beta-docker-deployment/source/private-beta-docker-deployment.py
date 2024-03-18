@@ -2,7 +2,7 @@ import boto3
 import datetime
 
 
-def private_beta_docker_deployment(event, context):
+def beta_docker_deployment(event, context):
     # Define the tag possessed by the EC2 instances that we want to execute the script on
     tag = 'beta-dw'
 

@@ -87,7 +87,7 @@ module "reverse-proxy" {
     sg_id = module.sgs.rp_sg_id
     # launch configuration
     #
-    image_id               = data.aws_ami.private_beta_rp_ami.id
+    image_id               = data.aws_ami.beta_rp_ami.id
     instance_type          = var.rp_instance_type
     key_name               = var.rp_key_name
     root_block_device_size = var.rp_root_block_device_size

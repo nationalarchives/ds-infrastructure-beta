@@ -12,8 +12,8 @@ if [ -z ${WEBSERVER_IMAGE+x} ]; then export WEBSERVER_IMAGE="none"; fi
 
 # get docker image tag from parameter store
 echo "retrieve versions"
-exp_traefik_image=$(aws ssm get-parameter --name /application/private_beta/dw/docker/release --query Parameter.Value --region $region --output text | jq -r '.["traefik"]')
-exp_webserver_image=$(aws ssm get-parameter --name /application/private_beta/dw/docker/release --query Parameter.Value --region $region --output text | jq -r '.["website"]')
+exp_traefik_image=$(aws ssm get-parameter --name /application/beta/dw/docker/release --query Parameter.Value --region $region --output text | jq -r '.["traefik"]')
+exp_webserver_image=$(aws ssm get-parameter --name /application/beta/dw/docker/release --query Parameter.Value --region $region --output text | jq -r '.["website"]')
 
 # update compose.traefik.yml if needed
 if [ "$TRAEFIK_IMAGE" = "$exp_traefik_image" ]; then

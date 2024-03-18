@@ -26,7 +26,7 @@ variable "web_acl_managed_rules_linux_rule_set" {}
 variable "web_acl_managed_rules_php_rule_set" {}
 
 variable "site_ips" {
-    description = "ip addresses opposing to general waf behaviour"
+    description = "ip addresses opposing general waf behaviour"
 }
 
 variable "tags" {}
@@ -35,7 +35,7 @@ variable "tags" {}
 # RESOURCES
 # ===================================================================================================================
 
-resource "aws_wafv2_ip_set" "private_beta_access" {
+resource "aws_wafv2_ip_set" "beta_access" {
     provider = aws.aws-cf-waf
 
     name               = "beta-access"
@@ -47,7 +47,7 @@ resource "aws_wafv2_ip_set" "private_beta_access" {
     tags = var.tags
 }
 
-resource "aws_wafv2_web_acl" "private_beta" {
+resource "aws_wafv2_web_acl" "beta" {
     provider = aws.aws-cf-waf
 
     name  = "beta"
@@ -81,7 +81,7 @@ resource "aws_wafv2_web_acl" "private_beta" {
 
         statement {
             ip_set_reference_statement {
-                arn = aws_wafv2_ip_set.private_beta_access.arn
+                arn = aws_wafv2_ip_set.beta_access.arn
             }
         }
 

@@ -62,7 +62,7 @@ data "aws_ssm_parameter" "client_vpc_cidr" {
 
 # amis
 #
-data "aws_ami" "private_beta_rp_ami" {
+data "aws_ami" "beta_rp_ami" {
     most_recent = true
 
     filter {
@@ -85,7 +85,7 @@ data "aws_ami" "private_beta_rp_ami" {
     ]
 }
 
-data "aws_ami" "private_beta_dw_ami" {
+data "aws_ami" "beta_dw_ami" {
     most_recent = true
 
     filter {
@@ -108,7 +108,7 @@ data "aws_ami" "private_beta_dw_ami" {
     ]
 }
 
-data "aws_ami" "private_beta_postgres_source_ami" {
+data "aws_ami" "beta_postgres_source_ami" {
     most_recent = true
 
     filter {
@@ -131,61 +131,11 @@ data "aws_ami" "private_beta_postgres_source_ami" {
     ]
 }
 
-#data "aws_ami" "private_beta_postgres_source_ami" {
-#    most_recent = true
-#
-#    filter {
-#        name   = "name"
-#        values = [
-#            "beta-postgres-source-primer*"
-#        ]
-#    }
-#
-#    filter {
-#        name   = "virtualization-type"
-#        values = [
-#            "hvm"
-#        ]
-#    }
-#
-#    owners = [
-#        data.aws_caller_identity.current.account_id,
-#        "amazon"
-#    ]
-#}
-
-#data "aws_ami" "private_beta_postgres_replica_ami" {
-#    most_recent = true
-#
-#    filter {
-#        name   = "name"
-#        values = [
-#            "beta-postgres-replica-primer*"
-#        ]
-#    }
-#
-#    filter {
-#        name   = "virtualization-type"
-#        values = [
-#            "hvm"
-#        ]
-#    }
-#
-#    owners = [
-#        data.aws_caller_identity.current.account_id,
-#        "amazon"
-#    ]
-#}
-
 data "aws_caller_identity" "current" {}
 
 data "aws_ssm_parameter" "zone_id" {
     name = "/infrastructure/zone_id"
 }
-
-#data "aws_secretsmanager_secret_version" "wp" {
-#    secret_id = data.aws_secretsmanager_secret.wp.id
-#}
 
 data "aws_ssm_parameter" "sns_slack_alert" {
     name = "/infrastructure/sns_slack_alert_arn"
@@ -216,7 +166,7 @@ data "aws_ssm_parameter" "s3_deployment_source_arn" {
 # cloudfront
 #
 data "aws_ssm_parameter" "cf_waf_ip_set" {
-    name = "/application/private_beta/waf/ip_set"
+    name = "/application/beta/waf/ip_set"
 }
 
 # CloudFront custom headers

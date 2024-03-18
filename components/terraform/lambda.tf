@@ -19,10 +19,10 @@ resource "aws_lambda_layer_version" "datetime" {
     ]
 }
 
-module "private_beta_docker_deployment" {
+module "beta_docker_deployment" {
     source = "./lambda"
 
-    private_beta_docker_deployment_role_arn = module.roles.lambda_private_beta_docker_deployment_role_arn
+    beta_docker_deployment_role_arn = module.roles.lambda_beta_docker_deployment_role_arn
 
     subnet_ids = [
         data.aws_ssm_parameter.private_subnet_2a_id.value,
@@ -35,7 +35,7 @@ module "private_beta_docker_deployment" {
     ]
 
     security_group_ids = [
-        module.sgs.lambda_private_beta_deployment_id,
+        module.sgs.lambda_beta_deployment_id,
     ]
 
     environment = var.environment

@@ -75,7 +75,7 @@ module "django-wagtail" {
 
     efs_id = module.sgs.dw_efs_sg_id
 
-    ami_id                 = data.aws_ami.private_beta_dw_ami.id
+    ami_id                 = data.aws_ami.beta_dw_ami.id
     instance_type          = var.dw_instance_type
     instance_profile_arn   = module.roles.dw_profile_arn
     key_name               = var.dw_key_name

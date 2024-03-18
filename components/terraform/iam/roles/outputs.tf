@@ -22,6 +22,6 @@ output "rp_profile_name" {
 output "rp_profile_arn" {
     value = aws_iam_instance_profile.rp_profile.arn
 }
-output "lambda_private_beta_docker_deployment_role_arn" {
-    value = aws_iam_role.lambda_private_beta_docker_deployment_role.arn
+output "lambda_beta_docker_deployment_role_arn" {
+    value = aws_iam_role.lambda_beta_docker_deployment_role.arn
 }

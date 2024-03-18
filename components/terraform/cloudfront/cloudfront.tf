@@ -1,4 +1,4 @@
-resource "aws_cloudfront_distribution" "private_beta" {
+resource "aws_cloudfront_distribution" "beta" {
     origin {
         domain_name = var.lb_dns_name
         origin_id   = lookup(var.cf_dist, "cfd_origin_id", "")
@@ -68,5 +68,5 @@ resource "aws_cloudfront_distribution" "private_beta" {
     }
 
     # get arn to indicate WAFv2
-    web_acl_id = element(split(",", var.private_beta_waf_info), 1)
+    web_acl_id = element(split(",", var.beta_waf_info), 1)
 }

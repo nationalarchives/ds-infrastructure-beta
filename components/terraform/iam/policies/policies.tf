@@ -21,7 +21,7 @@ resource "aws_iam_policy" "rp_config_s3" {
 
 # beta-docker-deployment
 #
-resource "aws_iam_policy" "lambda_private_beta_docker_deployment_policy" {
+resource "aws_iam_policy" "lambda_beta_docker_deployment_policy" {
     name        = "lambda-beta-docker-deployment-policy"
     description = "receive instance data and manipulate status"
 

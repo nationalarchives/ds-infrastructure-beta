@@ -15,7 +15,7 @@ Use the GitHub Action in **ds-ami-build** repo to prepare the ami(s) which will 
 ### Systems Manager Parameter Store
 Most values required will me set during ```terraform apply``` in **ds-infrastructure-beta**.
 Following values would need to be stored manually in the _Systems Manager Parameter Store_:
-* /infrastrcuture/private_beta_waf_ipset - comma separated string containing either a list of allowed or blocked IP address ranges in CIDR notation.
+* /application/beta/waf/ip_set - comma separated string containing either a list of allowed or blocked IP address ranges in CIDR notation.
 * /infrastructure/certificate-manager/wildcard-certificate-arn - containing the certificate arn for the valid wildcard certificate; might have been put in place by other application installations.
 * /infrastructure/certificate-manager/us-east-1-wildcard-certificate-arn - wildcard certificate used by CloudFront; similar to the wildcard certificate for the domain above.
 ### Secrets Manager

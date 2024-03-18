@@ -1,4 +1,4 @@
-data "archive_file" "private_beta_docker_deployment" {
+data "archive_file" "beta_docker_deployment" {
     type        = "zip"
     source_dir  = "${path.root}/lambda/beta-docker-deployment/source"
     output_path = "${path.root}/lambda/beta-docker-deployment/beta-docker-deployment.zip"
@@ -6,16 +6,16 @@ data "archive_file" "private_beta_docker_deployment" {
 
 # beta-docker-deployment
 #
-resource "aws_lambda_function" "private_beta_docker_deployment" {
-    filename         = data.archive_file.private_beta_docker_deployment.output_path
-    source_code_hash = data.archive_file.private_beta_docker_deployment.output_base64sha256
+resource "aws_lambda_function" "beta_docker_deployment" {
+    filename         = data.archive_file.beta_docker_deployment.output_path
+    source_code_hash = data.archive_file.beta_docker_deployment.output_base64sha256
 
-    function_name = "private_beta_docker_deployment"
-    role          = var.private_beta_docker_deployment_role_arn
+    function_name = "beta_docker_deployment"
+    role          = var.beta_docker_deployment_role_arn
 
     layers = var.layers
 
-    handler = "beta-docker-deployment.private_beta_docker_deployment"
+    handler = "beta-docker-deployment.beta_docker_deployment"
     runtime = "python3.11"
 
     memory_size = 512
@@ -35,13 +35,13 @@ resource "aws_lambda_function" "private_beta_docker_deployment" {
         ApplicationType = "python"
         CreatedBy       = "devops@nationalarchives.gov.uk"
         Service         = "beta-docker-deployment"
-        Name            = "private_beta_docker_deployment"
+        Name            = "beta_docker_deployment"
     })
 }
 
 # using this option allows setting of log retention and removal of the log group
 # when the function is destroyed
-resource "aws_cloudwatch_log_group" "private_beta_docker_deployment" {
-    name              = "/aws/lambda/${aws_lambda_function.private_beta_docker_deployment.function_name}"
+resource "aws_cloudwatch_log_group" "beta_docker_deployment" {
+    name              = "/aws/lambda/${aws_lambda_function.beta_docker_deployment.function_name}"
     retention_in_days = 7
 }

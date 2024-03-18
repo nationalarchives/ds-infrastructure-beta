@@ -17,6 +17,6 @@ output "rp_lb_sg_id" {
 output "rp_efs_sg_id" {
     value = aws_security_group.rp_efs.id
 }
-output "lambda_private_beta_deployment_id" {
-    value = aws_security_group.lambda_private_beta_deployment.id
+output "lambda_beta_deployment_id" {
+    value = aws_security_group.lambda_beta_deployment.id
 }
