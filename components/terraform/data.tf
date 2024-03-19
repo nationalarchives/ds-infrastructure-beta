@@ -108,29 +108,6 @@ data "aws_ami" "beta_dw_ami" {
     ]
 }
 
-data "aws_ami" "beta_postgres_source_ami" {
-    most_recent = true
-
-    filter {
-        name   = "name"
-        values = [
-            "beta-postgres-primer*"
-        ]
-    }
-
-    filter {
-        name   = "virtualization-type"
-        values = [
-            "hvm"
-        ]
-    }
-
-    owners = [
-        data.aws_caller_identity.current.account_id,
-        "amazon"
-    ]
-}
-
 data "aws_caller_identity" "current" {}
 
 data "aws_ssm_parameter" "zone_id" {
