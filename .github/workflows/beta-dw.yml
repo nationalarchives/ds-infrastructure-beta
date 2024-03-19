@@ -31,10 +31,9 @@ jobs:
       region: "eu-west-2"
       branch: "${{ github.event.inputs.branch }}"
       account: "${{ github.event.inputs.account }}"
-      key_name: "beta-rp-${{ github.event.inputs.account }}-eu-west-2"
+      key_name: "beta-dw-${{ github.event.inputs.account }}-eu-west-2"
       instance_type: 't3a.small'
       volume_size: 20
-      s3_deployment_bucket: "ds-staging-deployment-source"
+      s3_deployment_bucket: "ds-${{ github.event.inputs.account }}-deployment-source"
       s3_deployment_root: "beta/dw"
-
 ...
