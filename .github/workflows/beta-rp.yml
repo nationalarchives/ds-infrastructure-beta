@@ -1,5 +1,5 @@
 ---
-name: Beta Reverse Proxy AMI
+name: Reverse Proxy AMI
 run-name: Beta Reverse Proxy AMI beta-rp-primer-(date-time) to ${{ inputs.account }} by @${{ github.actor }}
 
 permissions:
