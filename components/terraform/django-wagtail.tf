@@ -83,7 +83,7 @@ module "django-wagtail" {
     root_block_device_size = var.dw_root_block_device_size
 
     efs_mount_dir = "/mnt/efs"
-    efs_dns_name  = module.efs.dw_efs_dns_name
+    efs_dns_name  = module.efs.upload_efs_dns_name
 
     patch_group      = var.dw_patch_group
     deployment_group = var.dw_deployment_group
