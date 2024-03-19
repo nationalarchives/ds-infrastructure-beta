@@ -17,7 +17,7 @@
                 "s3:GetObject"
             ],
             "Resource": [
-                "arn:aws:s3:::${deployment_s3_bucket}/${key}/*"
+                "arn:aws:s3:::${deployment_s3_bucket}/${deployment_root}/*"
             ]
         },
         {
@@ -26,7 +26,7 @@
                 "s3:*Object"
             ],
             "Resource": [
-                "arn:aws:s3:::${logfile_s3_bucket}/${key}/*"
+                "arn:aws:s3:::${logfile_s3_bucket}/${logfile_root}/*"
             ]
         }
     ]

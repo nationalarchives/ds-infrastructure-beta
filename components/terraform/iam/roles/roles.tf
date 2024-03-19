@@ -1,14 +1,5 @@
 # roles and profiles for Django/Wagtail
 #
-resource "aws_iam_role" "dw_efs_backup" {
-    name = "beta-dw-efs-backup-role"
-
-    assume_role_policy  = file("${path.root}/templates/efs_backup_assume_role.json")
-    managed_policy_arns = [
-        "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup"
-    ]
-}
-
 resource "aws_iam_role" "dw_role" {
     name               = "beta-dw-assume-role"
     assume_role_policy = file("${path.root}/templates/ec2_assume_role.json")
@@ -28,17 +19,6 @@ resource "aws_iam_instance_profile" "dw_profile" {
 }
 
 # roles and profiles for reverse proxy
-resource "aws_iam_role" "rp_efs_backup" {
-    name = "beta-rp-efs-backup-role"
-
-    assume_role_policy  = file("${path.root}/templates/efs_backup_assume_role.json")
-    managed_policy_arns = [
-        "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup"
-    ]
-
-    tags = var.tags
-}
-
 resource "aws_iam_role" "rp_role" {
     name               = "beta-rp-role"
     assume_role_policy = file("${path.root}/templates/ec2_assume_role.json")

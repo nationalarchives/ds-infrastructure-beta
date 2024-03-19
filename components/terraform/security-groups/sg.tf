@@ -1,273 +1,34 @@
-# -----------------------------------------------------------------------------
-# application servers Django/Wagtail
-# -----------------------------------------------------------------------------
-# load balancer
-#
-resource "aws_security_group" "dw_lb" {
-    name        = "beta-dw-lb"
-    description = "Reverse Proxy Security Group HTTP access"
-    vpc_id      = var.vpc_id
-
-    tags = merge(var.tags, {
-        Name = "beta-dw-lb"
-    })
-}
-
-resource "aws_security_group_rule" "dw_lb_http_ingress" {
-    cidr_blocks       = var.dw_lb_cidr
-    description = "port 80 traffic from RPs"
-    from_port         = 80
-    protocol          = "tcp"
-    security_group_id = aws_security_group.dw_lb.id
-    to_port           = 80
-    type              = "ingress"
-}
-
-resource "aws_security_group_rule" "dw_lb_http_egress" {
-    security_group_id = aws_security_group.dw_lb.id
-    type              = "egress"
-    from_port         = 0
-    to_port           = 0
-    protocol          = "-1"
-    cidr_blocks       = ["0.0.0.0/0"]
-}
-
-# instance
-#
-resource "aws_security_group" "dw" {
-    name        = "beta-dw"
-    description = "access to application"
-    vpc_id      = var.vpc_id
-
-    tags = merge(var.tags, {
-        Name = "beta-dw"
-    })
-}
-
-resource "aws_security_group_rule" "dw_http_ingress" {
-    description              = "port 80 traffic from LB"
-    from_port                = 80
-    protocol                 = "tcp"
-    security_group_id        = aws_security_group.dw.id
-    source_security_group_id = aws_security_group.dw_lb.id
-    to_port                  = 80
-    type                     = "ingress"
-}
-
-resource "aws_security_group_rule" "dw_response_ingress" {
-    cidr_blocks       = var.dw_instance_cidr
-    description       = "traffic from Client-VPN and load balancer"
-    from_port         = 1024
-    protocol          = "tcp"
-    security_group_id = aws_security_group.dw.id
-    to_port           = 65535
-    type              = "ingress"
-}
-
-resource "aws_security_group_rule" "dw_http_egress" {
-    security_group_id = aws_security_group.dw.id
-    type              = "egress"
-    from_port         = 0
-    to_port           = 0
-    protocol          = "-1"
-    cidr_blocks       = [
-        "0.0.0.0/0"
-    ]
-}
-
 # EFS access
 #
-resource "aws_security_group" "dw_efs" {
-    name        = "beta-dw-efs-access"
+resource "aws_security_group" "upload_efs" {
+    name        = "beta-upload-efs-access"
     description = "access to EFS storage"
     vpc_id      = var.vpc_id
 
     tags = merge(var.tags, {
-        Name = "beta-dw-efs-access"
+        Name = "beta-upload-efs-access"
     })
 }
 
 resource "aws_security_group_rule" "dw_efs_ingress" {
-    from_port                = 0
+    description              = "EFS mount target"
+    from_port                = 2049
     protocol                 = "tcp"
-    security_group_id        = aws_security_group.dw_efs.id
-    to_port                  = 65535
+    security_group_id        = aws_security_group.upload_efs.id
+    to_port                  = 2049
     type                     = "ingress"
-    source_security_group_id = aws_security_group.dw_efs.id
+    source_security_group_id = aws_security_group.upload_efs.id
 }
 
 resource "aws_security_group_rule" "efs_egress" {
     cidr_blocks = [
         "0.0.0.0/0"
     ]
-    security_group_id = aws_security_group.dw_efs.id
+    security_group_id = aws_security_group.upload_efs.id
     type              = "egress"
     from_port         = 0
     to_port           = 0
     protocol          = "-1"
-}
-# -----------------------------------------------------------------------------
-# reverse proxy
-# -----------------------------------------------------------------------------
-# load balancer
-#
-resource "aws_security_group" "rp_lb" {
-    name        = "beta-rp-lb"
-    description = "reverse proxy HTTP and HTTPS access"
-    vpc_id      = var.vpc_id
-
-    tags = merge(var.tags, {
-        Name = "beta-rp-lb"
-    })
-}
-
-resource "aws_security_group_rule" "rp_lb_http_ingress" {
-    cidr_blocks       = ["0.0.0.0/0"]
-    description       = "port 80 will be redirected to 443"
-    from_port         = 80
-    protocol          = "tcp"
-    security_group_id = aws_security_group.rp_lb.id
-    to_port           = 80
-    type              = "ingress"
-}
-
-resource "aws_security_group_rule" "rp_lb_https_ingress" {
-    cidr_blocks       = ["0.0.0.0/0"]
-    description       = "443 traffic from anywhere"
-    from_port         = 443
-    protocol          = "tcp"
-    security_group_id = aws_security_group.rp_lb.id
-    to_port           = 443
-    type              = "ingress"
-}
-
-resource "aws_security_group_rule" "rp_lb_http_egress" {
-    cidr_blocks = ["0.0.0.0/0"]
-    security_group_id = aws_security_group.rp_lb.id
-    type              = "egress"
-    from_port         = 0
-    to_port           = 0
-    protocol          = "-1"
-}
-
-# instance
-#
-resource "aws_security_group" "rp" {
-    name        = "beta-rp"
-    description = "Reverse proxy security group"
-    vpc_id      = var.vpc_id
-
-    tags = merge(var.tags, {
-        Name = "beta-rp"
-    })
-}
-
-resource "aws_security_group_rule" "rp_http_ingress" {
-    description              = "port 80 traffic from LB"
-    from_port                = 80
-    to_port                  = 80
-    protocol                 = "tcp"
-    security_group_id        = aws_security_group.rp.id
-    source_security_group_id = aws_security_group.rp_lb.id
-    type                     = "ingress"
-}
-
-resource "aws_security_group_rule" "rp_response_ingress" {
-    cidr_blocks       = var.rp_instance_cidr
-    description = "allow response from internal subnets"
-    from_port         = 1024
-    to_port           = 65535
-    protocol          = "tcp"
-    security_group_id = aws_security_group.rp.id
-    type              = "ingress"
-}
-
-resource "aws_security_group_rule" "rp_egress" {
-    from_port         = 0
-    to_port           = 0
-    protocol          = "-1"
-    security_group_id = aws_security_group.rp.id
-    type              = "egress"
-    cidr_blocks       = [
-        "0.0.0.0/0"
-    ]
-}
-
-# -----------------------------------------------------------------------------
-# postgre db
-# -----------------------------------------------------------------------------
-# instance
-#
-resource "aws_security_group" "postgre" {
-    name        = "beta-postgre"
-    description = "Reverse proxy security group"
-    vpc_id      = var.vpc_id
-
-    tags = merge(var.tags, {
-        Name = "beta-postgre"
-    })
-}
-
-resource "aws_security_group_rule" "postgre_ingress" {
-    cidr_blocks       = var.db_instance_cidr
-    description = "allow response from internal subnets"
-    from_port         = 5432
-    to_port           = 5432
-    protocol          = "tcp"
-    security_group_id = aws_security_group.postgre.id
-    type              = "ingress"
-}
-
-resource "aws_security_group_rule" "postgre_egress" {
-    from_port         = 0
-    to_port           = 0
-    protocol          = "-1"
-    security_group_id = aws_security_group.postgre.id
-    type              = "egress"
-    cidr_blocks       = [
-        "0.0.0.0/0"
-    ]
-}
-
-# Security group reverse proxy EFS
-#
-resource "aws_security_group" "rp_efs" {
-    name        = "beta-rp-efs-sg"
-    description = "Reverse proxy EFS storage security group"
-    vpc_id      = var.vpc_id
-
-    tags = merge(var.tags, {
-        Name = "beta-rp-efs-sg"
-    })
-}
-
-resource "aws_security_group_rule" "rp_efs_ingress" {
-    from_port                = 0
-    protocol                 = "tcp"
-    security_group_id        = aws_security_group.rp_efs.id
-    to_port                  = 65535
-    type                     = "ingress"
-    source_security_group_id = aws_security_group.rp.id
-}
-
-resource "aws_security_group_rule" "rp_efs_egress" {
-    security_group_id = aws_security_group.rp_efs.id
-    type              = "egress"
-    from_port         = 0
-    to_port           = 0
-    protocol          = "-1"
-    cidr_blocks       = [
-        "0.0.0.0/0"
-    ]
-}
-
-resource "aws_vpc_security_group_ingress_rule" "rp_efs_http" {
-    security_group_id = aws_security_group.rp_efs.id
-
-    cidr_ipv4   = "0.0.0.0/0"
-    from_port   = 0
-    ip_protocol = "tcp"
-    to_port     = 65535
 }
 
 resource "aws_security_group" "rp_lc" {
