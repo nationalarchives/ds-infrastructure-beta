@@ -9,7 +9,7 @@ permissions:
 on:
   workflow_dispatch:
     inputs:
-      deploy-environment:
+      account:
         type: choice
         description: Environment
         required: true
