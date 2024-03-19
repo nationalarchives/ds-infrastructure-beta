@@ -2,8 +2,10 @@
 
 sudo touch /var/log/start-up.log
 
-# Update system
 echo "$(date '+%Y-%m-%d %T') - system update" | sudo tee -a /var/log/start-up.log > /dev/nullsudo dnf -y update
+
+echo "$(date '+%Y-%m-%d %T') - install EFS utilities" | sudo tee -a /var/log/start-up.log > /dev/null
+sudo dnf install -y amazon-efs-utils
 
 # mounting process for ebs
 echo "$(date '+%Y-%m-%d %T') - check if media directory exist" | sudo tee -a /var/log/start-up.log > /dev/null
