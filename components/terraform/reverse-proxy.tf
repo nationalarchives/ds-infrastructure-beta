@@ -83,7 +83,7 @@ module "reverse-proxy" {
 
     lb_sg_id               = module.sgs.rp_lb_sg_id
     profile_arn           = module.roles.rp_profile_arn
-    efs_dns_name           = module.efs.rp_efs_dns_name
+    efs_dns_name           = module.efs.upload_efs_dns_name
     sg_id = module.sgs.rp_sg_id
 
     custom_header_name = jsondecode(data.aws_secretsmanager_secret_version.etna_custom_header.secret_string)["header_name"]
