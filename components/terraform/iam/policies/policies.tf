@@ -12,7 +12,7 @@ resource "aws_iam_policy" "rp_config_s3" {
     name        = "beta-rp-s3-policy"
     description = "S3 access to nginx configuration files and log files"
 
-    policy = templatefile("${path.module}/templates/reverse-proxy-s3-policy.json", {
+    policy = templatefile("${path.module}/templates/instance-s3-policy.json", {
         deployment_s3_bucket = var.deployment_s3_bucket,
         logfile_s3_bucket    = var.logfile_s3_bucket,
         deployment_root      = var.rp_deployment_s3_root,

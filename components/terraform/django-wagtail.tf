@@ -73,7 +73,7 @@ module "django-wagtail" {
 
     lb_sg_id = module.sgs.dw_lb_sg_id
 
-    efs_id = module.sgs.dw_efs_sg_id
+    efs_id = module.sgs.upload_efs_sg_id
 
     ami_id                 = data.aws_ami.beta_dw_ami.id
     instance_type          = var.dw_instance_type
