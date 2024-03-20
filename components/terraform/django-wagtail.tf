@@ -53,6 +53,8 @@ variable "dw_key_name" {}
 variable "dw_instance_type" {}
 variable "dw_root_block_device_size" {}
 
+variable "dw_efs_mount_dir" {}
+
 variable "dw_patch_group" {}
 variable "dw_deployment_group" {}
 variable "dw_auto_switch_on" {}
@@ -82,7 +84,7 @@ module "django-wagtail" {
     sg_id                  = module.sgs.dw_sg_id
     root_block_device_size = var.dw_root_block_device_size
 
-    efs_mount_dir = "/mnt/efs"
+    efs_mount_dir = var.dw_efs_mount_dir
     efs_dns_name  = module.efs.upload_efs_dns_name
 
     patch_group      = var.dw_patch_group

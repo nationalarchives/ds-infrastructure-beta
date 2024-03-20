@@ -1,3 +1,4 @@
+dw_efs_mount_dir = "/app/media"
 dw_key_name      = "beta-dw-dev-eu-west-2"
 dw_instance_type = "t3a.small"
 
