@@ -4,7 +4,7 @@
 locals {
     tags = {
         Terraform   = "true"
-        Product     = "private beta"
+        Product     = "beta"
         Environment = var.environment
         CostCentre  = "53"
         Owner       = "Digital Services"
