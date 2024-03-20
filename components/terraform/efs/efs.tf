@@ -8,7 +8,9 @@ resource "aws_efs_file_system" "upload_efs" {
     creation_token = "beta-upload-efs"
     encrypted      = true
 
-    tags = var.tags
+    tags = merge(var.tags, {
+        Name = "beta-upload-efs"
+    })
 }
 
 resource "aws_efs_mount_target" "upload_efs_private_a" {
@@ -30,7 +32,7 @@ resource "aws_efs_mount_target" "upload_efs_private_b" {
 }
 
 resource "aws_backup_selection" "upload_efs_backup" {
-    name         = "beta-rp-efs-backup"
+    name         = "beta-upload-efs-backup"
     plan_id      = aws_backup_plan.upload_efs_backup.id
     iam_role_arn = var.upload_efs_backup_role_arn
 

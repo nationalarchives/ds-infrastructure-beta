@@ -29,3 +29,5 @@ variable "logfile_s3_bucket" {}
 
 variable "rp_deployment_s3_root" {}
 variable "rp_logfile_s3_root" {}
+
+variable "efs_mount_dir" {}
