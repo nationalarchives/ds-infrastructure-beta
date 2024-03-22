@@ -32,4 +32,6 @@ resource "aws_launch_template" "django_wagtail" {
             encrypted   = true
         }
     }
+
+    default_version = "$Latest"
 }
