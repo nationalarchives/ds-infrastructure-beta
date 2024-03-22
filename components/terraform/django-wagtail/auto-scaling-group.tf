@@ -5,7 +5,7 @@ resource "aws_autoscaling_group" "dw" {
     name                 = "beta-dw"
     launch_template {
         id      = aws_launch_template.django_wagtail.id
-        version = "$Latest"
+        version = aws_launch_template.django_wagtail.latest_version
     }
 
     vpc_zone_identifier = [
