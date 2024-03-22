@@ -33,5 +33,5 @@ resource "aws_launch_template" "django_wagtail" {
         }
     }
 
-    default_version = "$Latest"
+    version = "$Latest"
 }
