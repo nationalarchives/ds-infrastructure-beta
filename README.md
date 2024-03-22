@@ -1,6 +1,11 @@
 # ds-infrastructure-beta
 
 ## Requisites
+### Create AMI for Reverse Proxy Server
+The AMI is the base for the reverse proxy using NginX without configuring any settings. The require settings are loaded at startup and restart from a S3 bucket.
+This process is in place to allow autoscalling picking up changes without rebuild and deployment of a new AMI.
+### Create AMI for Frontend Application Server
+### Apply Infrastructure to AWS
 Before a successful ```terraform apply``` can be run following requisites need to be in place.
 * Run ```terraform apply``` on **ds-infrastructure-beta**
 * Add values manually to _Systems Manager Parameter Store_
