@@ -1,5 +1,5 @@
 resource "aws_iam_policy" "deployment_s3" {
-    name        = "betq-deployment-source-s3-policy"
+    name        = "beta-deployment-source-s3-policy"
     description = "deployment S3 access for beta"
 
     policy = templatefile("${path.module}/templates/deployment-source-s3-access.json", {
