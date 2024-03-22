@@ -91,7 +91,7 @@ data "aws_ami" "beta_dw_ami" {
     filter {
         name   = "name"
         values = [
-            "beta-dw--primer*"
+            "beta-dw-primer*"
         ]
     }
 
