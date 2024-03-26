@@ -89,7 +89,7 @@ module "reverse-proxy" {
         module.sgs.media_efs_sg_id,
     ]
 
-    efs_dns_name  = module.efs.upload_efs_dns_name
+    efs_dns_name  = module.efs.media_efs_dns_name
     efs_mount_dir = var.rp_efs_mount_dir
 
     custom_header_name  = jsondecode(data.aws_secretsmanager_secret_version.etna_custom_header.secret_string)["header_name"]

@@ -89,7 +89,7 @@ module "django-wagtail" {
     ]
 
     efs_mount_dir = var.dw_efs_mount_dir
-    efs_dns_name  = module.efs.upload_efs_dns_name
+    efs_dns_name  = module.efs.media_efs_dns_name
 
     patch_group      = var.dw_patch_group
     deployment_group = var.dw_deployment_group
