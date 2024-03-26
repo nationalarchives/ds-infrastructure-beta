@@ -81,8 +81,12 @@ module "django-wagtail" {
     instance_type          = var.dw_instance_type
     instance_profile_arn   = module.roles.dw_profile_arn
     key_name               = var.dw_key_name
-    sg_id                  = module.sgs.dw_sg_id
     root_block_device_size = var.dw_root_block_device_size
+
+    sg_ids                  = [
+        module.sgs.dw_sg_id,
+        module.sgs.media_efs_sg_id,
+    ]
 
     efs_mount_dir = var.dw_efs_mount_dir
     efs_dns_name  = module.efs.upload_efs_dns_name

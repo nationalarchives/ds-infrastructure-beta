@@ -26,7 +26,7 @@ resource "aws_lb_target_group" "beta_dw" {
 
     health_check {
         interval            = 30
-        path                = "/healthcheck.html"
+        path                = "/"
         port                = "traffic-port"
         timeout             = 5
         healthy_threshold   = 2

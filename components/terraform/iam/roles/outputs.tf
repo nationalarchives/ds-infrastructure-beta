@@ -11,8 +11,8 @@ output "rp_profile_arn" {
     value = aws_iam_instance_profile.rp_profile.arn
 }
 
-output "upload_efs_backup_arn" {
-    value = aws_iam_role.upload_efs_backup.arn
+output "media_efs_backup_arn" {
+    value = aws_iam_role.media_efs_backup.arn
 }
 
 output "dw_role_id" {

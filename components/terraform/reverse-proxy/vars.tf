@@ -7,7 +7,7 @@ variable "private_subnet_b_id" {}
 
 variable "lb_sg_id" {}
 variable "profile_arn" {}
-variable "sg_id" {}
+variable "sg_ids" {}
 
 variable "efs_dns_name" {}
 variable "efs_mount_dir" {}

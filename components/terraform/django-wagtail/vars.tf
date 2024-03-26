@@ -9,7 +9,7 @@ variable "ami_id" {}
 variable "instance_type" {}
 variable "instance_profile_arn" {}
 variable "key_name" {}
-variable "sg_id" {}
+variable "sg_ids" {}
 variable "root_block_device_size" {}
 
 variable "efs_mount_dir" {}

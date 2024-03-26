@@ -84,7 +84,10 @@ module "reverse-proxy" {
 
     lb_sg_id    = module.sgs.rp_lb_sg_id
     profile_arn = module.roles.rp_profile_arn
-    sg_id       = module.sgs.rp_sg_id
+    sg_ids       = [
+        module.sgs.rp_sg_id,
+        module.sgs.media_efs_sg_id,
+    ]
 
     efs_dns_name  = module.efs.upload_efs_dns_name
     efs_mount_dir = var.rp_efs_mount_dir

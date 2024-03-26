@@ -13,9 +13,7 @@ resource "aws_launch_template" "django_wagtail" {
     key_name               = var.key_name
     update_default_version = true
 
-    vpc_security_group_ids = [
-        var.sg_id
-    ]
+    vpc_security_group_ids = var.sg_ids
 
     user_data = base64encode(templatefile("${path.module}/scripts/userdata.sh", {
         mount_target         = var.efs_dns_name,

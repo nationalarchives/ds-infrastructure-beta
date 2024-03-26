@@ -1,5 +1,35 @@
 # EFS access
 #
+resource "aws_security_group" "ec2_mount_efs" {
+    name        = "beta-ec2-mount-efs"
+    description = "ec2 security group to mount EFS storage"
+    vpc_id      = var.vpc_id
+
+    tags = merge(var.tags, {
+        Name = "beta-ec2-mount-efs"
+    })
+}
+
+resource "aws_security_group" "media_efs" {
+    name        = "beta-media-efs"
+    description = "media EFS storage"
+    vpc_id      = var.vpc_id
+
+    tags = merge(var.tags, {
+        Name = "beta-media-efs"
+    })
+}
+
+resource "aws_security_group_rule" "dw_efs_ingress" {
+    description              = "EFS mount target"
+    from_port                = 2049
+    protocol                 = "tcp"
+    security_group_id        = aws_security_group.media_efs.id
+    to_port                  = 2049
+    type                     = "ingress"
+    source_security_group_id = aws_security_group.ec2_mount_efs.id
+}
+
 resource "aws_security_group" "upload_efs" {
     name        = "beta-upload-efs-access"
     description = "access to EFS storage"
