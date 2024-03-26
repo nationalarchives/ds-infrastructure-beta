@@ -24,9 +24,7 @@ resource "aws_efs_mount_target" "media_efs_private_b" {
     file_system_id = aws_efs_file_system.media_efs.id
     subnet_id      = var.private_subnet_b_id
 
-    security_groups = [
-        var.media_efs_sg_id
-    ]
+    security_groups = var.media_efs_sg_ids
 }
 
 resource "aws_backup_selection" "media_efs_backup" {
