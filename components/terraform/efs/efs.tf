@@ -1,15 +1,15 @@
 # -----------------------------------------------------------------------------
 # EFS storage
 # -----------------------------------------------------------------------------
-# upload efs
+# media efs
 # shared between reverse proxy and frontend application server
 #
 resource "aws_efs_file_system" "media_efs" {
-    creation_token = "beta-upload-efs"
+    creation_token = "beta-media-efs"
     encrypted      = true
 
     tags = merge(var.tags, {
-        Name = "beta-upload-efs"
+        Name = "beta-media-efs"
     })
 }
 
@@ -28,7 +28,7 @@ resource "aws_efs_mount_target" "media_efs_private_b" {
 }
 
 resource "aws_backup_selection" "media_efs_backup" {
-    name         = "beta-upload-efs-backup"
+    name         = "beta-media-efs-backup"
     plan_id      = aws_backup_plan.media_efs_backup.id
     iam_role_arn = var.media_efs_backup_role_arn
 
@@ -38,10 +38,10 @@ resource "aws_backup_selection" "media_efs_backup" {
 }
 
 resource "aws_backup_plan" "media_efs_backup" {
-    name = "beta-upload-efs-backup-plan"
+    name = "beta-media-efs-backup-plan"
 
     rule {
-        rule_name         = "beta-upload-efs-backup-rule"
+        rule_name         = "beta-media-efs-backup-rule"
         target_vault_name = aws_backup_vault.media_efs_backup.name
         schedule          = var.media_efs_backup_schedule
         start_window      = var.media_efs_backup_start_window
@@ -56,7 +56,7 @@ resource "aws_backup_plan" "media_efs_backup" {
 }
 
 resource "aws_backup_vault" "media_efs_backup" {
-    name        = "beta-upload-efs-backup-vault"
+    name        = "beta-media-efs-backup-vault"
     kms_key_arn = var.media_efs_backup_kms_key_arn
 
     tags = var.tags

@@ -1,5 +1,5 @@
 output "ec2_mount_efs_sg_id" {
-    value = aws_security_group.ec2_mount_efs.id
+    value = aws_security_group.ec2_mount_media_efs.id
 }
 
 output "media_efs_sg_id" {
