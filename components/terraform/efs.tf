@@ -8,8 +8,8 @@ variable "media_efs_backup_kms_key_arn" {}
 module "efs" {
     source = "./efs"
 
-    private_subnet_a_id = data.aws_ssm_parameter.private_db_subnet_2a_id.value
-    private_subnet_b_id = data.aws_ssm_parameter.private_db_subnet_2b_id.value
+    private_subnet_a_id = data.aws_ssm_parameter.private_subnet_2a_id.value
+    private_subnet_b_id = data.aws_ssm_parameter.private_subnet_2b_id.value
 
     media_efs_sg_ids                     = [
         module.sgs.media_efs_sg_id,
