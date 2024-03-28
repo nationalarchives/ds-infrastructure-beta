@@ -85,7 +85,7 @@ module "django-wagtail" {
 
     sg_ids                  = [
         module.sgs.dw_sg_id,
-        module.sgs.media_efs_sg_id,
+        module.sgs.ec2_mount_efs_sg_id,
     ]
 
     efs_mount_dir = var.dw_efs_mount_dir
