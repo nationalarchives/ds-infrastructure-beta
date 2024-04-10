@@ -49,7 +49,7 @@ else
   echo "$(date '+%Y-%m-%d %T') - EBS found)" | sudo tee -a /var/log/start-up.log > /dev/null
 fi
 
-sudo /usr/local/bin/startup.sh
+/usr/local/bin/startup.sh
 
 
 
