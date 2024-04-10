@@ -1,19 +1,38 @@
+Content-Type: multipart/mixed; boundary="//"
+MIME-Version: 1.0
+
+--//
+Content-Type: text/cloud-config; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="cloud-config.txt"
+
+#cloud-config
+cloud_final_modules:
+- [scripts-user, always]
+
+--//
+Content-Type: text/x-shellscript; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="userdata.txt"
+
 #!/bin/bash
 
 sudo touch /var/log/start-up.log
 
-echo "$(date '+%Y-%m-%d %T') - system update" | sudo tee -a /var/log/start-up.log > /dev/nullsudo dnf -y update
+echo "$(date '+%Y-%m-%d %T') - system update" | sudo tee -a /var/log/start-up.log > /dev/null
+sudo dnf -y update
 
-echo "$(date '+%Y-%m-%d %T') - install EFS utilities" | sudo tee -a /var/log/start-up.log > /dev/null
-sudo dnf install -y amazon-efs-utils
+#echo "$(date '+%Y-%m-%d %T') - install EFS utilities" | sudo tee -a /var/log/start-up.log > /dev/null
+#sudo dnf install -y amazon-efs-utils
 
-# mounting process for ebs
+# mounting process for EFS
 echo "$(date '+%Y-%m-%d %T') - check if media directory exist" | sudo tee -a /var/log/start-up.log > /dev/null
 BASE_DIR="$${mount_dir}"
 if [ ! -d "$BASE_DIR" ]; then
   echo "$(date '+%Y-%m-%d %T') - create media directory" | sudo tee -a /var/log/start-up.log > /dev/null
-  sudo mkdir $BASE_DIR
-  sudo chown -R postgres:postgres $BASE_DIR
+  sudo mkdir -p $BASE_DIR
 else
   echo "$(date '+%Y-%m-%d %T') - media directory found" | sudo tee -a /var/log/start-up.log > /dev/null
 fi
@@ -30,13 +49,13 @@ else
   echo "$(date '+%Y-%m-%d %T') - EBS found)" | sudo tee -a /var/log/start-up.log > /dev/null
 fi
 
-
+sudo /usr/local/bin/startup.sh
 
 
 
 # Auto mount EFS storage on reboot
 
-sudo systemctl restart httpd
+#sudo systemctl restart httpd
 
 # Install CodeDeploy Agent
 #sudo yum update
@@ -49,4 +68,5 @@ sudo systemctl restart httpd
 #sudo chmod +x ./install
 #sudo ./install auto
 
-docker inspect --format='{{range $key, $value := .NetworkSettings.Networks}}{{if eq $key "'"traefik_webgateway"'"}}{{$value.IPAddress}}{{end}}{{end}}' "blue-dw"
+#docker inspect --format='{{range $key, $value := .NetworkSettings.Networks}}{{if eq $key "'"traefik_webgateway"'"}}{{$value.IPAddress}}{{end}}{{end}}' "blue-dw"
+--//--

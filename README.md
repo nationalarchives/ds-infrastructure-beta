@@ -29,3 +29,10 @@ This are database or other secrets which are confidential and should not be save
 Please read any documentation in the **ds-ami-build** repo in regards of the required build for further information.
 * NginX instance - beta-rp-primer*
 * Wagtail instance - beta-dw-primer*
+### Sharing public files
+Public files uploaded to the beta side are stored on EFS which is shared between the reverse proxy and Wagtail instances. The mounting point for RP is _/var/nationalarchives.gov.uk_ and for Wagtail _/app_ \
+There is no fixed directory structure in place but it is recommended to follow use root directories for the file families \
+/css - all css files \
+/js - all js files \
+/media - all images and media files \
+/error-pages - all error pages which are triggered from NginX \
