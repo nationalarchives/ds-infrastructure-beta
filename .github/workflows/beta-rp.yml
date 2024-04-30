@@ -45,13 +45,13 @@ jobs:
     if: github.event.inputs.account == 'staging'
     uses: nationalarchives/ds-github-actions/.github/workflows/beta-rp-ami-build.yml@main
     with:
-      base_role: "arn:aws:iam::846769538626:role/GithubOIDCProviderIAMRolePermissions-Role-I80RXHT6O1PL"
-      playbook_role: "arn:aws:iam::846769538626:role/s-devops-ansible-amis"
+      base_role: "arn:aws:iam::337670467269:role/GitHubActionRole"
+      playbook_role: "arn:aws:iam::337670467269:role/s-devops-ansible-amis"
       region: "eu-west-2"
       branch: "${{ github.event.inputs.branch }}"
       account: "${{ github.event.inputs.account }}"
       key_name: "beta-rp-${{ github.event.inputs.account }}-eu-west-2"
-      instance_type: 't3a.small'
+      instance_type: 't3a.medium'
       volume_size: 20
       s3_deployment_bucket: "ds-${{ github.event.inputs.account }}-deployment-source"
       s3_deployment_root: "beta/rp"

@@ -49,7 +49,7 @@ jobs:
       branch: "${{ github.event.inputs.branch }}"
       account: "${{ github.event.inputs.account }}"
       key_name: "beta-dw-${{ github.event.inputs.account }}-eu-west-2"
-      instance_type: 't3a.small'
+      instance_type: 't3a.medium'
       volume_size: 20
       s3_deployment_bucket: "ds-${{ github.event.inputs.account }}-deployment-source"
       s3_deployment_root: "beta/dw"
