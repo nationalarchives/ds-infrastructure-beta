@@ -56,8 +56,8 @@ data "aws_ssm_parameter" "private_db_subnet_2b_cidr" {
     name = "/infrastructure/network/base/private_db_subnet_2b_cidr"
 }
 
-data "aws_ssm_parameter" "client_vpc_cidr" {
-    name = "/infrastructure/client_vpc_cidr"
+data "aws_ssm_parameter" "client_vpn_cidr" {
+    name = "/infrastructure/client_vpn_cidr"
 }
 
 # amis
@@ -147,9 +147,9 @@ data "aws_ssm_parameter" "cf_waf_ip_set" {
 }
 
 # CloudFront custom headers
-data "aws_secretsmanager_secret" "etna_custom_header" {
-    name = "/infrastructure/etna/custom_header"
+data "aws_secretsmanager_secret" "beta_custom_header" {
+    name = "/infrastructure/beta/custom_header"
 }
-data "aws_secretsmanager_secret_version" "etna_custom_header" {
-    secret_id = data.aws_secretsmanager_secret.etna_custom_header.id
+data "aws_secretsmanager_secret_version" "beta_custom_header" {
+    secret_id = data.aws_secretsmanager_secret.beta_custom_header.id
 }
