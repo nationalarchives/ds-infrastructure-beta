@@ -18,7 +18,7 @@ module "sgs" {
         data.aws_ssm_parameter.private_subnet_2b_cidr.value,
         data.aws_ssm_parameter.private_db_subnet_2a_cidr.value,
         data.aws_ssm_parameter.private_db_subnet_2b_cidr.value,
-        data.aws_ssm_parameter.client_vpc_cidr.value,
+        data.aws_ssm_parameter.client_vpn_cidr.value,
     ]
 
     db_instance_cidr = [
