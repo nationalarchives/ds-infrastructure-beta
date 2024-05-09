@@ -62,7 +62,7 @@
       state: "present"
     register: s3_policy
 
-  - name: create Private Beta Wagtail IAM role
+  - name: create Beta Wagtail IAM role
     community.aws.iam_role:
       aws_access_key: "{{ assumed_role.sts_creds.access_key }}"
       aws_secret_key: "{{ assumed_role.sts_creds.secret_key }}"
