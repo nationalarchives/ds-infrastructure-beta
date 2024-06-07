@@ -22,6 +22,7 @@ resource "aws_launch_template" "reverse_proxy" {
         deployment_s3_bucket = var.deployment_s3_bucket,
         nginx_folder_s3_key  = var.nginx_folder_s3_key
     }))
+
     block_device_mappings {
         device_name = "/dev/xvda"
 
@@ -29,5 +30,12 @@ resource "aws_launch_template" "reverse_proxy" {
             volume_size = var.root_block_device_size
             encrypted   = true
         }
+    }
+
+    metadata_options {
+        http_endpoint               = "enabled"
+        http_tokens                 = "required"
+        http_put_response_hop_limit = 1
+        instance_metadata_tags      = "enabled"
     }
 }

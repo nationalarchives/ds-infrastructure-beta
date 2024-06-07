@@ -49,24 +49,8 @@ else
   echo "$(date '+%Y-%m-%d %T') - EBS found)" | sudo tee -a /var/log/start-up.log > /dev/null
 fi
 
+echo "$(date '+%Y-%m-%d %T') - call startup script" | sudo tee -a /var/log/start-up.log > /dev/null
 /usr/local/bin/startup.sh
-
-
-
-# Auto mount EFS storage on reboot
-
-#sudo systemctl restart httpd
-
-# Install CodeDeploy Agent
-#sudo yum update
-#sudo yum install ruby -y
-#sudo yum install wget -y
-#CODEDEPLOY_BIN="/opt/codedeploy-agent/bin/codedeploy-agent"
-#$CODEDEPLOY_BIN stop
-#sudo yum erase codedeploy-agent -y
-#sudo wget https://aws-codedeploy-eu-west-2.s3.eu-west-2.amazonaws.com/latest/install
-#sudo chmod +x ./install
-#sudo ./install auto
 
 #docker inspect --format='{{range $key, $value := .NetworkSettings.Networks}}{{if eq $key "'"traefik_webgateway"'"}}{{$value.IPAddress}}{{end}}{{end}}' "blue-dw"
 --//--
