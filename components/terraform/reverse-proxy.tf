@@ -26,7 +26,7 @@ locals {
             propagate_at_launch = "true"
         },
         {
-            key                 = "Patch Group"
+            key                 = "PatchGroup"
             value               = var.rp_nginx_patch_group
             propagate_at_launch = "true"
         },
