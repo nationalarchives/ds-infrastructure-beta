@@ -38,6 +38,9 @@ jobs:
       s3_deployment_root: "beta/rp"
       s3_logfile_bucket: "ds-${{ github.event.inputs.account }}-logfiles"
       s3_logfile_root: "beta/reverse-proxy"
+    secrets:
+      vpc_id: ${{ secrets.VPC_ID_DEV }}
+      subnet_id: ${{ secrets.SUBNET_ID_2A_DEV }}
 # ------------------------------------------------------------------------------
 # staging deployment
 # ------------------------------------------------------------------------------
@@ -57,6 +60,9 @@ jobs:
       s3_deployment_root: "beta/rp"
       s3_logfile_bucket: "ds-${{ github.event.inputs.account }}-logfiles"
       s3_logfile_root: "beta/reverse-proxy"
+    secrets:
+      vpc_id: ${{ secrets.VPC_ID_STAGING }}
+      subnet_id: ${{ secrets.SUBNET_ID_2A_STAGING }}
 # ------------------------------------------------------------------------------
 # live deployment
 # ------------------------------------------------------------------------------
@@ -76,4 +82,7 @@ jobs:
       s3_deployment_root: "beta/rp"
       s3_logfile_bucket: "ds-${{ github.event.inputs.account }}-logfiles"
       s3_logfile_root: "beta/reverse-proxy"
+    secrets:
+      vpc_id: ${{ secrets.VPC_ID_LIVE }}
+      subnet_id: ${{ secrets.SUBNET_ID_2A_LIVE }}
 ...
