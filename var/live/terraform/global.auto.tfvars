@@ -5,8 +5,8 @@ environment = "live"
 region      = "eu-west-2"
 service     = "beta"
 
-internal_domain_name = "beta.staging.local"
-ciim_domain_name     = "ciim.staging.local"
+internal_domain_name = "beta.live.local"
+ciim_domain_name     = "ciim.live.local"
 
 deployment_s3_bucket  = "ds-live-deployment-source"
 logfile_s3_bucket     = "ds-live-logfiles"
