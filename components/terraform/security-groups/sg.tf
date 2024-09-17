@@ -20,7 +20,7 @@ resource "aws_security_group_rule" "ec2_mount_media_efs_ingress" {
     cidr_blocks       = var.rp_instance_cidr
 }
 
-resource "aws_security_group_rule" "ec2_mount_media_efs_ingress" {
+resource "aws_security_group_rule" "ec2_mount_media_efs_egress" {
     description       = "EFS mount target"
     from_port         = 2049
     protocol          = "tcp"
