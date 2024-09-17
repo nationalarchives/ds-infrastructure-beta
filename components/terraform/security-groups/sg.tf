@@ -10,6 +10,26 @@ resource "aws_security_group" "ec2_mount_media_efs" {
     })
 }
 
+resource "aws_security_group_rule" "ec2_mount_media_efs_ingress" {
+    description       = "EFS mount target"
+    from_port         = 2049
+    protocol          = "tcp"
+    security_group_id = aws_security_group.ec2_mount_media_efs.id
+    to_port           = 2049
+    type              = "ingress"
+    cidr_blocks       = var.rp_instance_cidr
+}
+
+resource "aws_security_group_rule" "ec2_mount_media_efs_ingress" {
+    description       = "EFS mount target"
+    from_port         = 2049
+    protocol          = "tcp"
+    security_group_id = aws_security_group.ec2_mount_media_efs.id
+    to_port           = 2049
+    type              = "egress"
+    cidr_blocks       = var.rp_instance_cidr
+}
+
 resource "aws_security_group" "media_efs" {
     name        = "beta-media-efs"
     description = "media EFS"
@@ -24,7 +44,7 @@ resource "aws_security_group_rule" "media_efs_ingress" {
     description              = "EFS mount target"
     from_port                = 2049
     protocol                 = "tcp"
-    security_group_id        = aws_security_group.ec2_mount_media_efs.id
+    security_group_id        = aws_security_group.media_efs.id
     to_port                  = 2049
     type                     = "ingress"
     source_security_group_id = aws_security_group.ec2_mount_media_efs.id
@@ -116,7 +136,7 @@ resource "aws_security_group_rule" "lambda_beta_egress_443" {
     from_port         = 443
     to_port           = 443
     protocol          = "tcp"
-    cidr_blocks       = [
+    cidr_blocks = [
         "0.0.0.0/0"
     ]
 }
@@ -127,7 +147,7 @@ resource "aws_security_group_rule" "lambda_beta_egress_general" {
     from_port         = 1024
     to_port           = 65535
     protocol          = "tcp"
-    cidr_blocks       = [
+    cidr_blocks = [
         "10.128.224.0/23"
     ]
 }
