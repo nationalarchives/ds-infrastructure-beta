@@ -20,11 +20,11 @@ resource "aws_security_group" "media_efs" {
     })
 }
 
-resource "aws_security_group_rule" "ec2_mount_media_efs" {
+resource "aws_security_group_rule" "media_efs_ingress" {
     description              = "EFS mount target"
     from_port                = 2049
     protocol                 = "tcp"
-    security_group_id        = aws_security_group.media_efs.id
+    security_group_id        = aws_security_group.ec2_mount_media_efs.id
     to_port                  = 2049
     type                     = "ingress"
     source_security_group_id = aws_security_group.ec2_mount_media_efs.id
