@@ -29,7 +29,6 @@ sudo mv ~/update_nginx_confs.sh /usr/local/sbin/update_nginx_confs.sh
 sudo chmod u+x /usr/local/sbin/update_nginx_confs.sh
 
 # Install CodeDeploy Agent
-sudo yum update
 sudo yum install ruby -y
 sudo yum install wget -y
 CODEDEPLOY_BIN="/opt/codedeploy-agent/bin/codedeploy-agent"
