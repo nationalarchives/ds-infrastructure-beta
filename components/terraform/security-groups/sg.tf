@@ -20,7 +20,7 @@ resource "aws_security_group" "media_efs" {
     })
 }
 
-resource "aws_security_group_rule" "media_efs_ingress" {
+resource "aws_security_group_rule" "ec2_mount_media_efs" {
     description              = "EFS mount target"
     from_port                = 2049
     protocol                 = "tcp"
