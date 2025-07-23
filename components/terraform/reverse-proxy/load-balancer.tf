@@ -26,7 +26,7 @@ resource "aws_lb_target_group" "rp_public" {
 
     health_check {
         interval            = 30
-        path                = "/rp-beacon"
+        path                = "/"
         port                = "traffic-port"
         timeout             = 5
         healthy_threshold   = 2
