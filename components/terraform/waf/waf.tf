@@ -25,6 +25,7 @@ variable "web_acl_shield_advanced_active" {}
 variable "web_acl_amazon_ip_reputation_list" {}
 variable "web_acl_managed_rules_linux_rule_set" {}
 variable "web_acl_managed_rules_php_rule_set" {}
+variable "beta_x_external_access_key" {}
 
 variable "site_ips" {
     description = "ip addresses opposing general waf behaviour"
@@ -46,6 +47,11 @@ resource "aws_wafv2_ip_set" "beta_access" {
     addresses          = var.site_ips
 
     tags = var.tags
+    lifecycle {
+        ignore_changes = [
+            addresses
+        ]
+    }
 }
 
 resource "aws_wafv2_web_acl" "beta" {
@@ -66,8 +72,42 @@ resource "aws_wafv2_web_acl" "beta" {
     }
 
     rule {
+    name     = "allow-external-application-testing"
+    priority = 0
+
+    action {
+        allow {}
+    }
+
+    statement {
+        byte_match_statement {
+            field_to_match {
+                single_header {
+                    name = "x-external-access-key"
+                }
+            }
+
+            positional_constraint = "EXACTLY"
+
+            search_string = var.beta_x_external_access_key
+
+            text_transformation {
+                priority = 0
+                type     = "NONE"
+            }
+        }
+    }
+
+    visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = "allow-external-application-testing"
+        sampled_requests_enabled   = true
+    }
+}
+
+    rule {
         name     = "ip-address-access"
-        priority = 0
+        priority = 1
 
         action {
             dynamic "allow" {
@@ -97,7 +137,7 @@ resource "aws_wafv2_web_acl" "beta" {
         for_each = var.web_acl_requests_in_5_minutes == true ? [""] : []
         content {
             name     = "requests-in-5-minutes"
-            priority = 1
+            priority = 2
 
             action {
                 block {}
@@ -122,7 +162,7 @@ resource "aws_wafv2_web_acl" "beta" {
         for_each = var.web_acl_shield_advanced_active == true ? [""] : []
         content {
             name     = "ShieldMitigationRuleGroup_968803923593_ffdb120f-76b2-491e-8aa6-a1b557edb64c_f50c1afe-b7d3-459e-9f1e-d82a5f3c197d"
-            priority = 2
+            priority = 3
 
             override_action {
                 none {}
@@ -144,7 +184,7 @@ resource "aws_wafv2_web_acl" "beta" {
 
     rule {
         name     = "AWS-AWSManagedRulesBotControlRuleSet"
-        priority = 3
+        priority = 4
 
         override_action {
             none {}

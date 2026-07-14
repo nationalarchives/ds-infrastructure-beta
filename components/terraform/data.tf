@@ -153,3 +153,7 @@ data "aws_secretsmanager_secret" "beta_custom_header" {
 data "aws_secretsmanager_secret_version" "beta_custom_header" {
     secret_id = data.aws_secretsmanager_secret.beta_custom_header.id
 }
+
+data "aws_ssm_parameter" "beta_x_external_access_key" {
+  name = "/infrastructure/waf/beta/x-external-access-key"
+}
