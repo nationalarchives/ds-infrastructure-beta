@@ -3,6 +3,12 @@
 # Update yum
 sudo yum update -y
 
+# Start nginx
+sudo systemctl enable nginx
+sudo systemctl start nginx
+
+sudo yum install -y amazon-efs-utils nfs-utils
+
 # Mount EFS storage
 sudo mkdir -p ${mount_dir}
 sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 ${mount_target}:/ ${mount_dir}

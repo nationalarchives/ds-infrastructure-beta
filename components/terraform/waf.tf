@@ -15,6 +15,7 @@ module "waf" {
 
     site_ips = split(",", data.aws_ssm_parameter.cf_waf_ip_set.value)
     tags     = local.tags
+    beta_x_external_access_key = data.aws_ssm_parameter.beta_x_external_access_key.value
 
     web_acl_default_action_allow         = var.web_acl_default_action_allow
     web_acl_requests_in_5_minutes        = var.web_acl_requests_in_5_minutes

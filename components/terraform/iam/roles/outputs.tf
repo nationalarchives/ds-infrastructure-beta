@@ -21,6 +21,6 @@ output "dw_role_id" {
 output "rp_role_id" {
     value = aws_iam_role.rp_role.arn
 }
-output "lambda_beta_docker_deployment_role_arn" {
-    value = aws_iam_role.lambda_beta_docker_deployment_role.arn
-}
+# output "lambda_beta_docker_deployment_role_arn" {
+#     value = aws_iam_role.lambda_beta_docker_deployment_role.arn
+# }
