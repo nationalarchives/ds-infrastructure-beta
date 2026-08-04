@@ -21,7 +21,7 @@ on:
 jobs:
   deploy-nginx-dev:
     if: ${{ inputs.deploy-environment  == 'dev' }}
-    uses: nationalarchives/ds-infrastructure-beta/.github/workflows/deploy-nginx.yml@main
+    uses: nationalarchives/ds-infrastructure-beta/.github/workflows/deploy-nginx.yaml@main
     with:
       deploy-environment: "${{ inputs.deploy-environment }}"
       github-environment: "dev-deploy"
@@ -31,7 +31,7 @@ jobs:
 
   deploy-nginx-staging:
     if: ${{ inputs.deploy-environment  == 'staging' }}
-    uses: nationalarchives/ds-infrastructure-beta/.github/workflows/deploy-nginx.yml@main
+    uses: nationalarchives/ds-infrastructure-beta/.github/workflows/deploy-nginx.yaml@main
     with:
       deploy-environment: "${{ inputs.deploy-environment }}"
       github-environment: "staging-deploy"
@@ -41,7 +41,7 @@ jobs:
 
   deploy-nginx-live:
     if: ${{ inputs.deploy-environment  == 'live' }}
-    uses: nationalarchives/ds-infrastructure-beta/.github/workflows/deploy-nginx.yml@main
+    uses: nationalarchives/ds-infrastructure-beta/.github/workflows/deploy-nginx.yaml@main
     with:
       deploy-environment: "${{ inputs.deploy-environment }}"
       github-environment: "live-deploy"
