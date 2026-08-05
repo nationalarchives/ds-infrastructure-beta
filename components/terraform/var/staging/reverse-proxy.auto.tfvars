@@ -1,4 +1,4 @@
-rrp_efs_mount_dir = "/mnt/efs"
+rp_efs_mount_dir = "/mnt/efs"
 wagtail_media_mount_dir = "/mnt/wagtail-media"
 rp_folder_s3_key = "nginx"
 
