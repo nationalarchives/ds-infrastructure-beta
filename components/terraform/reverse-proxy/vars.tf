@@ -11,6 +11,8 @@ variable "sg_ids" {}
 
 variable "efs_dns_name" {}
 variable "efs_mount_dir" {}
+variable "wagtail_media_mount_target" {}
+variable "wagtail_media_mount_dir" {}
 
 # launch configuration - reverse proxy
 #
