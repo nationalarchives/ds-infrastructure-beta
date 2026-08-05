@@ -59,6 +59,7 @@ variable "rp_key_name" {}
 variable "rp_folder_s3_key" {}
 
 variable "rp_efs_mount_dir" {}
+variable "wagtail_media_mount_dir" {}
 
 variable "rp_root_block_device_size" {}
 
@@ -91,6 +92,8 @@ module "reverse-proxy" {
 
     efs_dns_name  = module.efs.media_efs_dns_name
     efs_mount_dir = var.rp_efs_mount_dir
+    wagtail_media_mount_target = data.aws_ssm_parameter.wagtail_media_dns_name.value
+    wagtail_media_mount_dir    = var.wagtail_media_mount_dir
 
     custom_header_name  = jsondecode(data.aws_secretsmanager_secret_version.beta_custom_header.secret_string)["header_name"]
     custom_header_value = jsondecode(data.aws_secretsmanager_secret_version.beta_custom_header.secret_string)["header_value"]

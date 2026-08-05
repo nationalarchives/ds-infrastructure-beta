@@ -19,6 +19,8 @@ resource "aws_launch_template" "reverse_proxy" {
         service              = "beta",
         mount_target         = var.efs_dns_name,
         mount_dir            = var.efs_mount_dir,
+        wagtail_media_mount_target = var.wagtail_media_mount_target,
+        wagtail_media_mount_dir    = var.wagtail_media_mount_dir,
         deployment_s3_bucket = var.deployment_s3_bucket,
         nginx_folder_s3_key  = var.nginx_folder_s3_key
     }))

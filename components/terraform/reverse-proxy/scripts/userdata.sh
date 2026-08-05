@@ -16,9 +16,18 @@ sudo chmod 777 ${mount_dir}
 cd ${mount_dir}
 sudo chmod go+rw .
 cd /
+# Mount Wagtail media EFS
+sudo mkdir -p /mnt/wagtail-media
+
+sudo mount -t nfs4 \
+-o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 \
+${wagtail_media_mount_target}:/ /mnt/wagtail-media
+
+sudo chmod 777 /mnt/wagtail-media
 
 # Auto mount EFS storage on reboot
 sudo echo "${mount_target}:/ ${mount_dir} nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,fsc,_netdev 0 0" >> /etc/fstab
+sudo echo "${wagtail_media_mount_target}:/ /mnt/wagtail-media nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,fsc,_netdev 0 0" >> /etc/fstab
 
 # Link directory to EFS mount directory
 sudo ln -snf ${mount_dir} /var/nationalarchives.gov.uk
