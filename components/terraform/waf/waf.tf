@@ -26,6 +26,7 @@ variable "web_acl_amazon_ip_reputation_list" {}
 variable "web_acl_managed_rules_linux_rule_set" {}
 variable "web_acl_managed_rules_php_rule_set" {}
 variable "beta_x_external_access_key" {}
+variable "environment" {}
 
 variable "site_ips" {
     description = "ip addresses opposing general waf behaviour"
@@ -47,6 +48,27 @@ resource "aws_wafv2_ip_set" "beta_access" {
     addresses          = var.site_ips
 
     tags = var.tags
+    lifecycle {
+        ignore_changes = [
+            addresses
+        ]
+    }
+}
+
+resource "aws_wafv2_ip_set" "beta_scan_allowlist" {
+    for_each = var.environment == "live" ? { live = true } : {}
+
+    provider = aws.aws-cf-waf
+
+    name               = "beta-scan-allowlist"
+    description        = "IP addresses allowed for beta scanning"
+    scope              = "CLOUDFRONT"
+    ip_address_version = "IPV4"
+
+    addresses = []
+
+    tags = var.tags
+
     lifecycle {
         ignore_changes = [
             addresses
@@ -105,9 +127,34 @@ resource "aws_wafv2_web_acl" "beta" {
     }
 }
 
+dynamic "rule" {
+    for_each = var.environment == "live" ? [1] : []
+
+    content {
+        name     = "beta-allow-scan-ip"
+        priority = 2
+
+        action {
+            allow {}
+        }
+
+        statement {
+            ip_set_reference_statement {
+                arn = aws_wafv2_ip_set.beta_scan_allowlist["live"].arn
+            }
+        }
+
+        visibility_config {
+            cloudwatch_metrics_enabled = true
+            metric_name                = "beta-allow-scan-ip"
+            sampled_requests_enabled   = true
+        }
+    }
+}
+
     rule {
         name     = "ip-address-access"
-        priority = 1
+        priority = 11
 
         action {
             dynamic "allow" {
@@ -184,7 +231,7 @@ resource "aws_wafv2_web_acl" "beta" {
 
     rule {
         name     = "AWS-AWSManagedRulesBotControlRuleSet"
-        priority = 4
+        priority = 3
 
         override_action {
             none {}
@@ -374,7 +421,7 @@ resource "aws_wafv2_web_acl" "beta" {
         for_each = var.web_acl_managed_rules_php_rule_set == true ? [""] : []
         content {
             name     = "AWS-AWSManagedRulesPHPRuleSet"
-            priority = 7
+            priority = 6
 
             override_action {
                 none {}
@@ -397,7 +444,7 @@ resource "aws_wafv2_web_acl" "beta" {
 
     rule {
         name     = "AWSManagedRulesKnownBadInputsRuleSet"
-        priority = 6
+        priority = 7
 
         override_action {
             none {}

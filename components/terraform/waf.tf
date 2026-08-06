@@ -23,4 +23,5 @@ module "waf" {
     web_acl_amazon_ip_reputation_list    = var.web_acl_amazon_ip_reputation_list
     web_acl_managed_rules_linux_rule_set = var.web_acl_managed_rules_linux_rule_set
     web_acl_managed_rules_php_rule_set   = var.web_acl_managed_rules_php_rule_set
+    environment                          = var.environment
 }
