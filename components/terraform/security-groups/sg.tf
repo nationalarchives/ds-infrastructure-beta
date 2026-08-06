@@ -60,15 +60,15 @@ resource "aws_security_group" "upload_efs" {
     })
 }
 
-resource "aws_security_group_rule" "dw_efs_ingress" {
-    description              = "EFS mount target"
-    from_port                = 2049
-    protocol                 = "tcp"
-    security_group_id        = aws_security_group.upload_efs.id
-    to_port                  = 2049
-    type                     = "ingress"
-    source_security_group_id = aws_security_group.upload_efs.id
-}
+# resource "aws_security_group_rule" "dw_efs_ingress" {
+#     description              = "EFS mount target"
+#     from_port                = 2049
+#     protocol                 = "tcp"
+#     security_group_id        = aws_security_group.upload_efs.id
+#     to_port                  = 2049
+#     type                     = "ingress"
+#     source_security_group_id = aws_security_group.upload_efs.id
+# }
 
 resource "aws_security_group_rule" "efs_egress" {
     cidr_blocks = [
