@@ -161,3 +161,7 @@ data "aws_ssm_parameter" "beta_x_external_access_key" {
 data "aws_ssm_parameter" "wagtail_media_dns_name" {
   name = "/infrastructure/wagtail-efs/media-dns-name"
 }
+
+data "aws_ssm_parameter" "website_efs_reverse_proxy" {
+  name = "/infrastructure/website-efs-reverse-proxy/dns-name"
+}
