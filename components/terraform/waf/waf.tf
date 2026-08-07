@@ -132,7 +132,7 @@ dynamic "rule" {
 
     content {
         name     = "beta-allow-scan-ip"
-        priority = 2
+        priority = 1
 
         action {
             allow {}

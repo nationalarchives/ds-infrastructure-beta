@@ -90,7 +90,7 @@ module "reverse-proxy" {
         module.sgs.ec2_mount_efs_sg_id,
     ]
 
-    efs_dns_name  = module.efs.media_efs_dns_name
+    efs_dns_name  = data.aws_ssm_parameter.website_efs_reverse_proxy.value
     efs_mount_dir = var.rp_efs_mount_dir
     wagtail_media_mount_target = data.aws_ssm_parameter.wagtail_media_dns_name.value
     wagtail_media_mount_dir    = var.wagtail_media_mount_dir
