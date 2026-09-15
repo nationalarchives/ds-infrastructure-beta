@@ -70,3 +70,29 @@ resource "aws_cloudfront_distribution" "beta" {
     # get arn to indicate WAFv2
     web_acl_id = element(split(",", var.beta_waf_info), 1)
 }
+
+resource "aws_cloudwatch_log_delivery_source" "beta" {
+  region = "us-east-1"
+
+  name         = "beta"
+  log_type     = "ACCESS_LOGS"
+  resource_arn = aws_cloudfront_distribution.beta.arn
+}
+
+resource "aws_cloudwatch_log_delivery_destination" "beta" {
+  region = "us-east-1"
+
+  name          = "s3-destination"
+  output_format = "w3c"
+
+  delivery_destination_configuration {
+    destination_resource_arn = "arn:aws:s3:::ds-live-logfiles/beta/cloudfront/"
+  }
+}
+
+resource "aws_cloudwatch_log_delivery" "beta" {
+  region = "us-east-1"
+
+  delivery_source_name     = aws_cloudwatch_log_delivery_source.beta.name
+  delivery_destination_arn = aws_cloudwatch_log_delivery_destination.beta.name
+}
