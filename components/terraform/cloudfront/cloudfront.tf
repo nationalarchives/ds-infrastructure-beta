@@ -91,7 +91,7 @@ resource "aws_cloudwatch_log_delivery_destination" "beta" {
 }
 
 resource "aws_cloudwatch_log_delivery" "beta" {
-  region = "us-east-1"
+#  region = "us-east-1"
 
   delivery_source_name     = aws_cloudwatch_log_delivery_source.beta.name
   delivery_destination_arn = aws_cloudwatch_log_delivery_destination.beta.name
