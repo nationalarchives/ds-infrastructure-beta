@@ -72,7 +72,7 @@ resource "aws_cloudfront_distribution" "beta" {
 }
 
 resource "aws_cloudwatch_log_delivery_source" "beta" {
-  region = "us-east-1"
+#  region = "us-east-1"
 
   name         = "beta"
   log_type     = "ACCESS_LOGS"
@@ -80,7 +80,7 @@ resource "aws_cloudwatch_log_delivery_source" "beta" {
 }
 
 resource "aws_cloudwatch_log_delivery_destination" "beta" {
-  region = "us-east-1"
+#  region = "us-east-1"
 
   name          = "s3-destination"
   output_format = "w3c"
