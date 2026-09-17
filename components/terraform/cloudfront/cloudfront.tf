@@ -96,6 +96,6 @@ resource "aws_cloudwatch_log_delivery" "beta" {
   count = lookup(var.cf_dist, "cfd_logging_access_enabled", "") ? 1 : 0
   region = "us-east-1"
 
-  delivery_source_name     = aws_cloudwatch_log_delivery_source.beta.name
-  delivery_destination_arn = aws_cloudwatch_log_delivery_destination.beta.arn
+  delivery_source_name     = aws_cloudwatch_log_delivery_source.beta[0].name
+  delivery_destination_arn = aws_cloudwatch_log_delivery_destination.beta[0].arn
 }
