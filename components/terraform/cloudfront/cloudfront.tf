@@ -72,6 +72,7 @@ resource "aws_cloudfront_distribution" "beta" {
 }
 
 resource "aws_cloudwatch_log_delivery_source" "beta" {
+  count = lookup(var.cf_dist, "cfd_logging_access_enabled", "") ? 1 : 0
   region = "us-east-1"
 
   name         = "beta"
@@ -80,6 +81,7 @@ resource "aws_cloudwatch_log_delivery_source" "beta" {
 }
 
 resource "aws_cloudwatch_log_delivery_destination" "beta" {
+  count = lookup(var.cf_dist, "cfd_logging_access_enabled", "") ? 1 : 0
   region = "us-east-1"
 
   name          = "s3-destination"
@@ -91,6 +93,7 @@ resource "aws_cloudwatch_log_delivery_destination" "beta" {
 }
 
 resource "aws_cloudwatch_log_delivery" "beta" {
+  count = lookup(var.cf_dist, "cfd_logging_access_enabled", "") ? 1 : 0
   region = "us-east-1"
 
   delivery_source_name     = aws_cloudwatch_log_delivery_source.beta.name
