@@ -1,6 +1,7 @@
 ## -----------------------------------------------------------------------------
 ## variable definitions
 
+variable "environment" {}
 variable "cf_dist" {}
 variable "lb_dns_name" {}
 

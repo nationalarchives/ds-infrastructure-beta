@@ -6,6 +6,7 @@ variable "cf_dist" {}
 module "cloudfront_public" {
     source = "./cloudfront"
 
+    environment = var.environment
     cf_dist = var.cf_dist
 
     lb_dns_name = module.reverse-proxy.rp_lb_dns_name

@@ -14,4 +14,5 @@ cf_dist = {
     "cfd_Managed_CachingOptimized_cache_policy_id"   = "2e54312d-136d-493c-8eb9-b001f22f67d2"
     "cfd_Managed_AllViewer_origin_request_policy_id" = "216adef6-5c7f-47e4-b989-5492eafa07d3"
     "cfd_Managed_CachingDisabled_cache_policy_id"    = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
+    "cfd_logging_access_enabled"                     = true
 }
