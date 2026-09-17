@@ -88,7 +88,7 @@ resource "aws_cloudwatch_log_delivery_destination" "beta" {
   output_format = "w3c"
 
   delivery_destination_configuration {
-    destination_resource_arn = "arn:aws:s3:::ds-live-logfiles/beta/cloudfront/"
+    destination_resource_arn = "arn:aws:s3:::ds-${var.environment}-logfiles/beta/cloudfront/"
   }
 }
 
