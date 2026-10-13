@@ -25,6 +25,7 @@ variable "web_acl_shield_advanced_active" {}
 variable "web_acl_amazon_ip_reputation_list" {}
 variable "web_acl_managed_rules_linux_rule_set" {}
 variable "web_acl_managed_rules_php_rule_set" {}
+variable "web_acl_asn_block" {}
 variable "beta_x_external_access_key" {}
 variable "environment" {}
 
@@ -154,7 +155,7 @@ dynamic "rule" {
 
     rule {
         name     = "ip-address-access"
-        priority = 11
+        priority = 12
 
         action {
             dynamic "allow" {
@@ -176,6 +177,27 @@ dynamic "rule" {
         visibility_config {
             cloudwatch_metrics_enabled = true
             metric_name                = "waf-ip-access-rule"
+            sampled_requests_enabled   = true
+        }
+    }
+
+    rule {
+        name     = "asn-access"
+        priority = 13
+
+        action {
+            block {}
+        }
+
+        statement {
+            asn_match_statement {
+                asn_list = var.web_acl_asn_block
+            }
+        }
+
+        visibility_config {
+            cloudwatch_metrics_enabled = true
+            metric_name                = "waf-asn-access-rule"
             sampled_requests_enabled   = true
         }
     }
