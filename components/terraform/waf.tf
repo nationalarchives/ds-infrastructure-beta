@@ -5,6 +5,7 @@ variable "web_acl_shield_advanced_active" {}
 variable "web_acl_amazon_ip_reputation_list" {}
 variable "web_acl_managed_rules_linux_rule_set" {}
 variable "web_acl_managed_rules_php_rule_set" {}
+variable "web_acl_asn_block" {}
 
 module "waf" {
     providers = {
@@ -23,5 +24,6 @@ module "waf" {
     web_acl_amazon_ip_reputation_list    = var.web_acl_amazon_ip_reputation_list
     web_acl_managed_rules_linux_rule_set = var.web_acl_managed_rules_linux_rule_set
     web_acl_managed_rules_php_rule_set   = var.web_acl_managed_rules_php_rule_set
+    web_acl_asn_block                    = var.web_acl_asn_block
     environment                          = var.environment
 }
