@@ -5,4 +5,4 @@ web_acl_shield_advanced_active = false
 web_acl_amazon_ip_reputation_list = true
 web_acl_managed_rules_linux_rule_set = true
 web_acl_managed_rules_php_rule_set = false
-web_acl_asn_block = [18046,398781]
+web_acl_asn_block = [18046,398781,139341,132203,150436,45899,136907,45102,209854,18046,398781,11404]
